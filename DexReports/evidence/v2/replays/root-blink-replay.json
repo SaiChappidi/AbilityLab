@@ -1,0 +1,9 @@
+{
+    "caseId": "root-blink",
+    "phase": "root-blink",
+    "result": "PASS / rooted mobility: expected blocked; actual blocked.\nMana / cooldown preserved. Root observed=True\nAfter root expiry: expected mobility; actual=True. REPLAY PASSED",
+    "capturedUtc": "2026-11-14T22:20:32.1212109Z",
+    "screenshot": "C:\\Users\\gamer\\Downloads\\dex\\My project\\DexReports\\evidence\\v2\\replays\\root-blink-replay.png",
+    "passed": true,
+    "seconds": 4.0265482
+}

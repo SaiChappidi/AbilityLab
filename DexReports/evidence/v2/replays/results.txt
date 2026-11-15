@@ -1,0 +1,18 @@
+root-blink: True
+PASS / rooted mobility: expected blocked; actual blocked.
+Mana / cooldown preserved. Root observed=True
+After root expiry: expected mobility; actual=True. REPLAY PASSED
+
+root-dash: True
+PASS / rooted mobility: expected blocked; actual blocked.
+Mana / cooldown preserved. Root observed=True
+After root expiry: expected mobility; actual=True. REPLAY PASSED
+
+mel-nova: True
+PASS / active nova: missile destroyed=True, root leaked=False, retaliation=True
+After nova expiry: expected incoming root; actual=True. REPLAY PASSED
+
+shield-charm: True
+PASS / active Black Shield: expected no Charm; actual controlled=False
+After shield expiry: expected Charm; actual=True. REPLAY PASSED
+

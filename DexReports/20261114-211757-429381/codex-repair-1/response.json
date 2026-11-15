@@ -1,0 +1,1 @@
+{"move":"!stunned && !rooted && !charmed && !grounded","shield":"magicShield","explanation":"Each control flag independently blocks a new dash or blink, while no active control preserves mobility. Black Shield blocks control while active regardless of damage type and grants no immunity when inactive."}

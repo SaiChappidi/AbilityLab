@@ -1,0 +1,11 @@
+Independent witness: Reset removes active combat objects and restores resources: 9/10
+PASS projectile exists before reset: observed 1 gt expected 0 @ before_reset
+PASS zone exists before reset: observed 1 gt expected 0 @ before_reset
+PASS effect exists before reset: observed 1 gt expected 0 @ before_reset
+PASS health depleted before reset: observed 1700 lt expected 1800 @ before_reset
+PASS mana spent before reset: observed 715 lt expected 900 @ before_reset
+FAIL reset removes every old projectile: observed 1 eq expected 0 @ after_reset
+PASS reset removes every old zone: observed 0 eq expected 0 @ after_reset
+PASS reset removes every old effect: observed 0 eq expected 0 @ after_reset
+PASS reset restores initial health: observed 1800 eq expected 1800 @ after_reset
+PASS reset restores initial mana: observed 900 eq expected 900 @ after_reset

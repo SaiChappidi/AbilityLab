@@ -1,0 +1,17 @@
+﻿Ahri ability 0: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/spell/AhriQ.png
+Ahri ability 1: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/spell/AhriW.png
+Ahri ability 2: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/spell/AhriE.png
+Ahri ability 3: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/spell/AhriR.png
+Morgana ability 0: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/spell/MorganaQ.png
+Morgana ability 1: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/spell/MorganaW.png
+Morgana ability 2: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/spell/MorganaE.png
+Morgana ability 3: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/spell/MorganaR.png
+Ezreal ability 0: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/spell/EzrealQ.png
+Ezreal ability 1: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/spell/EzrealW.png
+Ezreal ability 2: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/spell/EzrealE.png
+Ezreal ability 3: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/spell/EzrealR.png
+Mel ability 0: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/spell/MelQ.png
+Mel ability 1: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/spell/MelW.png
+Mel ability 2: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/spell/MelE.png
+Mel ability 3: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/spell/MelR.png
+Mel portrait: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/champion/Mel.png

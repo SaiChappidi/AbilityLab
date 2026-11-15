@@ -1,0 +1,225 @@
+Independent verifier: 224/224 passed. VERIFIED
+PASS mobility control mask 0 | expected=True actual=True 
+PASS mobility control mask 1 | expected=False actual=False 
+PASS mobility control mask 2 | expected=False actual=False 
+PASS mobility control mask 3 | expected=False actual=False 
+PASS mobility control mask 4 | expected=False actual=False 
+PASS mobility control mask 5 | expected=False actual=False 
+PASS mobility control mask 6 | expected=False actual=False 
+PASS mobility control mask 7 | expected=False actual=False 
+PASS mobility control mask 8 | expected=False actual=False 
+PASS mobility control mask 9 | expected=False actual=False 
+PASS mobility control mask 10 | expected=False actual=False 
+PASS mobility control mask 11 | expected=False actual=False 
+PASS mobility control mask 12 | expected=False actual=False 
+PASS mobility control mask 13 | expected=False actual=False 
+PASS mobility control mask 14 | expected=False actual=False 
+PASS mobility control mask 15 | expected=False actual=False 
+PASS immunity mask 0 | expected=False actual=False 
+PASS immunity mask 1 | expected=True actual=True 
+PASS immunity mask 2 | expected=False actual=False 
+PASS immunity mask 3 | expected=True actual=True 
+PASS Root at 1.999s items=False | expected=False actual=False 
+PASS Root at 1.999s items=False displacement | expected=False actual=False 
+PASS Root at 1.999s items=False cooldown consumed | expected=False actual=False 
+PASS Root at 1.999s items=False mana consumed | expected=False actual=False 
+PASS Root at 2.000s items=False | expected=True actual=True 
+PASS Root at 2.000s items=False displacement | expected=True actual=True 
+PASS Root at 2.000s items=False cooldown consumed | expected=True actual=True 
+PASS Root at 2.000s items=False mana consumed | expected=True actual=True 
+PASS Root at 2.001s items=False | expected=True actual=True 
+PASS Root at 2.001s items=False displacement | expected=True actual=True 
+PASS Root at 2.001s items=False cooldown consumed | expected=True actual=True 
+PASS Root at 2.001s items=False mana consumed | expected=True actual=True 
+PASS Stun at 1.999s items=False | expected=False actual=False 
+PASS Stun at 1.999s items=False displacement | expected=False actual=False 
+PASS Stun at 1.999s items=False cooldown consumed | expected=False actual=False 
+PASS Stun at 1.999s items=False mana consumed | expected=False actual=False 
+PASS Stun at 2.000s items=False | expected=True actual=True 
+PASS Stun at 2.000s items=False displacement | expected=True actual=True 
+PASS Stun at 2.000s items=False cooldown consumed | expected=True actual=True 
+PASS Stun at 2.000s items=False mana consumed | expected=True actual=True 
+PASS Stun at 2.001s items=False | expected=True actual=True 
+PASS Stun at 2.001s items=False displacement | expected=True actual=True 
+PASS Stun at 2.001s items=False cooldown consumed | expected=True actual=True 
+PASS Stun at 2.001s items=False mana consumed | expected=True actual=True 
+PASS Charm at 1.999s items=False | expected=False actual=False 
+PASS Charm at 1.999s items=False displacement | expected=False actual=False 
+PASS Charm at 1.999s items=False cooldown consumed | expected=False actual=False 
+PASS Charm at 1.999s items=False mana consumed | expected=False actual=False 
+PASS Charm at 2.000s items=False | expected=True actual=True 
+PASS Charm at 2.000s items=False displacement | expected=True actual=True 
+PASS Charm at 2.000s items=False cooldown consumed | expected=True actual=True 
+PASS Charm at 2.000s items=False mana consumed | expected=True actual=True 
+PASS Charm at 2.001s items=False | expected=True actual=True 
+PASS Charm at 2.001s items=False displacement | expected=True actual=True 
+PASS Charm at 2.001s items=False cooldown consumed | expected=True actual=True 
+PASS Charm at 2.001s items=False mana consumed | expected=True actual=True 
+PASS Ground at 1.999s items=False | expected=False actual=False 
+PASS Ground at 1.999s items=False displacement | expected=False actual=False 
+PASS Ground at 1.999s items=False cooldown consumed | expected=False actual=False 
+PASS Ground at 1.999s items=False mana consumed | expected=False actual=False 
+PASS Ground at 2.000s items=False | expected=True actual=True 
+PASS Ground at 2.000s items=False displacement | expected=True actual=True 
+PASS Ground at 2.000s items=False cooldown consumed | expected=True actual=True 
+PASS Ground at 2.000s items=False mana consumed | expected=True actual=True 
+PASS Ground at 2.001s items=False | expected=True actual=True 
+PASS Ground at 2.001s items=False displacement | expected=True actual=True 
+PASS Ground at 2.001s items=False cooldown consumed | expected=True actual=True 
+PASS Ground at 2.001s items=False mana consumed | expected=True actual=True 
+PASS active shield resists charm items=False | expected=False actual=False 
+PASS shield expiry at 0.999 items=False | expected=False actual=False 
+PASS shield expiry at 1 items=False | expected=True actual=True 
+PASS shield expiry at 1.001 items=False | expected=True actual=True 
+PASS Root at 1.999s items=True | expected=False actual=False 
+PASS Root at 1.999s items=True displacement | expected=False actual=False 
+PASS Root at 1.999s items=True cooldown consumed | expected=False actual=False 
+PASS Root at 1.999s items=True mana consumed | expected=False actual=False 
+PASS Root at 2.000s items=True | expected=True actual=True 
+PASS Root at 2.000s items=True displacement | expected=True actual=True 
+PASS Root at 2.000s items=True cooldown consumed | expected=True actual=True 
+PASS Root at 2.000s items=True mana consumed | expected=True actual=True 
+PASS Root at 2.001s items=True | expected=True actual=True 
+PASS Root at 2.001s items=True displacement | expected=True actual=True 
+PASS Root at 2.001s items=True cooldown consumed | expected=True actual=True 
+PASS Root at 2.001s items=True mana consumed | expected=True actual=True 
+PASS Stun at 1.999s items=True | expected=False actual=False 
+PASS Stun at 1.999s items=True displacement | expected=False actual=False 
+PASS Stun at 1.999s items=True cooldown consumed | expected=False actual=False 
+PASS Stun at 1.999s items=True mana consumed | expected=False actual=False 
+PASS Stun at 2.000s items=True | expected=True actual=True 
+PASS Stun at 2.000s items=True displacement | expected=True actual=True 
+PASS Stun at 2.000s items=True cooldown consumed | expected=True actual=True 
+PASS Stun at 2.000s items=True mana consumed | expected=True actual=True 
+PASS Stun at 2.001s items=True | expected=True actual=True 
+PASS Stun at 2.001s items=True displacement | expected=True actual=True 
+PASS Stun at 2.001s items=True cooldown consumed | expected=True actual=True 
+PASS Stun at 2.001s items=True mana consumed | expected=True actual=True 
+PASS Charm at 1.999s items=True | expected=False actual=False 
+PASS Charm at 1.999s items=True displacement | expected=False actual=False 
+PASS Charm at 1.999s items=True cooldown consumed | expected=False actual=False 
+PASS Charm at 1.999s items=True mana consumed | expected=False actual=False 
+PASS Charm at 2.000s items=True | expected=True actual=True 
+PASS Charm at 2.000s items=True displacement | expected=True actual=True 
+PASS Charm at 2.000s items=True cooldown consumed | expected=True actual=True 
+PASS Charm at 2.000s items=True mana consumed | expected=True actual=True 
+PASS Charm at 2.001s items=True | expected=True actual=True 
+PASS Charm at 2.001s items=True displacement | expected=True actual=True 
+PASS Charm at 2.001s items=True cooldown consumed | expected=True actual=True 
+PASS Charm at 2.001s items=True mana consumed | expected=True actual=True 
+PASS Ground at 1.999s items=True | expected=False actual=False 
+PASS Ground at 1.999s items=True displacement | expected=False actual=False 
+PASS Ground at 1.999s items=True cooldown consumed | expected=False actual=False 
+PASS Ground at 1.999s items=True mana consumed | expected=False actual=False 
+PASS Ground at 2.000s items=True | expected=True actual=True 
+PASS Ground at 2.000s items=True displacement | expected=True actual=True 
+PASS Ground at 2.000s items=True cooldown consumed | expected=True actual=True 
+PASS Ground at 2.000s items=True mana consumed | expected=True actual=True 
+PASS Ground at 2.001s items=True | expected=True actual=True 
+PASS Ground at 2.001s items=True displacement | expected=True actual=True 
+PASS Ground at 2.001s items=True cooldown consumed | expected=True actual=True 
+PASS Ground at 2.001s items=True mana consumed | expected=True actual=True 
+PASS active shield resists charm items=True | expected=False actual=False 
+PASS shield expiry at 0.999 items=True | expected=False actual=False 
+PASS shield expiry at 1 items=True | expected=True actual=True 
+PASS shield expiry at 1.001 items=True | expected=True actual=True 
+PASS free blink | expected=True actual=True 
+PASS immediate recast cooldown | expected=False actual=False 
+PASS dead caster | expected=False actual=False 
+PASS invalid slot | expected=False actual=False 
+PASS nova predicate mask 0 | expected=False actual=False 
+PASS nova predicate mask 1 | expected=False actual=False 
+PASS nova predicate mask 2 | expected=False actual=False 
+PASS nova predicate mask 3 | expected=False actual=False 
+PASS nova predicate mask 4 | expected=False actual=False 
+PASS nova predicate mask 5 | expected=False actual=False 
+PASS nova predicate mask 6 | expected=False actual=False 
+PASS nova predicate mask 7 | expected=True actual=True 
+PASS Ahri dash Root at 1.999 items=False | expected=False actual=False 
+PASS Ahri dash resource Root at 1.999 items=False | expected=False actual=False 
+PASS Ahri dash Root at 2 items=False | expected=True actual=True 
+PASS Ahri dash resource Root at 2 items=False | expected=True actual=True 
+PASS Ahri dash Root at 2.001 items=False | expected=True actual=True 
+PASS Ahri dash resource Root at 2.001 items=False | expected=True actual=True 
+PASS Ahri dash Stun at 1.999 items=False | expected=False actual=False 
+PASS Ahri dash resource Stun at 1.999 items=False | expected=False actual=False 
+PASS Ahri dash Stun at 2 items=False | expected=True actual=True 
+PASS Ahri dash resource Stun at 2 items=False | expected=True actual=True 
+PASS Ahri dash Stun at 2.001 items=False | expected=True actual=True 
+PASS Ahri dash resource Stun at 2.001 items=False | expected=True actual=True 
+PASS Ahri dash Charm at 1.999 items=False | expected=False actual=False 
+PASS Ahri dash resource Charm at 1.999 items=False | expected=False actual=False 
+PASS Ahri dash Charm at 2 items=False | expected=True actual=True 
+PASS Ahri dash resource Charm at 2 items=False | expected=True actual=True 
+PASS Ahri dash Charm at 2.001 items=False | expected=True actual=True 
+PASS Ahri dash resource Charm at 2.001 items=False | expected=True actual=True 
+PASS Ahri dash Ground at 1.999 items=False | expected=False actual=False 
+PASS Ahri dash resource Ground at 1.999 items=False | expected=False actual=False 
+PASS Ahri dash Ground at 2 items=False | expected=True actual=True 
+PASS Ahri dash resource Ground at 2 items=False | expected=True actual=True 
+PASS Ahri dash Ground at 2.001 items=False | expected=True actual=True 
+PASS Ahri dash resource Ground at 2.001 items=False | expected=True actual=True 
+PASS nova boundary 0.749 items=False | expected=False actual=False 
+PASS nova root leakage 0.749 items=False | expected=False actual=False 
+PASS nova boundary 0.75 items=False | expected=True actual=True 
+PASS nova root leakage 0.75 items=False | expected=True actual=True 
+PASS nova boundary 0.751 items=False | expected=True actual=True 
+PASS nova root leakage 0.751 items=False | expected=True actual=True 
+PASS Mel W grants barrier items=False | expected=True actual=True 
+PASS barrier absorbs physical damage items=False | expected=True actual=True 
+PASS Searing Brilliance cap items=False | expected=True actual=True 
+PASS attack consumes banked bolts items=False | expected=True actual=True 
+PASS attack applies Overwhelm items=False | expected=True actual=True 
+PASS unmarked R rejected items=False | expected=False actual=False 
+PASS unmarked R resource preservation items=False | expected=True actual=True 
+PASS marked R detonates items=False | expected=True actual=True 
+PASS nova retaliates at owner items=False | expected=True actual=True 
+PASS retaliation occurs once items=False | expected=True actual=True 
+PASS Mel mana gate items=False | expected=False actual=False 
+PASS Mel mana gate keeps cooldown items=False | expected=True actual=True 
+PASS Solar Snare roots items=False | expected=True actual=True 
+PASS Volley builds multiple marks items=False | expected=True actual=True 
+PASS Ahri dash Root at 1.999 items=True | expected=False actual=False 
+PASS Ahri dash resource Root at 1.999 items=True | expected=False actual=False 
+PASS Ahri dash Root at 2 items=True | expected=True actual=True 
+PASS Ahri dash resource Root at 2 items=True | expected=True actual=True 
+PASS Ahri dash Root at 2.001 items=True | expected=True actual=True 
+PASS Ahri dash resource Root at 2.001 items=True | expected=True actual=True 
+PASS Ahri dash Stun at 1.999 items=True | expected=False actual=False 
+PASS Ahri dash resource Stun at 1.999 items=True | expected=False actual=False 
+PASS Ahri dash Stun at 2 items=True | expected=True actual=True 
+PASS Ahri dash resource Stun at 2 items=True | expected=True actual=True 
+PASS Ahri dash Stun at 2.001 items=True | expected=True actual=True 
+PASS Ahri dash resource Stun at 2.001 items=True | expected=True actual=True 
+PASS Ahri dash Charm at 1.999 items=True | expected=False actual=False 
+PASS Ahri dash resource Charm at 1.999 items=True | expected=False actual=False 
+PASS Ahri dash Charm at 2 items=True | expected=True actual=True 
+PASS Ahri dash resource Charm at 2 items=True | expected=True actual=True 
+PASS Ahri dash Charm at 2.001 items=True | expected=True actual=True 
+PASS Ahri dash resource Charm at 2.001 items=True | expected=True actual=True 
+PASS Ahri dash Ground at 1.999 items=True | expected=False actual=False 
+PASS Ahri dash resource Ground at 1.999 items=True | expected=False actual=False 
+PASS Ahri dash Ground at 2 items=True | expected=True actual=True 
+PASS Ahri dash resource Ground at 2 items=True | expected=True actual=True 
+PASS Ahri dash Ground at 2.001 items=True | expected=True actual=True 
+PASS Ahri dash resource Ground at 2.001 items=True | expected=True actual=True 
+PASS nova boundary 0.749 items=True | expected=False actual=False 
+PASS nova root leakage 0.749 items=True | expected=False actual=False 
+PASS nova boundary 0.75 items=True | expected=True actual=True 
+PASS nova root leakage 0.75 items=True | expected=True actual=True 
+PASS nova boundary 0.751 items=True | expected=True actual=True 
+PASS nova root leakage 0.751 items=True | expected=True actual=True 
+PASS Mel W grants barrier items=True | expected=True actual=True 
+PASS barrier absorbs physical damage items=True | expected=True actual=True 
+PASS Searing Brilliance cap items=True | expected=True actual=True 
+PASS attack consumes banked bolts items=True | expected=True actual=True 
+PASS attack applies Overwhelm items=True | expected=True actual=True 
+PASS unmarked R rejected items=True | expected=False actual=False 
+PASS unmarked R resource preservation items=True | expected=True actual=True 
+PASS marked R detonates items=True | expected=True actual=True 
+PASS nova retaliates at owner items=True | expected=True actual=True 
+PASS retaliation occurs once items=True | expected=True actual=True 
+PASS Mel mana gate items=True | expected=False actual=False 
+PASS Mel mana gate keeps cooldown items=True | expected=True actual=True 
+PASS Solar Snare roots items=True | expected=True actual=True 
+PASS Volley builds multiple marks items=True | expected=True actual=True 

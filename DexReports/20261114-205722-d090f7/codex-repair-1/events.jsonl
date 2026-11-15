@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a1dbd9-d576-7ac3-b848-1aa5e2e94d8e"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"move\":\"!stunned && !rooted && !charmed && !grounded\",\"shield\":\"magicShield\",\"explanation\":\"Each control flag independently blocks a new dash or blink; movement remains allowed when all flags are false. Active Black Shield blocks CC regardless of damage type and grants no immunity when inactive.\"}"}}
+{"type":"turn.completed","usage":{"input_tokens":17040,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":74,"reasoning_output_tokens":0}}

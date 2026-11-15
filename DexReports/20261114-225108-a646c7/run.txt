@@ -1,0 +1,36 @@
+17:51:08  Run type: Live Codex CLI. No manual baseline or time-savings measurement.
+
+17:51:08  Investigating / elapsed 0.0s
+
+17:51:08  Developer request: Mel's Rebuttal nova lets Morgana's projectile through. Repair missile destruction without blocking missiles after the nova expires.
+Codex model: CLI default
+
+17:51:09  Logged in using ChatGPT
+
+17:51:09  Codex session started: 01a1dc41-e90b-7182-b739-45b088b8540c
+
+17:51:09  Codex is investigating the supplied source and feedback.
+
+17:51:13  Codex proposal received. Validating structured output.
+
+17:51:13  Codex completed a proposal (input 17473, output 65 tokens).
+
+17:51:13  Model test selection: Reproduce the hostile missile passing through active Rebuttal and verify it is destroyed within the nova radius. Use the encounter's expired-nova control to confirm missiles pass through after expiry.
+mel-nova: PASS | expected missile hit=False actual=False | 0.00s  Rebuttal destroys Morgana missile; 0.00s  Mel casts Rebuttal
+
+17:51:13  Deterministic exploration: 43 generated timing/matchup cases; 0 failures.
+
+Action deletion: 6 original actions -> No mel-nova failure to minimize in the loaded build.
+Scope: finite generated simplified scenarios, not arbitrary gameplay discovery.
+
+17:51:13  Selected scenarios did not reproduce a failure; no failure is claimed.
+
+17:51:13  Capturing before / elapsed 5.5s
+
+17:51:17  PASS / active nova: missile destroyed=True, root leaked=False, retaliation=True
+After nova expiry: expected incoming root; actual=True. REPLAY PASSED
+
+17:51:17  Passed / elapsed 9.5s
+
+17:51:17  All current checks pass. No repair requested from Codex and no source changed.
+

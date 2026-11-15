@@ -1,0 +1,9 @@
+{
+    "caseId": "shield-charm",
+    "phase": "shield-charm",
+    "result": "PASS / active Black Shield: expected no Charm; actual controlled=False\nAfter shield expiry: expected Charm; actual=True. REPLAY PASSED",
+    "capturedUtc": "2026-11-14T22:20:45.9950421Z",
+    "screenshot": "C:\\Users\\gamer\\Downloads\\dex\\My project\\DexReports\\evidence\\v2\\replays\\shield-charm-replay.png",
+    "passed": true,
+    "seconds": 6.7360484
+}

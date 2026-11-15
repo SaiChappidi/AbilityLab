@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a1dc3e-1e51-70c0-b033-3d1adba9fd52"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"move\":\"!stunned && !rooted && !charmed && !grounded\",\"shield\":\"magicShield\",\"projectile\":\"novaActive && enemyProjectile && insideNova\",\"explanation\":\"Preserves the correct movement and shield rules. Rebuttal destroys missiles only while active, when they are enemy projectiles inside the nova.\"}"}}
+{"type":"turn.completed","usage":{"input_tokens":18070,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":78,"reasoning_output_tokens":0}}

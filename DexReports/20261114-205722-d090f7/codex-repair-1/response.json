@@ -1,0 +1,1 @@
+{"move":"!stunned && !rooted && !charmed && !grounded","shield":"magicShield","explanation":"Each control flag independently blocks a new dash or blink; movement remains allowed when all flags are false. Active Black Shield blocks CC regardless of damage type and grants no immunity when inactive."}

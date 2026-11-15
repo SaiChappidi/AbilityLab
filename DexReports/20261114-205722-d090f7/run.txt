@@ -1,0 +1,163 @@
+15:57:22  Run type: Live Codex CLI. No manual baseline or time-savings measurement.
+
+15:57:22  Investigating / elapsed 0.0s
+
+15:57:22  Developer request: Reproduce Morgana's root allowing Ezreal to start Arcane Shift. Repair mobility and Black Shield control immunity while preserving free and post-expiry mobility.
+Codex model: CLI default
+
+15:57:23  Logged in using ChatGPT
+
+15:57:23  Codex session started: 01a1dbd9-c050-72e0-a887-6ddc07b22c8c
+
+15:57:23  Codex is investigating the supplied source and feedback.
+
+15:57:27  Codex proposal received. Validating structured output.
+
+15:57:27  Codex completed a proposal (input 17365, output 64 tokens).
+
+15:57:28  Model test selection: Reproduce rooted Arcane Shift, check Black Shield control immunity and stun blocking, and establish free-movement and expired-root mobility controls.
+root-blink: FAIL | expected=False actual=True | 0.00s  Ezreal casts Arcane Shift; 0.00s  Ezreal receives Root; 0.00s  Morgana casts Dark Binding
+shield-charm: PASS | expected=False actual=False | 0.00s  Black Shield resists Charm; 0.00s  Ahri casts Charm; 0.00s  Morgana casts Black Shield
+free-blink: PASS | expected=True actual=True | 0.00s  Ezreal casts Arcane Shift
+stun-blink: PASS | expected=False actual=False | 0.00s  Cast blocked by Stun; 0.00s  Ezreal receives Stun
+expired-root: PASS | expected=True actual=True | 2.01s  Ezreal casts Arcane Shift; 0.00s  Ezreal receives Root
+
+15:57:28  Reproduced / elapsed 5.6s
+
+15:57:28  Repairing / elapsed 5.6s
+
+15:57:28  Codex session started: 01a1dbd9-d576-7ac3-b848-1aa5e2e94d8e
+
+15:57:28  Codex is investigating the supplied source and feedback.
+
+15:57:33  Codex proposal received. Validating structured output.
+
+15:57:33  Codex completed a proposal (input 17040, output 74 tokens).
+
+15:57:34  Model repair attempt 1: Each control flag independently blocks a new dash or blink; movement remains allowed when all flags are false. Active Black Shield blocks CC regardless of damage type and grants no immunity when inactive.
+
+15:57:34  --- Assets/Dex/Runtime/CombatRules.cs
++++ Assets/Dex/Runtime/CombatRules.cs
+-             return !stunned;
++             return !stunned && !rooted && !charmed && !grounded;
+
+
+15:57:34  Compiling / elapsed 11.1s
+
+15:57:40  Verifying / elapsed 17.7s
+
+15:57:40  root-blink: PASS | expected=False actual=False | 0.00s  Mobility blocked by Root; 0.00s  Ezreal receives Root; 0.00s  Morgana casts Dark Binding
+shield-charm: PASS | expected=False actual=False | 0.00s  Black Shield resists Charm; 0.00s  Ahri casts Charm; 0.00s  Morgana casts Black Shield
+free-blink: PASS | expected=True actual=True | 0.00s  Ezreal casts Arcane Shift
+stun-blink: PASS | expected=False actual=False | 0.00s  Cast blocked by Stun; 0.00s  Ezreal receives Stun
+expired-root: PASS | expected=True actual=True | 2.01s  Ezreal casts Arcane Shift; 0.00s  Ezreal receives Root
+Independent verifier: 104/104 passed. VERIFIED
+PASS mobility control mask 0 | expected=True actual=True 
+PASS mobility control mask 1 | expected=False actual=False 
+PASS mobility control mask 2 | expected=False actual=False 
+PASS mobility control mask 3 | expected=False actual=False 
+PASS mobility control mask 4 | expected=False actual=False 
+PASS mobility control mask 5 | expected=False actual=False 
+PASS mobility control mask 6 | expected=False actual=False 
+PASS mobility control mask 7 | expected=False actual=False 
+PASS mobility control mask 8 | expected=False actual=False 
+PASS mobility control mask 9 | expected=False actual=False 
+PASS mobility control mask 10 | expected=False actual=False 
+PASS mobility control mask 11 | expected=False actual=False 
+PASS mobility control mask 12 | expected=False actual=False 
+PASS mobility control mask 13 | expected=False actual=False 
+PASS mobility control mask 14 | expected=False actual=False 
+PASS mobility control mask 15 | expected=False actual=False 
+PASS immunity mask 0 | expected=False actual=False 
+PASS immunity mask 1 | expected=True actual=True 
+PASS immunity mask 2 | expected=False actual=False 
+PASS immunity mask 3 | expected=True actual=True 
+PASS Root at 1.999s items=False | expected=False actual=False 
+PASS Root at 1.999s items=False displacement | expected=False actual=False 
+PASS Root at 1.999s items=False cooldown consumed | expected=False actual=False 
+PASS Root at 2.000s items=False | expected=True actual=True 
+PASS Root at 2.000s items=False displacement | expected=True actual=True 
+PASS Root at 2.000s items=False cooldown consumed | expected=True actual=True 
+PASS Root at 2.001s items=False | expected=True actual=True 
+PASS Root at 2.001s items=False displacement | expected=True actual=True 
+PASS Root at 2.001s items=False cooldown consumed | expected=True actual=True 
+PASS Stun at 1.999s items=False | expected=False actual=False 
+PASS Stun at 1.999s items=False displacement | expected=False actual=False 
+PASS Stun at 1.999s items=False cooldown consumed | expected=False actual=False 
+PASS Stun at 2.000s items=False | expected=True actual=True 
+PASS Stun at 2.000s items=False displacement | expected=True actual=True 
+PASS Stun at 2.000s items=False cooldown consumed | expected=True actual=True 
+PASS Stun at 2.001s items=False | expected=True actual=True 
+PASS Stun at 2.001s items=False displacement | expected=True actual=True 
+PASS Stun at 2.001s items=False cooldown consumed | expected=True actual=True 
+PASS Charm at 1.999s items=False | expected=False actual=False 
+PASS Charm at 1.999s items=False displacement | expected=False actual=False 
+PASS Charm at 1.999s items=False cooldown consumed | expected=False actual=False 
+PASS Charm at 2.000s items=False | expected=True actual=True 
+PASS Charm at 2.000s items=False displacement | expected=True actual=True 
+PASS Charm at 2.000s items=False cooldown consumed | expected=True actual=True 
+PASS Charm at 2.001s items=False | expected=True actual=True 
+PASS Charm at 2.001s items=False displacement | expected=True actual=True 
+PASS Charm at 2.001s items=False cooldown consumed | expected=True actual=True 
+PASS Ground at 1.999s items=False | expected=False actual=False 
+PASS Ground at 1.999s items=False displacement | expected=False actual=False 
+PASS Ground at 1.999s items=False cooldown consumed | expected=False actual=False 
+PASS Ground at 2.000s items=False | expected=True actual=True 
+PASS Ground at 2.000s items=False displacement | expected=True actual=True 
+PASS Ground at 2.000s items=False cooldown consumed | expected=True actual=True 
+PASS Ground at 2.001s items=False | expected=True actual=True 
+PASS Ground at 2.001s items=False displacement | expected=True actual=True 
+PASS Ground at 2.001s items=False cooldown consumed | expected=True actual=True 
+PASS active shield resists charm items=False | expected=False actual=False 
+PASS shield expiry at 0.999 items=False | expected=False actual=False 
+PASS shield expiry at 1 items=False | expected=True actual=True 
+PASS shield expiry at 1.001 items=False | expected=True actual=True 
+PASS Root at 1.999s items=True | expected=False actual=False 
+PASS Root at 1.999s items=True displacement | expected=False actual=False 
+PASS Root at 1.999s items=True cooldown consumed | expected=False actual=False 
+PASS Root at 2.000s items=True | expected=True actual=True 
+PASS Root at 2.000s items=True displacement | expected=True actual=True 
+PASS Root at 2.000s items=True cooldown consumed | expected=True actual=True 
+PASS Root at 2.001s items=True | expected=True actual=True 
+PASS Root at 2.001s items=True displacement | expected=True actual=True 
+PASS Root at 2.001s items=True cooldown consumed | expected=True actual=True 
+PASS Stun at 1.999s items=True | expected=False actual=False 
+PASS Stun at 1.999s items=True displacement | expected=False actual=False 
+PASS Stun at 1.999s items=True cooldown consumed | expected=False actual=False 
+PASS Stun at 2.000s items=True | expected=True actual=True 
+PASS Stun at 2.000s items=True displacement | expected=True actual=True 
+PASS Stun at 2.000s items=True cooldown consumed | expected=True actual=True 
+PASS Stun at 2.001s items=True | expected=True actual=True 
+PASS Stun at 2.001s items=True displacement | expected=True actual=True 
+PASS Stun at 2.001s items=True cooldown consumed | expected=True actual=True 
+PASS Charm at 1.999s items=True | expected=False actual=False 
+PASS Charm at 1.999s items=True displacement | expected=False actual=False 
+PASS Charm at 1.999s items=True cooldown consumed | expected=False actual=False 
+PASS Charm at 2.000s items=True | expected=True actual=True 
+PASS Charm at 2.000s items=True displacement | expected=True actual=True 
+PASS Charm at 2.000s items=True cooldown consumed | expected=True actual=True 
+PASS Charm at 2.001s items=True | expected=True actual=True 
+PASS Charm at 2.001s items=True displacement | expected=True actual=True 
+PASS Charm at 2.001s items=True cooldown consumed | expected=True actual=True 
+PASS Ground at 1.999s items=True | expected=False actual=False 
+PASS Ground at 1.999s items=True displacement | expected=False actual=False 
+PASS Ground at 1.999s items=True cooldown consumed | expected=False actual=False 
+PASS Ground at 2.000s items=True | expected=True actual=True 
+PASS Ground at 2.000s items=True displacement | expected=True actual=True 
+PASS Ground at 2.000s items=True cooldown consumed | expected=True actual=True 
+PASS Ground at 2.001s items=True | expected=True actual=True 
+PASS Ground at 2.001s items=True displacement | expected=True actual=True 
+PASS Ground at 2.001s items=True cooldown consumed | expected=True actual=True 
+PASS active shield resists charm items=True | expected=False actual=False 
+PASS shield expiry at 0.999 items=True | expected=False actual=False 
+PASS shield expiry at 1 items=True | expected=True actual=True 
+PASS shield expiry at 1.001 items=True | expected=True actual=True 
+PASS free blink | expected=True actual=True 
+PASS immediate recast cooldown | expected=False actual=False 
+PASS dead caster | expected=False actual=False 
+PASS invalid slot | expected=False actual=False 
+
+15:57:40  Passed / elapsed 17.7s
+
+15:57:40  Loaded source passed the independent verifier. Review the saved source diff and replay in Play mode.
+

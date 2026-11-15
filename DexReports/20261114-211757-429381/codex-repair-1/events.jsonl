@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a1dbec-ae70-7f41-b81d-ff33502b5afd"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"move\":\"!stunned && !rooted && !charmed && !grounded\",\"shield\":\"magicShield\",\"explanation\":\"Each control flag independently blocks a new dash or blink, while no active control preserves mobility. Black Shield blocks control while active regardless of damage type and grants no immunity when inactive.\"}"}}
+{"type":"turn.completed","usage":{"input_tokens":17671,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":73,"reasoning_output_tokens":0}}

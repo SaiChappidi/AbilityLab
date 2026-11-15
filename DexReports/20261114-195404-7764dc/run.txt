@@ -1,0 +1,28 @@
+14:54:04  Run type: Offline reference repair (NOT AI). No manual baseline or time-savings measurement.
+
+14:54:04  Investigating / elapsed 0.0s
+
+14:54:04  root-blink: FAIL | expected=False actual=True | 0.00s  Ezreal casts Arcane Shift; 0.00s  Ezreal receives Root; 0.00s  Morgana casts Dark Binding
+shield-charm: FAIL | expected=False actual=True | 0.00s  Morgana receives Charm; 0.00s  Ahri casts Charm; 0.00s  Morgana casts Black Shield
+free-blink: PASS | expected=True actual=True | 0.00s  Ezreal casts Arcane Shift
+stun-blink: PASS | expected=False actual=False | 0.00s  Cast blocked by Stun; 0.00s  Ezreal receives Stun
+expired-root: PASS | expected=True actual=True | 2.01s  Ezreal casts Arcane Shift; 0.00s  Ezreal receives Root
+
+14:54:04  Reproduced / elapsed 0.0s
+
+14:54:04  Repairing / elapsed 0.0s
+
+14:54:04  --- Assets/Dex/Runtime/CombatRules.cs
++++ Assets/Dex/Runtime/CombatRules.cs
+-             return !stunned;
++             return !stunned && !rooted && !charmed && !grounded;
+-             return false;
++             return magicShield;
+
+
+14:54:04  Compiling / elapsed 0.0s
+
+14:56:04  Failed / elapsed 120.0s
+
+14:56:04  Compilation/domain reload timed out after 120s. Inspect Console; original and proposed source are saved. No verification success assumed.
+

@@ -1,0 +1,11 @@
+Actual arena casts charge listed mana once and cooldown rejection preserves resources: 10/10
+PASS Shield cast spends listed cost once: observed 830 eq expected 830 @ shield_cast
+PASS Successful E grants shield: observed 210 eq expected 210 @ shield_cast
+PASS Successful E starts listed cooldown: observed 14 eq expected 14 @ shield_cast
+PASS Ordinary mana regeneration control: observed 832.9993 eq expected 833 @ before_recast
+PASS Cooldown recast spends no mana: observed 832.9993 eq expected 832.9993 @ cooldown_recast
+PASS Cooldown recast preserves ready timestamp: observed 14 eq expected 14 @ cooldown_recast
+PASS Cooldown elapsed normally: observed 13.5 eq expected 13.5 @ cooldown_recast
+PASS Independent Q spends listed cost once: observed 845 eq expected 845 @ binding_cast
+PASS Successful Q creates projectile: observed 1 eq expected 1 @ binding_cast
+PASS Successful Q starts listed cooldown: observed 7 eq expected 7 @ binding_cast

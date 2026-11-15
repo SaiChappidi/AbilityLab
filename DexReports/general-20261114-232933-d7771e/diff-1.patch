@@ -1,0 +1,5 @@
+--- a/Assets/Dex/Runtime/Combat.cs
++++ b/Assets/Dex/Runtime/Combat.cs
+              if(move&&!Mobility(source)) { Log("Mobility blocked by "+source.control); return false; }
++             source.mana-=ChampionKit.Mana(source.champion,slot);
+-             source.mana-=2*ChampionKit.Mana(source.champion,slot);

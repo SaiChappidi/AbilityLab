@@ -1,0 +1,2 @@
+Reset clears in-flight combat objects and restores match resources: 0/0 ERROR: MissingReferenceException: The object of type 'UnityEngine.SpriteRenderer' has been destroyed but you are still trying to access it.
+Your script should either check if it is null or you should not destroy the object.

@@ -1,0 +1,1 @@
+{"tests":["root-blink","shield-charm","free-blink","stun-blink","expired-root"],"reason":"Reproduce rooted Arcane Shift, check Black Shield control immunity and stun blocking, and establish free-movement and expired-root mobility controls."}

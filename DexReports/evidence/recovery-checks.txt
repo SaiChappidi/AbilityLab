@@ -1,0 +1,4 @@
+Recovery checks: 3/3
+PASS missing native Codex executable stops without a fabricated run
+PASS compile timeout releases pending and running state
+PASS stale source snapshot cannot overwrite current source

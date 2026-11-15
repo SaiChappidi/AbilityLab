@@ -1,0 +1,1 @@
+{"type":"object","properties":{"tests":{"type":"array","items":{"type":"string"}},"reason":{"type":"string"}},"required":["tests","reason"],"additionalProperties":false}

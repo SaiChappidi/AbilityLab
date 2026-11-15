@@ -1,0 +1,1 @@
+{"move":"!stunned && !rooted && !charmed && !grounded","shield":"magicShield","projectile":"novaActive && enemyProjectile && insideNova","explanation":"Preserve the correct movement and Black Shield rules. Destroy missiles only while the nova is active and the missile is hostile and inside it."}

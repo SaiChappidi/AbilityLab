@@ -1,0 +1,6 @@
+15:05:27  Run type: Live AI. No manual baseline or time-savings measurement.
+
+15:05:27  Failed / elapsed 0.0s
+
+15:05:27  Missing OPENAI_API_KEY. No AI request was sent. Offline verification, reference repair and replay remain available.
+

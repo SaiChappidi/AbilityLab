@@ -1,0 +1,16 @@
+Ahri orb hits each stationary target once per leg across step sizes: 10/15
+PASS Fine cast creates actual projectile: observed 1 eq expected 1 @ fineCast
+PASS Fine pre-impact control: observed 1800 eq expected 1800 @ fineBeforeImpact
+FAIL Fine outbound hits once: observed 1250 eq expected 1750 @ fineOutbound
+FAIL Fine return hits once: observed 150 eq expected 1150 @ fineComplete
+PASS Fine off-path control: observed 1800 eq expected 1800 @ fineComplete
+PASS Fine projectile finishes: observed 0 eq expected 0 @ fineComplete
+PASS Coarse cast creates actual projectile: observed 1 eq expected 1 @ coarseCast
+PASS Coarse pre-impact control: observed 1800 eq expected 1800 @ coarseBeforeImpact
+FAIL Coarse outbound hits once: observed 1700 eq expected 1750 @ coarseOutbound
+FAIL Coarse return hits once: observed 1500 eq expected 1600 @ coarseComplete
+PASS Coarse off-path control: observed 1800 eq expected 1800 @ coarseComplete
+PASS Coarse projectile finishes: observed 0 eq expected 0 @ coarseComplete
+FAIL Damage independent of step size: observed 1500 eq expected 150 @ coarseComplete
+PASS Fine target stays stationary: observed 3 eq expected 3 @ fineComplete
+PASS Coarse target stays stationary: observed 3 eq expected 3 @ coarseComplete

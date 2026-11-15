@@ -1,0 +1,4 @@
+Deterministic exploration: 43 generated timing/matchup cases; 0 failures.
+
+Action deletion: 6 original actions -> No mel-nova failure to minimize in the loaded build.
+Scope: finite generated simplified scenarios, not arbitrary gameplay discovery.

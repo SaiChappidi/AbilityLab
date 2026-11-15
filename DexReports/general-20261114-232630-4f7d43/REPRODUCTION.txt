@@ -1,0 +1,37 @@
+Reset removes active combat objects and restores resources
+Seed: 731 / Morgana vs Ezreal
+Expected: A normal Morgana Q damages and roots its target. Reset with a projectile, zone and effect active immediately clears all three and restores health, mana, cooldowns and control.
+
+1. Place player at (0, 0) → observe [control_player]
+2. Place enemy at (4, 0) → observe [control_enemy]
+3. Cast player Q toward (4, 0) → observe [normal_launch]
+4. Advance 0.4s at dt=0.01 → observe [normal_hit]
+5. Reset the actual arena → observe [control_reset]
+6. Damage player from enemy for 160 physical → observe [resource_damage]
+7. Cast player W toward (0, 0) → observe [active_zone]
+8. Cast player E toward (0, 0) → observe [active_effect]
+9. Cast player Q toward (0, -2) → observe [before_reset]
+10. Reset the actual arena → observe [after_reset]
+
+Assertions:
+normal projectile exists @ normal_launch: world.shots eq 1
+normal projectile damages @ normal_hit: enemy.hp lt 0 + initial.enemy.hp
+normal projectile roots @ normal_hit: enemy.controlled eq 1
+normal projectile consumed @ normal_hit: world.shots eq 0
+projectile active before reset @ before_reset: world.shots eq 1
+zone active before reset @ before_reset: world.zones eq 1
+effect active before reset @ before_reset: world.effects gt 0
+health depleted before reset @ before_reset: player.hp lt 0 + initial.player.hp
+mana spent before reset @ before_reset: player.mana lt 0 + initial.player.mana
+reset clears projectiles @ after_reset: world.shots eq 0
+reset clears zones @ after_reset: world.zones eq 0
+reset clears effects @ after_reset: world.effects eq 0
+reset restores player health @ after_reset: player.hp eq 0 + initial.player.hp
+reset restores player mana @ after_reset: player.mana eq 0 + initial.player.mana
+reset restores enemy health @ after_reset: enemy.hp eq 0 + initial.enemy.hp
+reset clears Q cooldown @ after_reset: player.cooldownQ eq 0
+reset clears W cooldown @ after_reset: player.cooldownW eq 0
+reset clears E cooldown @ after_reset: player.cooldownE eq 0
+reset clears shield @ after_reset: player.shield eq 0
+reset clears enemy control @ after_reset: enemy.controlled eq 0
+reset restarts clock @ after_reset: world.time eq 0

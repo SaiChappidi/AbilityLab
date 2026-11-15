@@ -1,0 +1,15 @@
+namespace Dex
+{
+    // Intentionally faulty fixture. The agent may edit only the two expressions below.
+    public static class CombatRules
+    {
+        public static bool CanMove(bool stunned, bool rooted, bool charmed, bool grounded)
+        {
+            return !stunned && !rooted && !charmed;
+        }
+        public static bool BlocksControl(bool magicShield, bool physicalDamage)
+        {
+            return magicShield;
+        }
+    }
+}

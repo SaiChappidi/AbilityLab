@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a1dc42-3011-7cf0-924c-1444ff3e8d76"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"caseId\":\"mel-nova\",\"tests\":[\"mel-nova\"],\"reason\":\"Reproduce the reported hostile missile passing through active Rebuttal, and verify the encounter’s expiry control allows missiles through after the nova expires.\"}"}}
+{"type":"turn.completed","usage":{"input_tokens":17473,"cached_input_tokens":16256,"cache_write_input_tokens":0,"output_tokens":56,"reasoning_output_tokens":0}}

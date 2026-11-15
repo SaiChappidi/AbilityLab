@@ -1,0 +1,19 @@
+General host guard checks: 18/18
+PASS deny protected/traversing path ../Assets/Dex/Runtime/Combat.cs
+PASS deny protected/traversing path Assets/../Assets/Dex/Runtime/Combat.cs
+PASS deny protected/traversing path Assets/Dex/Editor/Verification.cs
+PASS deny protected/traversing path Assets/Dex/eDiToR/New.cs
+PASS deny protected/traversing path Assets/Dex/Runtime/ArenaDIAGNOSTICS.cs
+PASS deny protected/traversing path Assets/Dex/Runtime/Verification.cs
+PASS deny protected/traversing path C:/outside.cs
+PASS deny protected/traversing path Assets\Dex\Runtime\Combat.cs
+PASS ordinary multi-line body change stages in working copy only
+PASS multi-file proposals stage ordinary C# changes
+PASS failed multi-file proposal commits no partial working edit
+PASS deny arbitrary host API in gameplay patch
+PASS source snapshot detects stale live manifest
+PASS frozen check rejects self-comparison
+PASS unknown operations rejected before Play
+PASS excessive simulation budget rejected
+PASS nonfinite action rejected
+PASS protected source remains unchanged

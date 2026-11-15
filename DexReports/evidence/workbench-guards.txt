@@ -1,0 +1,18 @@
+Workbench guard checks: 17/17
+PASS reject unsupported expression: true; System.IO.File.Delete("x")
+PASS reject unsupported expression: stunned ||
+PASS reject unsupported expression: stunnedX
+PASS reject unsupported expression: /*comment*/true
+PASS reject unsupported expression: System.Environment.Exit(0)
+PASS reject unsupported expression: rooted ? true : false
+PASS reject unsupported expression: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+PASS reject wrong shield variable
+PASS reject wrong nova variable
+PASS reject nova code injection
+PASS accept valid nova grammar
+PASS reject nova identifier prefix
+PASS accept valid boolean grammar
+PASS preserve surrounding source
+PASS reject non expression-only method
+PASS reject prose around JSON
+PASS accept fenced JSON

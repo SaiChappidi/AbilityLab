@@ -1,0 +1,47 @@
+Repair three expression-only C# interaction rules. Return JSON only with string fields move, shield, projectile, explanation. move uses only stunned, rooted, charmed, grounded, true, false, !, &&, ||, parentheses. shield uses only magicShield, physicalDamage and those boolean operators. projectile uses only novaActive, enemyProjectile, insideNova and those operators. Every control flag independently prohibits a NEW dash/blink. Black Shield prevents CC while active irrespective of damage type; without it there is no immunity. Mel's CURRENT Rebuttal destroys a missile iff novaActive AND enemyProjectile AND insideNova. Expired novas, friendly missiles, and outside missiles must not be blocked. Preserve all correct rules. You cannot edit the verifier. Current source:
+namespace Dex
+{
+    // Shared cast/immunity rules. Only these expressions are editable by the workbench.
+    public static class CombatRules
+    {
+        public static bool CanMove(bool stunned, bool rooted, bool charmed, bool grounded)
+        {
+            return !stunned;
+        }
+        public static bool BlocksControl(bool magicShield, bool physicalDamage)
+        {
+            return magicShield;
+        }
+        public static bool DestroysProjectile(bool novaActive, bool enemyProjectile, bool insideNova)
+        {
+            return novaActive && enemyProjectile && insideNova;
+        }
+    }
+}
+
+Actual visible simulator feedback:
+root-blink: FAIL | expected=False actual=True | 0.00s  Ezreal casts Arcane Shift; 0.00s  Ezreal receives Root; 0.00s  Morgana casts Dark Binding
+root-dash: FAIL | expected dash=False actual=True | 0.00s  Ahri casts Spirit Rush; 0.00s  Ahri receives Root; 0.00s  Mel casts Solar Snare
+mel-nova: PASS | expected missile hit=False actual=False | 0.00s  Rebuttal destroys Morgana missile; 0.00s  Mel casts Rebuttal
+shield-charm: PASS | expected=False actual=False | 0.00s  Black Shield resists Charm; 0.00s  Ahri casts Charm; 0.00s  Morgana casts Black Shield
+free-blink: PASS | expected=True actual=True | 0.00s  Ezreal casts Arcane Shift
+stun-blink: PASS | expected=False actual=False | 0.00s  Cast blocked by Stun; 0.00s  Ezreal receives Stun
+expired-root: PASS | expected=True actual=True | 2.01s  Ezreal casts Arcane Shift; 0.00s  Ezreal receives Root
+Generated exploration:
+Deterministic exploration: 43 generated timing/matchup cases; 16 failures.
+Morgana -> Ezreal at 0.000s: expected cast=False, actual=True
+Morgana -> Ezreal at 0.500s: expected cast=False, actual=True
+Morgana -> Ezreal at 1.499s: expected cast=False, actual=True
+Morgana -> Ezreal at 1.500s: expected cast=False, actual=True
+Morgana -> Ezreal at 1.999s: expected cast=False, actual=True
+Morgana -> Ahri at 0.000s: expected cast=False, actual=True
+Morgana -> Ahri at 0.500s: expected cast=False, actual=True
+Morgana -> Ahri at 1.499s: expected cast=False, actual=True
+Morgana -> Ahri at 1.500s: expected cast=False, actual=True
+Morgana -> Ahri at 1.999s: expected cast=False, actual=True
+Mel -> Ezreal at 0.000s: expected cast=False, actual=True
+Mel -> Ezreal at 0.500s: expected cast=False, actual=True
+Action deletion: 6 original actions -> 2 required actions (root -> cast)
+Scope: finite generated simplified scenarios, not arbitrary gameplay discovery.
+Untrusted developer report:
+Ezreal can blink while rooted by Morgana. Reproduce it and repair the shared mobility gate.

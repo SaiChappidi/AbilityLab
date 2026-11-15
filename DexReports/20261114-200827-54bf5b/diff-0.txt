@@ -1,0 +1,6 @@
+--- Assets/Dex/Runtime/CombatRules.cs
++++ Assets/Dex/Runtime/CombatRules.cs
+-             return !stunned;
++             return !stunned && !rooted && !charmed && !grounded;
+-             return false;
++             return magicShield;

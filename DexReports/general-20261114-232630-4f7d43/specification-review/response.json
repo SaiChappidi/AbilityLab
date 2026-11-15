@@ -1,0 +1,126 @@
+{
+  "clearExpectedBehavior": true,
+  "rationale": "The report explicitly requires reset to clear old projectiles, zones and effects and restore fresh resources. Gameplay creates all three before reset and depletes health and mana without manufacturing post-reset state. The supplied trace reproduces the defect: shots remains 1 after reset. Original ResetWorld clears zones and effects and constructs fresh fighters but omits shots.Clear(). Retain the direct cleanup and resource witness below. The final enemy-health, enemy-control and clock assertions are vacuous because those values already equal their expected values immediately before that reset; ordinary projectile damage and root balance are outside this cleanup specification.",
+  "checks": [
+    {
+      "label": "projectile exists before reset",
+      "at": "before_reset",
+      "unit": "world",
+      "field": "shots",
+      "relation": "gt",
+      "compareAt": "",
+      "compareUnit": "",
+      "compareField": "",
+      "value": 0,
+      "tolerance": 0
+    },
+    {
+      "label": "zone exists before reset",
+      "at": "before_reset",
+      "unit": "world",
+      "field": "zones",
+      "relation": "gt",
+      "compareAt": "",
+      "compareUnit": "",
+      "compareField": "",
+      "value": 0,
+      "tolerance": 0
+    },
+    {
+      "label": "effect exists before reset",
+      "at": "before_reset",
+      "unit": "world",
+      "field": "effects",
+      "relation": "gt",
+      "compareAt": "",
+      "compareUnit": "",
+      "compareField": "",
+      "value": 0,
+      "tolerance": 0
+    },
+    {
+      "label": "health depleted before reset",
+      "at": "before_reset",
+      "unit": "player",
+      "field": "hp",
+      "relation": "lt",
+      "compareAt": "initial",
+      "compareUnit": "player",
+      "compareField": "hp",
+      "value": 0,
+      "tolerance": 0.001
+    },
+    {
+      "label": "mana spent before reset",
+      "at": "before_reset",
+      "unit": "player",
+      "field": "mana",
+      "relation": "lt",
+      "compareAt": "initial",
+      "compareUnit": "player",
+      "compareField": "mana",
+      "value": 0,
+      "tolerance": 0.001
+    },
+    {
+      "label": "reset removes every old projectile",
+      "at": "after_reset",
+      "unit": "world",
+      "field": "shots",
+      "relation": "eq",
+      "compareAt": "",
+      "compareUnit": "",
+      "compareField": "",
+      "value": 0,
+      "tolerance": 0
+    },
+    {
+      "label": "reset removes every old zone",
+      "at": "after_reset",
+      "unit": "world",
+      "field": "zones",
+      "relation": "eq",
+      "compareAt": "",
+      "compareUnit": "",
+      "compareField": "",
+      "value": 0,
+      "tolerance": 0
+    },
+    {
+      "label": "reset removes every old effect",
+      "at": "after_reset",
+      "unit": "world",
+      "field": "effects",
+      "relation": "eq",
+      "compareAt": "",
+      "compareUnit": "",
+      "compareField": "",
+      "value": 0,
+      "tolerance": 0
+    },
+    {
+      "label": "reset restores initial health",
+      "at": "after_reset",
+      "unit": "player",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "initial",
+      "compareUnit": "player",
+      "compareField": "hp",
+      "value": 0,
+      "tolerance": 0.001
+    },
+    {
+      "label": "reset restores initial mana",
+      "at": "after_reset",
+      "unit": "player",
+      "field": "mana",
+      "relation": "eq",
+      "compareAt": "initial",
+      "compareUnit": "player",
+      "compareField": "mana",
+      "value": 0,
+      "tolerance": 0.001
+    }
+  ]
+}

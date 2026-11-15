@@ -1,0 +1,66 @@
+{
+  "clearExpectedBehavior": false,
+  "rationale": "The report clearly requires one hit per target per leg, independent of step size. The scenario uses actual projectiles and does not manufacture post-cast state. However, the supplied evidence does not establish the proposed 50 outbound and 100 return damage per hit or confirm the leg timing. Those numeric assertions need source evidence or independent single-hit calibration before freezing. The trace establishes differing damage totals across step sizes. The retained checks below are necessary witnesses, but cannot alone prove exactly one hit per leg.",
+  "checks": [
+    {
+      "label": "Actual fine-step projectile exists",
+      "at": "fineCast",
+      "unit": "world",
+      "field": "shots",
+      "relation": "eq",
+      "compareAt": "",
+      "compareUnit": "",
+      "compareField": "",
+      "value": 1,
+      "tolerance": 0
+    },
+    {
+      "label": "Actual coarse-step projectile exists",
+      "at": "coarseCast",
+      "unit": "world",
+      "field": "shots",
+      "relation": "eq",
+      "compareAt": "",
+      "compareUnit": "",
+      "compareField": "",
+      "value": 1,
+      "tolerance": 0
+    },
+    {
+      "label": "Fine cast damages on-path enemy",
+      "at": "fineComplete",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "lt",
+      "compareAt": "fineSetup",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": 0,
+      "tolerance": 0
+    },
+    {
+      "label": "Coarse cast damages on-path enemy",
+      "at": "coarseComplete",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "lt",
+      "compareAt": "coarseSetup",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": 0,
+      "tolerance": 0
+    },
+    {
+      "label": "Damage independent of simulation step size",
+      "at": "coarseComplete",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "fineComplete",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": 0,
+      "tolerance": 0.01
+    }
+  ]
+}

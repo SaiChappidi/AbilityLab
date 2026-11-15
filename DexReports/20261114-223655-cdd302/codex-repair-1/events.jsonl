@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a1dc35-0b98-7812-8cf0-f6c96abc3944"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"move\":\"!stunned && !rooted && !charmed && !grounded\",\"shield\":\"magicShield\",\"projectile\":\"novaActive && enemyProjectile && insideNova\",\"explanation\":\"Each control flag independently blocks a new dash or blink. Preserve Black Shield immunity regardless of damage type and projectile destruction only for enemy missiles inside an active nova.\"}"}}
+{"type":"turn.completed","usage":{"input_tokens":18124,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":81,"reasoning_output_tokens":0}}

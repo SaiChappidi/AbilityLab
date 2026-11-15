@@ -1,0 +1,12 @@
+Deterministic exploration: 43 generated timing/matchup cases; 9 failures.
+Rebuttal vs Morgana at 0.000s: expected hit=False, actual=True
+Rebuttal vs Morgana at 0.250s: expected hit=False, actual=True
+Rebuttal vs Morgana at 0.749s: expected hit=False, actual=True
+Rebuttal vs Ezreal at 0.000s: expected hit=False, actual=True
+Rebuttal vs Ezreal at 0.250s: expected hit=False, actual=True
+Rebuttal vs Ezreal at 0.749s: expected hit=False, actual=True
+Rebuttal vs Ahri at 0.000s: expected hit=False, actual=True
+Rebuttal vs Ahri at 0.250s: expected hit=False, actual=True
+Rebuttal vs Ahri at 0.749s: expected hit=False, actual=True
+Action deletion: 6 original actions -> 2 required actions (nova -> cast)
+Scope: finite generated simplified scenarios, not arbitrary gameplay discovery.

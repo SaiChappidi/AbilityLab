@@ -1,0 +1,1 @@
+{"caseId":"mel-nova","tests":["mel-nova"],"reason":"Reproduce the reported hostile missile passing through active Rebuttal, and verify the encounter’s expiry control allows missiles through after the nova expires."}

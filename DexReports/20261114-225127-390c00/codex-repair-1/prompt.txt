@@ -1,0 +1,44 @@
+Repair three expression-only C# interaction rules. Return JSON only with string fields move, shield, projectile, explanation. move uses only stunned, rooted, charmed, grounded, true, false, !, &&, ||, parentheses. shield uses only magicShield, physicalDamage and those boolean operators. projectile uses only novaActive, enemyProjectile, insideNova and those operators. Every control flag independently prohibits a NEW dash/blink. Black Shield prevents CC while active irrespective of damage type; without it there is no immunity. Mel's CURRENT Rebuttal destroys a missile iff novaActive AND enemyProjectile AND insideNova. Expired novas, friendly missiles, and outside missiles must not be blocked. Preserve all correct rules. You cannot edit the verifier. Current source:
+namespace Dex
+{
+    // Shared cast/immunity rules. Only these expressions are editable by the workbench.
+    public static class CombatRules
+    {
+        public static bool CanMove(bool stunned, bool rooted, bool charmed, bool grounded)
+        {
+            return !stunned && !rooted && !charmed && !grounded;
+        }
+        public static bool BlocksControl(bool magicShield, bool physicalDamage)
+        {
+            return magicShield;
+        }
+        public static bool DestroysProjectile(bool novaActive, bool enemyProjectile, bool insideNova)
+        {
+            return false;
+        }
+    }
+}
+
+Actual visible simulator feedback:
+root-blink: PASS | expected=False actual=False | 0.00s  Mobility blocked by Root; 0.00s  Ezreal receives Root; 0.00s  Morgana casts Dark Binding
+root-dash: PASS | expected dash=False actual=False | 0.00s  Mobility blocked by Root; 0.00s  Ahri receives Root; 0.00s  Mel casts Solar Snare
+mel-nova: FAIL | expected missile hit=False actual=True | 0.00s  Mel receives Root; 0.00s  Mel casts Rebuttal
+shield-charm: PASS | expected=False actual=False | 0.00s  Black Shield resists Charm; 0.00s  Ahri casts Charm; 0.00s  Morgana casts Black Shield
+free-blink: PASS | expected=True actual=True | 0.00s  Ezreal casts Arcane Shift
+stun-blink: PASS | expected=False actual=False | 0.00s  Cast blocked by Stun; 0.00s  Ezreal receives Stun
+expired-root: PASS | expected=True actual=True | 2.01s  Ezreal casts Arcane Shift; 0.00s  Ezreal receives Root
+Generated exploration:
+Deterministic exploration: 43 generated timing/matchup cases; 9 failures.
+Rebuttal vs Morgana at 0.000s: expected hit=False, actual=True
+Rebuttal vs Morgana at 0.250s: expected hit=False, actual=True
+Rebuttal vs Morgana at 0.749s: expected hit=False, actual=True
+Rebuttal vs Ezreal at 0.000s: expected hit=False, actual=True
+Rebuttal vs Ezreal at 0.250s: expected hit=False, actual=True
+Rebuttal vs Ezreal at 0.749s: expected hit=False, actual=True
+Rebuttal vs Ahri at 0.000s: expected hit=False, actual=True
+Rebuttal vs Ahri at 0.250s: expected hit=False, actual=True
+Rebuttal vs Ahri at 0.749s: expected hit=False, actual=True
+Action deletion: 6 original actions -> 2 required actions (nova -> cast)
+Scope: finite generated simplified scenarios, not arbitrary gameplay discovery.
+Untrusted developer report:
+Mel's Rebuttal nova lets Morgana's projectile through. Repair missile destruction without blocking missiles after the nova expires.

@@ -1,0 +1,6 @@
+Select a supported encounter and useful reproduction/control tests for the untrusted engineering report. Encounter catalog:
+root-blink: Binding / Arcane Shift. Root blocks a new blink; expiry restores it.
+root-dash: Solar Snare / Spirit Rush. Solar Snare blocks a new dash; expiry restores it.
+mel-nova: Rebuttal / hostile missile. Active nova destroys hostile missiles inside its radius; expired nova does not.
+shield-charm: Black Shield / Charm. An active magic shield prevents Charm; an expired shield does not.
+Available test IDs: root-blink, root-dash, mel-nova, shield-charm, free-blink, stun-blink, expired-root. Include the corresponding encounter test and appropriate normal/expiry controls. The host executes them and returns actual feedback. Return JSON with caseId, tests, reason. Report: Mel's Rebuttal nova lets Morgana's projectile through. Repair missile destruction without blocking missiles after the nova expires.

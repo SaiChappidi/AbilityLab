@@ -1,0 +1,162 @@
+{
+  "clearExpectedBehavior": true,
+  "rationale": "The report explicitly requires one hit per enemy per travel leg, independent of step size. Original Cast creates an actual orb with 100 + 0.5*AP damage; AP is zero. Combat.Damage reduces the outward hit to 50 at 100 MR, while StepShots applies 100 directly on return. These are existing per-hit balances, not new tuning. Speed 11 and range 8 support the selected outbound and completion checkpoints. All state setup precedes casting. The trace reproduces excess damage at both step sizes. The witness checks exact per-leg damage and total damage, so equal but incorrect damage or a missing return hit cannot pass. Passing these checks establishes only this scenario's behavior.",
+  "checks": [
+    {
+      "label": "Fine actual orb created",
+      "at": "fine_cast",
+      "unit": "world",
+      "field": "shots",
+      "relation": "eq",
+      "compareAt": "",
+      "compareUnit": "",
+      "compareField": "",
+      "value": 1,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Fine one outward hit",
+      "at": "fine_outbound",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "fine_before",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": -50,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Fine no damage between crossings",
+      "at": "fine_gap",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "fine_outbound",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": 0,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Fine one return hit",
+      "at": "fine_returned",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "fine_outbound",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": -100,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Fine completed cast totals two hits",
+      "at": "fine_finished",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "fine_before",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": -150,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Coarse actual orb created",
+      "at": "coarse_cast",
+      "unit": "world",
+      "field": "shots",
+      "relation": "eq",
+      "compareAt": "",
+      "compareUnit": "",
+      "compareField": "",
+      "value": 1,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Coarse one outward hit",
+      "at": "coarse_outbound",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "coarse_before",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": -50,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Coarse no damage between crossings",
+      "at": "coarse_gap",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "coarse_outbound",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": 0,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Coarse one return hit",
+      "at": "coarse_returned",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "coarse_outbound",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": -100,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Coarse completed cast totals two hits",
+      "at": "coarse_finished",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "coarse_before",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": -150,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Tested step sizes give equal final health",
+      "at": "coarse_finished",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "fine_finished",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": 0,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Fine off-path control unharmed",
+      "at": "fine_finished",
+      "unit": "fine_control",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "fine_before",
+      "compareUnit": "fine_control",
+      "compareField": "hp",
+      "value": 0,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Coarse off-path control unharmed",
+      "at": "coarse_finished",
+      "unit": "coarse_control",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "coarse_before",
+      "compareUnit": "coarse_control",
+      "compareField": "hp",
+      "value": 0,
+      "tolerance": 0.01
+    }
+  ]
+}

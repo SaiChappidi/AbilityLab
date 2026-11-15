@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a1dc34-e0e9-7912-8bb9-9dcfb54ec152"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"caseId\":\"root-blink\",\"tests\":[\"root-blink\",\"free-blink\",\"stun-blink\",\"expired-root\",\"root-dash\"],\"reason\":\"Test the reported Binding/Arcane Shift interaction, with free-blink and expired-root controls confirming normal mobility and recovery after expiry. Stun-blink checks the existing mobility restriction, and root-dash checks whether the reported defect affects the shared mobility gate.\"}"}}
+{"type":"turn.completed","usage":{"input_tokens":17467,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":95,"reasoning_output_tokens":0}}

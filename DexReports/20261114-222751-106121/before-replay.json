@@ -1,0 +1,9 @@
+{
+    "caseId": "mel-nova",
+    "phase": "before",
+    "result": "FAIL / active nova: missile destroyed=False, root leaked=True, retaliation=False\nAfter nova expiry: expected incoming root; actual=True. REPLAY FAILED",
+    "capturedUtc": "2026-11-14T22:28:04.8888888Z",
+    "screenshot": "C:\\Users\\gamer\\Downloads\\dex\\My project\\DexReports\\20261114-222751-106121\\before-replay.png",
+    "passed": false,
+    "seconds": 4.6610480999999995
+}

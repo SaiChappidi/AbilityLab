@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a1dc2c-c944-7231-a9f5-df847f4c55e1"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"move\":\"!stunned && !rooted && !charmed && !grounded\",\"shield\":\"magicShield\",\"projectile\":\"novaActive && enemyProjectile && insideNova\",\"explanation\":\"Preserve the correct movement and Black Shield rules. Destroy missiles only while the nova is active and the missile is hostile and inside it.\"}"}}
+{"type":"turn.completed","usage":{"input_tokens":18070,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":77,"reasoning_output_tokens":0}}

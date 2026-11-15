@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a1dbdd-8189-7490-a9c6-d213f793badc"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"tests\":[\"root-blink\",\"free-blink\",\"stun-blink\",\"expired-root\"],\"reason\":\"Reproduce the reported rooted blink, check that stun also blocks blink, and verify that free movement and blink after root expiry remain allowed.\"}"}}
+{"type":"turn.completed","usage":{"input_tokens":17360,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":60,"reasoning_output_tokens":0}}

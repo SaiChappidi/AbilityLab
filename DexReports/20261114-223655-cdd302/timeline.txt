@@ -1,0 +1,8 @@
+0.0s  /  Investigating
+6.9s  /  Reproduced
+6.9s  /  Capturing before
+11.1s  /  Repairing
+18.6s  /  Compiling
+25.0s  /  Verifying
+25.0s  /  Replaying
+29.9s  /  Passed

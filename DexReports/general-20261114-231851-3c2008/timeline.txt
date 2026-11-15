@@ -1,0 +1,6 @@
+0.0s / Investigating
+0.2s / Investigating
+62.8s / Reproducing
+64.0s / Reproduced
+64.0s / Reviewing specification
+81.6s / Needs developer review

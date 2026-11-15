@@ -1,0 +1,114 @@
+{
+  "clearExpectedBehavior": true,
+  "rationale": "The report explicitly requires one listed mana charge per successful arena cast and unchanged mana/readiness on cooldown rejection. ChampionKit lists Morgana E at 70 mana and Q at 55; the HUD displays those values. Actual arena Cast calls BeginCast, whose original implementation deducts twice that cost. The trace reproduces both excessive charges while confirming successful shield/projectile effects. The cooldown recast already preserves resources. These checks retain source-supported success controls without prescribing new balance or manufacturing state.",
+  "checks": [
+    {
+      "label": "Successful E charges 70 mana once",
+      "at": "shield_cast",
+      "unit": "player",
+      "field": "mana",
+      "relation": "eq",
+      "compareAt": "initial",
+      "compareUnit": "player",
+      "compareField": "mana",
+      "value": -70,
+      "tolerance": 0.001
+    },
+    {
+      "label": "E produces its shield",
+      "at": "shield_cast",
+      "unit": "player",
+      "field": "shield",
+      "relation": "eq",
+      "compareAt": "",
+      "compareUnit": "",
+      "compareField": "",
+      "value": 210,
+      "tolerance": 0.001
+    },
+    {
+      "label": "E starts its listed cooldown",
+      "at": "shield_cast",
+      "unit": "player",
+      "field": "cooldownE",
+      "relation": "eq",
+      "compareAt": "",
+      "compareUnit": "",
+      "compareField": "",
+      "value": 14,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Recast occurs during active cooldown",
+      "at": "before_recast",
+      "unit": "player",
+      "field": "cooldownE",
+      "relation": "gt",
+      "compareAt": "",
+      "compareUnit": "",
+      "compareField": "",
+      "value": 0,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Rejected cooldown recast preserves mana",
+      "at": "cooldown_recast",
+      "unit": "player",
+      "field": "mana",
+      "relation": "eq",
+      "compareAt": "before_recast",
+      "compareUnit": "player",
+      "compareField": "mana",
+      "value": 0,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Rejected cooldown recast preserves readiness",
+      "at": "cooldown_recast",
+      "unit": "player",
+      "field": "readyE",
+      "relation": "eq",
+      "compareAt": "before_recast",
+      "compareUnit": "player",
+      "compareField": "readyE",
+      "value": 0,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Successful Q charges 55 mana once",
+      "at": "binding_cast",
+      "unit": "enemy",
+      "field": "mana",
+      "relation": "eq",
+      "compareAt": "cooldown_recast",
+      "compareUnit": "enemy",
+      "compareField": "mana",
+      "value": -55,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Q produces one projectile",
+      "at": "binding_cast",
+      "unit": "world",
+      "field": "shots",
+      "relation": "eq",
+      "compareAt": "cooldown_recast",
+      "compareUnit": "world",
+      "compareField": "shots",
+      "value": 1,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Q starts its listed cooldown",
+      "at": "binding_cast",
+      "unit": "enemy",
+      "field": "cooldownQ",
+      "relation": "eq",
+      "compareAt": "",
+      "compareUnit": "",
+      "compareField": "",
+      "value": 7,
+      "tolerance": 0.001
+    }
+  ]
+}

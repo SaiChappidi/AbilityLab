@@ -1,0 +1,3 @@
+INTENTIONAL DEVELOPER EVALUATION FIXTURE: projectile-hit-accounting
+Ahri's Orb of Deception damages the same stationary enemy repeatedly while passing through it. It should damage that enemy once going out and once coming back, regardless of simulation step size. Reproduce this with the actual projectile and fix the hit accounting.
+Target: Assets/Dex/Runtime/DexArena.cs

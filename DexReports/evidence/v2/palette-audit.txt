@@ -1,0 +1,2 @@
+Sprite renderers=66; missing sprites=0; default 3D materials=0; particle systems=0
+Intentional white texture tint preserves official portrait artwork and procedural sprite palettes. Runtime IMGUI panels are drawn in the art-direction palette. This 2D build has no skybox lighting or TMP UI.

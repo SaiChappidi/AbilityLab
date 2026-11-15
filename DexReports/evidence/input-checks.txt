@@ -1,0 +1,14 @@
+Input integration checks: 13/13
+PASS right mouse button sets movement goal
+PASS left-click empty ground does not replace movement order
+PASS left-click enemy starts auto-attack
+PASS one click continues repeated attacks after release
+PASS right mouse button selects enemy attack target
+PASS S clears attack target
+PASS Q input reaches cast and consumes cooldown
+PASS W input reaches cast and consumes cooldown
+PASS E input reaches cast and consumes cooldown
+PASS R input reaches cast and consumes cooldown
+PASS Escape opens sandbox menu
+PASS Escape closes sandbox menu
+PASS F6 starts interaction replay

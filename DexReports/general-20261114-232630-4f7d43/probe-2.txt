@@ -1,0 +1,22 @@
+Reset removes active combat objects and restores resources: 20/21
+PASS normal projectile exists: observed 1 eq expected 1 @ normal_launch
+PASS normal projectile damages: observed 1685.714 lt expected 1800 @ normal_hit
+PASS normal projectile roots: observed 1 eq expected 1 @ normal_hit
+PASS normal projectile consumed: observed 0 eq expected 0 @ normal_hit
+PASS projectile active before reset: observed 1 eq expected 1 @ before_reset
+PASS zone active before reset: observed 1 eq expected 1 @ before_reset
+PASS effect active before reset: observed 1 gt expected 0 @ before_reset
+PASS health depleted before reset: observed 1700 lt expected 1800 @ before_reset
+PASS mana spent before reset: observed 715 lt expected 900 @ before_reset
+FAIL reset clears projectiles: observed 1 eq expected 0 @ after_reset
+PASS reset clears zones: observed 0 eq expected 0 @ after_reset
+PASS reset clears effects: observed 0 eq expected 0 @ after_reset
+PASS reset restores player health: observed 1800 eq expected 1800 @ after_reset
+PASS reset restores player mana: observed 900 eq expected 900 @ after_reset
+PASS reset restores enemy health: observed 1800 eq expected 1800 @ after_reset
+PASS reset clears Q cooldown: observed 0 eq expected 0 @ after_reset
+PASS reset clears W cooldown: observed 0 eq expected 0 @ after_reset
+PASS reset clears E cooldown: observed 0 eq expected 0 @ after_reset
+PASS reset clears shield: observed 0 eq expected 0 @ after_reset
+PASS reset clears enemy control: observed 0 eq expected 0 @ after_reset
+PASS reset restarts clock: observed 0 eq expected 0 @ after_reset

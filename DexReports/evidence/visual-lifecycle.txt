@@ -1,0 +1,31 @@
+2026-11-14T20:29:23.4271590Z
+PASS visual lifecycle: 108 renderers; missing sprites=0; official portraits=3/3
+Sprites=108 missing sprites=0 enabled=108 cameraMask=-1
+Morgana sprite=Morgana material=Universal Render Pipeline/2D/Sprite-Lit-Default enabled=True position=(5.94, 1.98, 0.00)
+Ezreal sprite=Ezreal material=Universal Render Pipeline/2D/Sprite-Lit-Default enabled=True position=(-6.00, -2.00, 0.00)
+
+2026-11-14T20:31:00.8831375Z
+PASS visual lifecycle: 109 renderers; missing sprites=0; official portraits=3/3
+Sprites=109 missing sprites=0 enabled=108 cameraMask=-1
+Morgana sprite=Morgana material=Universal Render Pipeline/2D/Sprite-Lit-Default enabled=True position=(5.94, 1.98, 0.00)
+Ezreal sprite=Ezreal material=Universal Render Pipeline/2D/Sprite-Lit-Default enabled=True position=(-6.00, -2.00, 0.00)
+
+2026-11-14T20:31:08.9599068Z
+PASS visual lifecycle: 109 renderers; missing sprites=0; official portraits=3/3
+Sprites=109 missing sprites=0 enabled=108 cameraMask=-1
+Morgana sprite=Morgana material=Universal Render Pipeline/2D/Sprite-Lit-Default enabled=True position=(4.27, 1.43, 0.00)
+Ezreal sprite=Ezreal material=Universal Render Pipeline/2D/Sprite-Lit-Default enabled=True position=(-6.00, -1.99, 0.00)
+
+2026-11-14T22:42:28.6040801Z
+PASS visual lifecycle: 83 renderers; missing sprites=0; official portraits=4/4
+Sprites=83 missing sprites=0 enabled=77 cameraMask=-1
+Minion sprite= material=Universal Render Pipeline/2D/Sprite-Lit-Default enabled=True position=(-1.44, -0.38, 0.00)
+Minion sprite= material=Universal Render Pipeline/2D/Sprite-Lit-Default enabled=True position=(-3.40, -1.74, 0.00)
+Minion sprite= material=Universal Render Pipeline/2D/Sprite-Lit-Default enabled=True position=(-3.59, -0.79, 0.00)
+Minion sprite= material=Universal Render Pipeline/2D/Sprite-Lit-Default enabled=True position=(-1.43, -0.75, 0.00)
+Minion sprite= material=Universal Render Pipeline/2D/Sprite-Lit-Default enabled=True position=(-4.12, -0.94, 0.00)
+Minion sprite= material=Universal Render Pipeline/2D/Sprite-Lit-Default enabled=True position=(-1.13, -0.55, 0.00)
+Minion sprite= material=Universal Render Pipeline/2D/Sprite-Lit-Default enabled=True position=(-1.54, -0.04, 0.00)
+Minion sprite= material=Universal Render Pipeline/2D/Sprite-Lit-Default enabled=True position=(-3.14, -0.95, 0.00)
+Ezreal sprite=Ezreal material=Dex/PortraitToken enabled=True position=(-3.50, -1.29, 0.00)
+

@@ -1,0 +1,1 @@
+{"caseId":"mel-nova","tests":["mel-nova"],"reason":"Reproduce the hostile missile passing through active Rebuttal and verify it is destroyed within the nova radius. Use the encounter's expired-nova control to confirm missiles pass through after expiry."}

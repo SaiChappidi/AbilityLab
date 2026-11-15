@@ -1,0 +1,1 @@
+{"move":"!stunned && !rooted && !charmed && !grounded","shield":"magicShield","projectile":"novaActive && enemyProjectile && insideNova","explanation":"Preserves the correct movement and shield rules. Rebuttal destroys missiles only while active, when they are enemy projectiles inside the nova."}

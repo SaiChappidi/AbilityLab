@@ -1,0 +1,20 @@
+Actual arena casts charge listed mana once and cooldown rejection preserves resources
+Seed: 1729 / Morgana vs Morgana
+Expected: Morgana E grants its shield, spends 70 mana once, and starts its listed cooldown. A recast during cooldown spends no mana and does not extend readiness. An independent Morgana Q cast spends 55 mana and creates one projectile. Ordinary regeneration restores 3 mana during the half-second advance.
+
+1. Cast player E toward (-6, -2) → observe [shield_cast]
+2. Advance 0.5s at dt=0.017 → observe [before_recast]
+3. Cast player E toward (-6, -2) → observe [cooldown_recast]
+4. Cast enemy Q toward (6, 6) → observe [binding_cast]
+
+Assertions:
+Shield cast spends listed cost once @ shield_cast: player.mana eq -70 + initial.player.mana
+Successful E grants shield @ shield_cast: player.shield eq 210
+Successful E starts listed cooldown @ shield_cast: player.cooldownE eq 14
+Ordinary mana regeneration control @ before_recast: player.mana eq 3 + shield_cast.player.mana
+Cooldown recast spends no mana @ cooldown_recast: player.mana eq 0 + before_recast.player.mana
+Cooldown recast preserves ready timestamp @ cooldown_recast: player.readyE eq 0 + shield_cast.player.readyE
+Cooldown elapsed normally @ cooldown_recast: player.cooldownE eq 13.5
+Independent Q spends listed cost once @ binding_cast: enemy.mana eq -55 + cooldown_recast.enemy.mana
+Successful Q creates projectile @ binding_cast: world.shots eq 1 + cooldown_recast.world.shots
+Successful Q starts listed cooldown @ binding_cast: enemy.cooldownQ eq 7

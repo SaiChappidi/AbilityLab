@@ -1,0 +1,1 @@
+{"move":"!stunned && !rooted && !charmed && !grounded","shield":"magicShield","explanation":"Each control flag independently blocks new movement casts; no flags preserves mobility. Active Black Shield blocks control regardless of damage type and grants no immunity when inactive."}

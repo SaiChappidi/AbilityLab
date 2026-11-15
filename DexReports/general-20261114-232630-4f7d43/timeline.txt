@@ -1,0 +1,11 @@
+0.0s / Investigating
+0.2s / Investigating
+57.0s / Reproducing
+58.1s / Investigating
+103.7s / Reproducing
+104.1s / Reproduced
+104.1s / Reviewing specification
+127.4s / Repairing
+134.5s / Compiling
+143.3s / Verifying
+146.8s / Verified

@@ -1,0 +1,14 @@
+Independent witness: Ahri orb hits each stationary target once per travel leg across step sizes: 6/13
+PASS Fine actual orb created: observed 1 eq expected 1 @ fine_cast
+FAIL Fine one outward hit: observed 700 eq expected 1750 @ fine_outbound
+PASS Fine no damage between crossings: observed 700 eq expected 700 @ fine_gap
+FAIL Fine one return hit: observed 0 eq expected 600 @ fine_returned
+FAIL Fine completed cast totals two hits: observed 0 eq expected 1650 @ fine_finished
+PASS Coarse actual orb created: observed 1 eq expected 1 @ coarse_cast
+FAIL Coarse one outward hit: observed 1700 eq expected 1750 @ coarse_outbound
+PASS Coarse no damage between crossings: observed 1700 eq expected 1700 @ coarse_gap
+FAIL Coarse one return hit: observed 1500 eq expected 1600 @ coarse_returned
+FAIL Coarse completed cast totals two hits: observed 1500 eq expected 1650 @ coarse_finished
+FAIL Tested step sizes give equal final health: observed 1500 eq expected 0 @ coarse_finished
+PASS Fine off-path control unharmed: observed 1800 eq expected 1800 @ fine_finished
+PASS Coarse off-path control unharmed: observed 1800 eq expected 1800 @ coarse_finished

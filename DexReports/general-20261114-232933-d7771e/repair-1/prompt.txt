@@ -1,0 +1,1120 @@
+Repair the reproduced gameplay issue using the current source supplied below. Propose ordinary, minimal multi-file C# edits as exact find/replace operations using workspace-relative Assets paths. Do not change test/harness infrastructure, infer success, weaken frozen expectations, detect tests, or add special handling for this report. Preserve unrelated behavior. You receive actual failures; no reference implementation is supplied.
+UNTRUSTED REPORT:
+Casting an ability takes twice its listed mana cost. A successful cast should charge the listed cost once; a rejected cooldown recast must not spend more mana or extend its cooldown. Reproduce and fix this using actual arena casts.
+FROZEN SCENARIO:
+{
+    "title": "Actual arena casts charge listed mana once and cooldown rejection preserves resources",
+    "expectedBehavior": "Morgana E grants its shield, spends 70 mana once, and starts its listed cooldown. A recast during cooldown spends no mana and does not extend readiness. An independent Morgana Q cast spends 55 mana and creates one projectile. Ordinary regeneration restores 3 mana during the half-second advance.",
+    "player": "Morgana",
+    "opponent": "Morgana",
+    "seed": 1729,
+    "actions": [
+        {
+            "op": "cast",
+            "unit": "player",
+            "target": "",
+            "field": "",
+            "text": "",
+            "label": "shield_cast",
+            "champion": "",
+            "slot": "E",
+            "x": -6.0,
+            "y": -2.0,
+            "value": 0.0,
+            "seconds": 0.0,
+            "dt": 0.0,
+            "red": false
+        },
+        {
+            "op": "advance",
+            "unit": "",
+            "target": "",
+            "field": "",
+            "text": "",
+            "label": "before_recast",
+            "champion": "",
+            "slot": "",
+            "x": 0.0,
+            "y": 0.0,
+            "value": 0.0,
+            "seconds": 0.5,
+            "dt": 0.01666666753590107,
+            "red": false
+        },
+        {
+            "op": "cast",
+            "unit": "player",
+            "target": "",
+            "field": "",
+            "text": "",
+            "label": "cooldown_recast",
+            "champion": "",
+            "slot": "E",
+            "x": -6.0,
+            "y": -2.0,
+            "value": 0.0,
+            "seconds": 0.0,
+            "dt": 0.0,
+            "red": false
+        },
+        {
+            "op": "cast",
+            "unit": "enemy",
+            "target": "",
+            "field": "",
+            "text": "",
+            "label": "binding_cast",
+            "champion": "",
+            "slot": "Q",
+            "x": 6.0,
+            "y": 6.0,
+            "value": 0.0,
+            "seconds": 0.0,
+            "dt": 0.0,
+            "red": false
+        }
+    ],
+    "checks": [
+        {
+            "label": "Shield cast spends listed cost once",
+            "at": "shield_cast",
+            "unit": "player",
+            "field": "mana",
+            "relation": "eq",
+            "compareAt": "initial",
+            "compareUnit": "player",
+            "compareField": "mana",
+            "value": -70.0,
+            "tolerance": 0.0010000000474974513
+        },
+        {
+            "label": "Successful E grants shield",
+            "at": "shield_cast",
+            "unit": "player",
+            "field": "shield",
+            "relation": "eq",
+            "compareAt": "",
+            "compareUnit": "",
+            "compareField": "",
+            "value": 210.0,
+            "tolerance": 0.0010000000474974513
+        },
+        {
+            "label": "Successful E starts listed cooldown",
+            "at": "shield_cast",
+            "unit": "player",
+            "field": "cooldownE",
+            "relation": "eq",
+            "compareAt": "",
+            "compareUnit": "",
+            "compareField": "",
+            "value": 14.0,
+            "tolerance": 0.0010000000474974513
+        },
+        {
+            "label": "Ordinary mana regeneration control",
+            "at": "before_recast",
+            "unit": "player",
+            "field": "mana",
+            "relation": "eq",
+            "compareAt": "shield_cast",
+            "compareUnit": "player",
+            "compareField": "mana",
+            "value": 3.0,
+            "tolerance": 0.009999999776482582
+        },
+        {
+            "label": "Cooldown recast spends no mana",
+            "at": "cooldown_recast",
+            "unit": "player",
+            "field": "mana",
+            "relation": "eq",
+            "compareAt": "before_recast",
+            "compareUnit": "player",
+            "compareField": "mana",
+            "value": 0.0,
+            "tolerance": 0.0010000000474974513
+        },
+        {
+            "label": "Cooldown recast preserves ready timestamp",
+            "at": "cooldown_recast",
+            "unit": "player",
+            "field": "readyE",
+            "relation": "eq",
+            "compareAt": "shield_cast",
+            "compareUnit": "player",
+            "compareField": "readyE",
+            "value": 0.0,
+            "tolerance": 0.0010000000474974513
+        },
+        {
+            "label": "Cooldown elapsed normally",
+            "at": "cooldown_recast",
+            "unit": "player",
+            "field": "cooldownE",
+            "relation": "eq",
+            "compareAt": "",
+            "compareUnit": "",
+            "compareField": "",
+            "value": 13.5,
+            "tolerance": 0.009999999776482582
+        },
+        {
+            "label": "Independent Q spends listed cost once",
+            "at": "binding_cast",
+            "unit": "enemy",
+            "field": "mana",
+            "relation": "eq",
+            "compareAt": "cooldown_recast",
+            "compareUnit": "enemy",
+            "compareField": "mana",
+            "value": -55.0,
+            "tolerance": 0.0010000000474974513
+        },
+        {
+            "label": "Successful Q creates projectile",
+            "at": "binding_cast",
+            "unit": "world",
+            "field": "shots",
+            "relation": "eq",
+            "compareAt": "cooldown_recast",
+            "compareUnit": "world",
+            "compareField": "shots",
+            "value": 1.0,
+            "tolerance": 0.0010000000474974513
+        },
+        {
+            "label": "Successful Q starts listed cooldown",
+            "at": "binding_cast",
+            "unit": "enemy",
+            "field": "cooldownQ",
+            "relation": "eq",
+            "compareAt": "",
+            "compareUnit": "",
+            "compareField": "",
+            "value": 7.0,
+            "tolerance": 0.0010000000474974513
+        }
+    ]
+}
+ACTUAL FEEDBACK:
+Actual arena casts charge listed mana once and cooldown rejection preserves resources: 8/10
+FAIL Shield cast spends listed cost once: observed 760 eq expected 830 @ shield_cast
+PASS Successful E grants shield: observed 210 eq expected 210 @ shield_cast
+PASS Successful E starts listed cooldown: observed 14 eq expected 14 @ shield_cast
+PASS Ordinary mana regeneration control: observed 762.9993 eq expected 763 @ before_recast
+PASS Cooldown recast spends no mana: observed 762.9993 eq expected 762.9993 @ cooldown_recast
+PASS Cooldown recast preserves ready timestamp: observed 14 eq expected 14 @ cooldown_recast
+PASS Cooldown elapsed normally: observed 13.5 eq expected 13.5 @ cooldown_recast
+FAIL Independent Q spends listed cost once: observed 790 eq expected 845 @ binding_cast
+PASS Successful Q creates projectile: observed 1 eq expected 1 @ binding_cast
+PASS Successful Q starts listed cooldown: observed 7 eq expected 7 @ binding_cast
+Independent witness:
+Independent witness: Actual arena casts charge listed mana once and cooldown rejection preserves resources: 7/9
+FAIL Successful E charges 70 mana once: observed 760 eq expected 830 @ shield_cast
+PASS E produces its shield: observed 210 eq expected 210 @ shield_cast
+PASS E starts its listed cooldown: observed 14 eq expected 14 @ shield_cast
+PASS Recast occurs during active cooldown: observed 13.5 gt expected 0 @ before_recast
+PASS Rejected cooldown recast preserves mana: observed 762.9993 eq expected 762.9993 @ cooldown_recast
+PASS Rejected cooldown recast preserves readiness: observed 14 eq expected 14 @ cooldown_recast
+FAIL Successful Q charges 55 mana once: observed 790 eq expected 845 @ binding_cast
+PASS Q produces one projectile: observed 1 eq expected 1 @ binding_cast
+PASS Q starts its listed cooldown: observed 7 eq expected 7 @ binding_cast
+CURRENT WORKING COPY SOURCE:
+FILE Assets/Dex/Runtime/ArenaPresentation.cs
+using UnityEngine;
+
+namespace Dex
+{
+    public partial class DexArena
+    {
+        readonly System.Collections.Generic.Dictionary<Texture,Material> tokenMaterials=new System.Collections.Generic.Dictionary<Texture,Material>();AudioSource feedback;AudioClip[] cues;bool sound=true;
+        void SetupFeel()
+        {
+            feedback=gameObject.AddComponent<AudioSource>();feedback.playOnAwake=false;feedback.spatialBlend=0;
+            cues=new AudioClip[4];
+            for(int n=0;n<cues.Length;n++)
+            {
+                int length=5292;float[] samples=new float[length];float frequency=new[]{460,660,220,880}[n];
+                for(int i=0;i<length;i++){float t=i/44100f;float envelope=Mathf.Sin(Mathf.PI*i/(length-1))*Mathf.Exp(-t*24);samples[i]=Mathf.Sin(2*Mathf.PI*(frequency+t*300)*t)*envelope*.22f;}
+                cues[n]=AudioClip.Create("Dex cue "+n,length,1,44100,false);cues[n].SetData(samples,0);
+            }
+        }
+        void PlayCue(int cue){if(sound&&feedback!=null&&cues!=null&&cues[cue]!=null)feedback.PlayOneShot(cues[cue],.23f);}
+        void ReleaseFeel(){if(cues!=null)foreach(var cue in cues)if(cue!=null)Destroy(cue);foreach(var material in tokenMaterials.Values)if(material!=null)Destroy(material);tokenMaterials.Clear();}
+        void AddUnitVisuals(Unit u)
+        {
+            bool championToken=!u.minion&&System.Array.IndexOf(ChampionKit.Roster,u.f.champion)>=0;
+            if(championToken)
+            {
+                if(u.art.sprite==MobaArt.Portrait(u.f.champion))
+                {
+                    // Keep a distinct material binding per texture: the custom unlit mask
+                    // must not let an SRP batch reuse another champion's portrait.
+                    var texture=u.art.sprite.texture;Material material;
+                    if(!tokenMaterials.TryGetValue(texture,out material))
+                    {var shader=Shader.Find("Dex/PortraitToken");if(shader!=null){material=new Material(shader){mainTexture=texture};tokenMaterials[texture]=material;}}
+                    if(material!=null)u.art.sharedMaterial=material;
+                }
+                u.rim=Art("Team outline",MobaArt.Ring,u.p,Vector2.one*1.68f,u.red?Pink:Cyan,99);
+                u.aura=Art("Control / barrier aura",MobaArt.Ring,u.p,Vector2.one*1.95f,Gold,98);u.aura.enabled=false;
+            }
+        }
+        void UpdateUnitVisuals(Unit u)
+        {
+            if(u.rim!=null){u.rim.transform.position=u.p;u.rim.sortingOrder=u.art.sortingOrder-1;}
+            if(u.aura!=null)
+            {
+                u.aura.enabled=u.f.novaUntil>sim.time||u.f.barrier>0||u.f.Shielded(sim.time)||u.f.ActiveControl(sim.time);
+                u.aura.transform.position=u.p;u.aura.sortingOrder=u.art.sortingOrder-2;
+                u.aura.color=u.f.ActiveControl(sim.time)?Pink:u.f.novaUntil>sim.time?Gold:new Color(.64f,.47f,1);
+                u.aura.transform.localScale=Vector3.one*(u.f.novaUntil>sim.time?NovaRadius(u.f)*2:1.95f+.05f*Mathf.Sin(sim.time*6));
+            }
+        }
+    }
+}
+
+FILE Assets/Dex/Runtime/ChampionKit.cs
+namespace Dex
+{
+    // Kit identities follow official descriptions; all numbers are deliberate demo tuning.
+    public static class ChampionKit
+    {
+        public static readonly string[] Roster={"Ahri","Morgana","Ezreal","Mel"};
+        public static string[] Names(string c)
+        {
+            switch(c){case "Ahri":return new[]{"Orb of Deception","Fox-Fire","Charm","Spirit Rush"};case "Morgana":return new[]{"Dark Binding","Tormented Shadow","Black Shield","Soul Shackles"};case "Mel":return new[]{"Radiant Volley","Rebuttal","Solar Snare","Golden Eclipse"};default:return new[]{"Mystic Shot","Essence Flux","Arcane Shift","Trueshot Barrage"};}
+        }
+        public static float Mana(string c,int slot){return c=="Mel"?new[]{60f,60f,60f,100f}[slot]:new[]{55f,60f,70f,100f}[slot];}
+        public static float Cooldown(string c,int slot){return c=="Mel"?new[]{8f,24f,10f,60f}[slot]:new[]{7f,9f,14f,80f}[slot];}
+        public static string Description(string c,int slot)
+        {
+            if(c=="Mel")return new[]{"Six luminous missiles burst around your aim point. A champion hit refunds a little cooldown.","An expanding nova destroys hostile missiles and nearby enemy shields. Grants a barrier and speed, then retaliates at missile owners.","An aimed orb roots enemies at its centre and leaves a slowing, damaging solar field. Root duration grows with travel.","Detonate your active Overwhelm marks across the arena. Damage scales with their stacks and consumes them."}[slot];
+            if(c=="Ahri")return new[]{"A piercing orb returns for true damage.","Three bolts seek nearby enemies.","A skillshot charms the first target hit.","Three dashes with nearby bolts. New dashes are blocked by crowd control."}[slot];
+            if(c=="Morgana")return new[]{"A projectile roots the first enemy hit.","A persistent pool damages enemies inside it.","A magic shield prevents control while it remains active.","Nearby enemies are tethered; staying close causes a delayed stun."}[slot];
+            return new[]{"Physical skillshot; a hit reduces ability cooldowns.","Mark a champion or turret; another hit detonates the mark.","Blink toward your aim and launch a seeking bolt. New casts respect roots.","A wide, piercing energy wave."}[slot];
+        }
+        public static string Passive(string c){return c=="Mel"?"Searing Brilliance: casts bank 3 bonus attack bolts (max 9). Damage applies Overwhelm; low-health marked targets can be executed.":c=="Ezreal"?"Hits build Rising Spell Force stacks (simplified).":c=="Ahri"?"Champion takedowns restore health (simplified).":"Magic damage restores a little health (simplified).";}
+    }
+}
+
+FILE Assets/Dex/Runtime/Combat.cs
+using System;
+using System.Collections.Generic;
+
+namespace Dex
+{
+    [Serializable] public class Fighter
+    {
+        public string champion, build;
+        public float hp = 1800, maxHp = 1800, ap, ad = 110, armor = 60, mr = 40, haste;
+        public float x, controlUntil, shield, shieldUntil, markUntil, poolUntil, tetherUntil;
+        public float mana=900,barrier,barrierUntil,novaUntil,speedUntil,slowUntil,overwhelmUntil;
+        public int searing,overwhelm;public Fighter overwhelmOwner;
+        public readonly Dictionary<Fighter,int> retaliations=new Dictionary<Fighter,int>();
+        public string control = "";
+        public int stacks, rushCharges = 3;
+        public float[] ready = new float[4];
+        public Fighter(string name, bool equipped, float position)
+        {
+            champion = name; x = position;
+            build = equipped ? (name == "Ezreal" ? "Trinity Force / Muramana" : name == "Ahri" ? "Malignance / Rabadon's Deathcap" : name=="Mel"?"Luden's Companion / Shadowflame":"Liandry's Torment / Zhonya's Hourglass") : "No items";
+            // Demonstration aggregate stats; item procs and exact live balance are not modeled.
+            if(equipped) { ap = name == "Ezreal" ? 0 : 230; ad += name == "Ezreal" ? 100 : 0; haste = 30; }
+        }
+        public bool ActiveControl(float t) { return hp > 0 && controlUntil > t; }
+        public bool Shielded(float t) { return shield > 0 && shieldUntil > t; }
+        public bool MarkedBy(Fighter owner,float t){return overwhelm>0&&overwhelmUntil>t&&overwhelmOwner==owner;}
+    }
+    public class Combat
+    {
+        public Fighter a, b;
+        public float time;
+        public readonly List<string> events = new List<string>();
+        public Combat(string left = "Morgana", string right = "Ezreal", bool items = true)
+        { a = new Fighter(left, items, 0.28f); b = new Fighter(right, items, 0.7f); }
+        public void Log(string message) { events.Insert(0, time.ToString("0.00") + "s  " + message); if(events.Count > 30) events.RemoveAt(30); }
+        public void Tick(float dt)
+        {
+            time += dt;
+            foreach(var f in new[]{a,b})
+            {
+                var enemy = f == a ? b : a;
+                if(f.controlUntil <= time) f.control = "";
+                if(f.shieldUntil <= time) f.shield = 0;
+                if(f.barrierUntil<=time)f.barrier=0;
+                if(f.overwhelmUntil<=time)f.overwhelm=0;
+                if(f.hp <= 0) continue;
+                if(f.control == "Charm") f.x = Approach(f.x, enemy.x, dt * 0.025f);
+                if(f.poolUntil > time) Damage(enemy, f, (35 + enemy.ap * 0.1f) * dt, false);
+                if(f.tetherUntil > 0 && time >= f.tetherUntil)
+                { f.tetherUntil = 0; if(Math.Abs(f.x - enemy.x) < 0.55f) { Damage(enemy,f,200+enemy.ap*0.7f,false); CC(f,"Stun",1.5f); Log("Soul Shackles detonates"); } else Log("Soul Shackles tether broken"); }
+            }
+            ResolveRetaliations(a,(from,to,amount)=>Damage(from,to,amount,false));ResolveRetaliations(b,(from,to,amount)=>Damage(from,to,amount,false));
+        }
+        static float Approach(float v,float target,float step) { return v < target ? Math.Min(v+step,target) : Math.Max(v-step,target); }
+        public void Damage(Fighter source, Fighter target, float amount, bool physical,bool applyMark=true)
+        {
+            if(target.hp<=0||amount<=0)return;
+            float dealt = amount * 100f / (100f + (physical ? target.armor : target.mr));
+            if(target.barrierUntil>time&&target.barrier>0){float absorbed=Math.Min(target.barrier,dealt);target.barrier-=absorbed;dealt-=absorbed;}
+            if(!physical && target.Shielded(time)) { float absorbed = Math.Min(target.shield,dealt); target.shield -= absorbed; dealt -= absorbed; }
+            target.hp = Math.Max(0,target.hp-dealt);
+            if(source.champion == "Morgana"&&source.hp>0) source.hp = Math.Min(source.maxHp,source.hp+dealt*0.18f);
+            if(source.champion == "Ezreal") source.stacks = Math.Min(5,source.stacks+1);
+            if(source.champion=="Mel"&&applyMark&&dealt>0&&target.champion!="Turret")
+            {
+                if(!target.MarkedBy(source,time))target.overwhelm=0;
+                if(target.overwhelm<int.MaxValue)target.overwhelm++;
+                target.overwhelmOwner=source;target.overwhelmUntil=time+5;
+                if(target.hp>0&&target.hp<40+.1f*source.ap+target.overwhelm*6){target.hp=0;target.overwhelm=0;Log("Overwhelm executes "+target.champion);}
+            }
+        }
+        public bool InterceptProjectile(Fighter defender,Fighter owner,bool insideNova)
+        {
+            if(defender.champion!="Mel"||!CombatRules.DestroysProjectile(defender.novaUntil>time,defender!=owner,insideNova))return false;
+            int n;defender.retaliations.TryGetValue(owner,out n);defender.retaliations[owner]=Math.Min(7,n+1);Log("Rebuttal destroys "+owner.champion+" missile");return true;
+        }
+        public bool Projectile(Fighter source,Fighter target,float damage,bool physical,string control="",float duration=0)
+        {if(InterceptProjectile(target,source,true))return false;Damage(source,target,damage,physical);if(control!=""&&target.hp>0)CC(target,control,duration);return true;}
+        public void ResolveRetaliations(Fighter defender,Action<Fighter,Fighter,float> hit)
+        {
+            if(defender.retaliations.Count==0||time<defender.novaUntil)return;
+            if(defender.hp>0)foreach(var pair in defender.retaliations)if(pair.Key.hp>0)hit(defender,pair.Key,45+.1f*defender.ap+(pair.Value-1)*(15+.05f*defender.ap));
+            defender.retaliations.Clear();
+        }
+        public void Attack(Fighter source,Fighter target)
+        {Damage(source,target,source.ad,true);if(source.champion=="Mel"){int bolts=source.searing;source.searing=0;for(int i=0;i<bolts;i++)Damage(source,target,20+.04f*source.ap,false);}}
+        public void MelUltimate(Fighter source,Fighter target)
+        {if(!target.MarkedBy(source,time))return;int count=target.overwhelm;target.overwhelm=0;Damage(source,target,150+.5f*source.ap+count*(8+.02f*source.ap),false,false);Log("Golden Eclipse detonates "+count+" stacks");}
+        public void CC(Fighter target,string kind,float seconds)
+        { if(CombatRules.BlocksControl(target.Shielded(time),false)) { Log("Black Shield resists " + kind); return; } target.control = kind; target.controlUntil = time+seconds; Log(target.champion+" receives "+kind); }
+        public bool Mobility(Fighter f)
+        { bool active=f.ActiveControl(time); return CombatRules.CanMove(active&&f.control=="Stun",active&&f.control=="Root",active&&f.control=="Charm",active&&f.control=="Ground"); }
+        public bool Cast(Fighter source,Fighter target,int slot)
+        {
+            if(!BeginCast(source,target,slot)) return false;
+            ResolveCast(source,target,slot);
+            return true;
+        }
+        public bool BeginCast(Fighter source,Fighter target,int slot)
+        {
+            if(slot<0 || slot>3 || source.hp<=0 || time<source.ready[slot]||source.mana<ChampionKit.Mana(source.champion,slot)) return false;
+            if(source.champion=="Mel"&&slot==3&&!target.MarkedBy(source,time)){Log("Golden Eclipse needs an active Overwhelm mark");return false;}
+            if(source.ActiveControl(time) && (source.control=="Stun" || source.control=="Charm")) { Log("Cast blocked by "+source.control); return false; }
+            bool move=(source.champion=="Ezreal"&&slot==2)||(source.champion=="Ahri"&&slot==3);
+            if(move&&!Mobility(source)) { Log("Mobility blocked by "+source.control); return false; }
+            source.mana-=2*ChampionKit.Mana(source.champion,slot);
+            source.ready[slot]=time+ChampionKit.Cooldown(source.champion,slot)/(1+source.haste/100);
+            if(source.champion=="Ahri"&&slot==3&&source.rushCharges<=0) source.rushCharges=3;
+            if(source.champion=="Mel")source.searing=Math.Min(9,source.searing+3);
+            Log(source.champion+" casts "+Names(source.champion)[slot]);
+            return true;
+        }
+        public void ResolveCast(Fighter source,Fighter target,int slot)
+        {
+            float p=source.ap;
+            if(source.champion=="Morgana")
+            {
+                if(slot==0) Projectile(source,target,160+.9f*p,false,"Root",2);
+                if(slot==1) target.poolUntil=time+5;
+                if(slot==2) { source.shield=210+0.7f*p; source.shieldUntil=time+5; }
+                if(slot==3) { Damage(source,target,200+0.7f*p,false); target.tetherUntil=time+3; }
+            }
+            if(source.champion=="Ahri")
+            {
+                if(slot==0) { Damage(source,target,100+0.5f*p,false); target.hp=Math.Max(0,target.hp-100-0.5f*p); }
+                if(slot==1) Damage(source,target,144+0.72f*p,false);
+                if(slot==2) Projectile(source,target,160+.85f*p,false,"Charm",1.5f);
+                if(slot==3) { source.x=Approach(source.x,target.x,0.14f); Damage(source,target,125+0.35f*p,false); if(--source.rushCharges>0) source.ready[slot]=time+1; }
+                if(target.hp<=0) source.hp=Math.Min(source.maxHp,source.hp+120+0.3f*p);
+            }
+            if(source.champion=="Ezreal")
+            {
+                if(slot==0&&Projectile(source,target,80+1.3f*source.ad+.15f*p,true))for(int i=0;i<4;i++)source.ready[i]=Math.Max(time,source.ready[i]-1.5f);
+                if(slot==1) target.markUntil=time+4;
+                if(slot==2) { source.x=Math.Min(0.94f,source.x+0.16f); Damage(source,target,180+0.5f*source.ad+0.75f*p,false); }
+                if(slot==3) Damage(source,target,500+source.ad+0.9f*p,false);
+                if(slot!=1 && target.markUntil>time) { target.markUntil=0; Damage(source,target,180+0.9f*p,false); Log("Essence Flux detonates"); }
+            }
+            if(source.champion=="Mel")
+            {
+                if(slot==0){for(int i=0;i<6;i++)Projectile(source,target,22+.16f*p,false);source.ready[0]=Math.Max(time,source.ready[0]-.75f);}
+                if(slot==1){source.novaUntil=time+.75f;source.barrier=180+.7f*p;source.barrierUntil=time+2;source.speedUntil=time+2;}
+                if(slot==2){if(Projectile(source,target,100+.4f*p,false,"Root",1.5f))target.slowUntil=time+3;}
+                if(slot==3)MelUltimate(source,target);
+            }
+        }
+        public static string[] Names(string c)
+        {return ChampionKit.Names(c);}
+    }
+}
+
+FILE Assets/Dex/Runtime/CombatRules.cs
+namespace Dex
+{
+    // Shared cast/immunity rules. Only these expressions are editable by the workbench.
+    public static class CombatRules
+    {
+        public static bool CanMove(bool stunned, bool rooted, bool charmed, bool grounded)
+        {
+            return !stunned && !rooted && !charmed && !grounded;
+        }
+        public static bool BlocksControl(bool magicShield, bool physicalDamage)
+        {
+            return magicShield;
+        }
+        public static bool DestroysProjectile(bool novaActive, bool enemyProjectile, bool insideNova)
+        {
+            return novaActive && enemyProjectile && insideNova;
+        }
+    }
+}
+
+FILE Assets/Dex/Runtime/DemoCases.cs
+namespace Dex
+{
+    public sealed class DemoCase
+    {
+        public string id,title,report,player,opponent,expected;
+        public DemoCase(string id,string title,string report,string player,string opponent,string expected){this.id=id;this.title=title;this.report=report;this.player=player;this.opponent=opponent;this.expected=expected;}
+    }
+    public static class DemoCases
+    {
+        public static readonly DemoCase[] All={
+            new DemoCase("root-blink","Binding / Arcane Shift","Ezreal can blink while rooted by Morgana. Reproduce it and repair the shared mobility gate.","Ezreal","Morgana","Root blocks a new blink; expiry restores it."),
+            new DemoCase("root-dash","Solar Snare / Spirit Rush","Ahri can dash while rooted by Mel's Solar Snare. Investigate and preserve normal dashes.","Ahri","Mel","Solar Snare blocks a new dash; expiry restores it."),
+            new DemoCase("mel-nova","Rebuttal / hostile missile","Mel's Rebuttal nova lets Morgana's projectile through. Repair missile destruction without blocking missiles after the nova expires.","Mel","Morgana","Active nova destroys hostile missiles inside its radius; expired nova does not."),
+            new DemoCase("shield-charm","Black Shield / Charm","Ahri's Charm controls Morgana through an active Black Shield. Repair control immunity and preserve the expired-shield case.","Morgana","Ahri","An active magic shield prevents Charm; an expired shield does not.")};
+        public static DemoCase Find(string id){foreach(var item in All)if(item.id==id)return item;return All[0];}
+        public static bool Contains(string id){foreach(var item in All)if(item.id==id)return true;return false;}
+    }
+}
+
+FILE Assets/Dex/Runtime/DexArena.cs
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+namespace Dex
+{
+    public partial class DexArena : MonoBehaviour
+    {
+        class Unit
+        {
+            public Fighter f; public Vector2 p,goal,home; public SpriteRenderer art,shadow;
+            public bool red,minion,tower; public float mana{get{return f.mana;}set{f.mana=value;}}public float attackAt,respawn,hitAt=-10;public SpriteRenderer rim,aura; public Unit target;
+            public float radius {get{return tower?.7f:minion?.22f:.38f;}}
+        }
+        class Shot
+        {
+            public Unit owner;public Vector2 p,dir;public float range=8,speed=11,damage,width=.2f;
+            public int slot;public Unit homing;public bool physical,orb,back,burst,solarBloomed;public Vector2 destination;public Volley volley;public SpriteRenderer art;public HashSet<Unit> hit=new HashSet<Unit>();
+        }
+        class Volley {public bool refunded;}
+        class Zone {public Unit owner;public Vector2 p;public float until,nextTick;public bool solar;public SpriteRenderer art;}
+        class Fx {public SpriteRenderer art;public float born,life,size;}
+        class Pop {public Vector2 p;public float born;public string text;public Color color;}
+        Combat sim;Unit player,enemy;Transform world;Camera cam;SpriteRenderer targetRing;
+        List<Unit> units=new List<Unit>();List<Shot> shots=new List<Shot>();List<Zone> zones=new List<Zone>();List<Fx> fx=new List<Fx>();List<Pop> pops=new List<Pop>();
+        readonly List<Unit> collisionOrder=new List<Unit>();
+        readonly string[] champions=ChampionKit.Roster;int champion=3,opponent=2,kills,deaths,cs,gold=500;
+        bool bot=true,waves=true,items=true,practice=true,menu;
+        // The Editor's deterministic driver calls the same gameplay tick as Update.
+        bool manualSimulation;float nextWave,botAt;Vector2 aim,lastArenaAim;
+        string notice="Left-click an enemy to auto-attack. Right-click to move or attack. Aim Q / W / E / R.";float noticeUntil=8;
+        static readonly Color Cyan=new Color(.27f,.85f,.94f),Gold=new Color(.83f,.7f,.38f),Pink=new Color(.96f,.39f,.55f);
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        static void Boot(){if(FindAnyObjectByType<DexArena>()==null)new GameObject("Dex MOBA Sandbox").AddComponent<DexArena>();}
+        void Awake()
+        {
+            cam=Camera.main;if(cam==null)cam=new GameObject("Sandbox Camera").AddComponent<Camera>();
+            cam.transform.position=new Vector3(0,0,-10);cam.transform.rotation=Quaternion.identity;cam.orthographic=true;cam.orthographicSize=8.2f;cam.backgroundColor=new Color(.018f,.028f,.05f);SetupFeel();ResetWorld();
+        }
+        void ResetWorld()
+        {
+            notice="Left-click enemy: auto-attack. Aim Q / W / E / R. Esc opens the sandbox.";noticeUntil=4;
+            replayStep=-1;replayResult="F6: replay Morgana root > Ezreal E";
+            if(world!=null)Destroy(world.gameObject);world=new GameObject("Sandbox World").transform;
+            units.Clear();shots.Clear();zones.Clear();fx.Clear();pops.Clear();sim=new Combat(champions[champion],champions[opponent],items);
+            Map();player=Spawn(sim.a,new Vector2(-6,-2),false);enemy=Spawn(sim.b,new Vector2(6,2),true);
+            Tower(new Vector2(-10,-3.5f),false);Tower(new Vector2(10,3.5f),true);nextWave=2;botAt=3;kills=deaths=cs=0;gold=500;
+            targetRing=Art("Auto-attack target",MobaArt.Ring,Vector2.zero,Vector2.one*1.9f,Pink,75);targetRing.enabled=false;
+        }
+        SpriteRenderer Art(string name,Sprite sprite,Vector2 p,Vector2 scale,Color color,int layer)
+        {var go=new GameObject(name);go.transform.SetParent(world);go.transform.position=p;go.transform.localScale=scale;var r=go.AddComponent<SpriteRenderer>();r.sprite=sprite;r.color=color;r.sortingOrder=layer;return r;}
+        Unit Spawn(Fighter f,Vector2 p,bool red,bool minion=false)
+        {
+            var u=new Unit{f=f,p=p,goal=p,home=p,red=red,minion=minion};u.shadow=Art("Shadow",MobaArt.Disc,p+Vector2.down*.28f,new Vector2(.9f,.38f),new Color(0,0,0,.4f),10);
+            u.art=Art(f.champion,minion?MobaArt.Minion:MobaArt.Champion(f.champion),p,Vector2.one*(minion?.65f:1.5f),Color.white,100);AddUnitVisuals(u);units.Add(u);return u;
+        }
+        void Tower(Vector2 p,bool red){var u=Spawn(new Fighter("Turret",false,0){hp=4000,maxHp=4000,armor=90,mr=90},p,red);u.tower=true;u.art.sprite=MobaArt.Tower;u.art.transform.localScale=Vector3.one*2.4f;}
+        void Map()
+        {
+            Art("Test chamber",MobaArt.Square,Vector2.zero,new Vector2(32,19),new Color(.024f,.04f,.065f),-100);
+            Art("Inner board",MobaArt.Square,Vector2.zero,new Vector2(27.5f,14.2f),new Color(.035f,.065f,.095f),-99);
+            for(int x=-13;x<=13;x++)Art("Grid",MobaArt.Square,new Vector2(x,0),new Vector2(x%5==0?.018f:.008f,13.5f),new Color(.12f,.24f,.3f,x%5==0?.45f:.28f),-95);
+            for(int y=-6;y<=6;y++)Art("Grid",MobaArt.Square,new Vector2(0,y),new Vector2(26.5f,y%3==0?.018f:.008f),new Color(.12f,.24f,.3f,y%3==0?.45f:.28f),-95);
+            var lane=Art("Interaction lane",MobaArt.Square,Vector2.zero,new Vector2(27,3),new Color(.045f,.095f,.13f),-94);lane.transform.rotation=Quaternion.Euler(0,0,18);
+            for(int side=-1;side<=1;side+=2)
+            {
+                Color team=side<0?Cyan:Pink;Vector2 p=new Vector2(side*11,side*3.7f);
+                Art("Base pad",MobaArt.Disc,p,Vector2.one*4.8f,new Color(team.r,team.g,team.b,.08f),-88);
+                Art("Base perimeter",MobaArt.Ring,p,Vector2.one*4.8f,new Color(team.r,team.g,team.b,.4f),-87);
+                Art("Core",MobaArt.Crystal,p,Vector2.one*1.45f,team,25);
+                Art("Chamber border",MobaArt.Square,new Vector2(0,side*6.9f),new Vector2(27.5f,.035f),new Color(.25f,.45f,.53f,.6f),-85);
+            }
+            Art("Centre marker",MobaArt.Ring,Vector2.zero,Vector2.one*3.3f,new Color(.4f,.7f,.8f,.12f),-87);
+            Art("Centre marker inner",MobaArt.Ring,Vector2.zero,Vector2.one*3,new Color(.4f,.7f,.8f,.12f),-87);
+        }
+        void Update()
+        {
+            if(manualSimulation)return;
+            var kb=Keyboard.current;var mouse=Mouse.current;if(kb!=null&&kb.f6Key.wasPressedThisFrame)StartInteractionReplay();if(kb!=null&&kb.escapeKey.wasPressedThisFrame)menu=!menu;if(menu)return;
+            float dt=Mathf.Min(Time.deltaTime,.04f);Vector2 mp=mouse!=null?mouse.position.ReadValue():new Vector2(Screen.width/2,Screen.height/2);aim=cam.ScreenToWorldPoint(mp);
+            bool hud=mp.y<Screen.height*.19f||mp.y>Screen.height*.92f;
+            // GUI overlays must not issue arena orders when clicked.
+            Vector2 ui=new Vector2(mp.x/Screen.width*1600,(1-mp.y/Screen.height)*900);
+            hud|=new Rect(25,88,620,100).Contains(ui)||(trace&&new Rect(1240,85,335,375).Contains(ui));
+            if(!hud)lastArenaAim=aim;
+            if(mouse!=null&&!hud&&player.f.hp>0&&!ReplayRunning)
+            {
+                if(mouse.rightButton.wasPressedThisFrame)IssuePointerOrder(aim,true);
+                else if(mouse.leftButton.wasPressedThisFrame)IssuePointerOrder(aim,false);
+            }
+            if(kb!=null&&player.f.hp>0&&!hud&&!ReplayRunning)
+            {
+                if(kb.qKey.wasPressedThisFrame)Cast(player,0,aim);if(kb.wKey.wasPressedThisFrame)Cast(player,1,aim);if(kb.eKey.wasPressedThisFrame)Cast(player,2,aim);if(kb.rKey.wasPressedThisFrame)Cast(player,3,aim);
+                if(kb.aKey.wasPressedThisFrame)player.target=Nearest(player.p,true,6);
+                if(kb.sKey.wasPressedThisFrame){player.goal=player.p;player.target=null;}
+            }
+            TickSimulation(dt);
+        }
+        void TickSimulation(float dt)
+        {
+            sim.time+=dt;
+            if(waves&&sim.time>nextWave){nextWave=sim.time+18;Wave(false);Wave(true);}
+            foreach(var u in units.ToArray())Step(u,dt);StepShots(dt);StepZones(dt);
+            targetRing.enabled=player.target!=null&&player.target.f.hp>0;
+            if(targetRing.enabled){targetRing.transform.position=player.target.p;targetRing.transform.localScale=Vector3.one*(player.target.tower?2.6f:player.target.minion?1:1.9f);}
+            StepReplay();
+            for(int i=units.Count-1;i>=0;i--){var u=units[i];if(u.minion&&u.f.hp<=0&&sim.time>u.respawn){Destroy(u.art.gameObject);Destroy(u.shadow.gameObject);units.RemoveAt(i);}}
+            for(int i=fx.Count-1;i>=0;i--){var f=fx[i];float t=(sim.time-f.born)/f.life;if(t>=1){Destroy(f.art.gameObject);fx.RemoveAt(i);}else {f.art.transform.localScale=Vector3.one*f.size*(.5f+t);var c=f.art.color;c.a=1-t;f.art.color=c;}}
+            pops.RemoveAll(p=>sim.time-p.born>1.1f);
+        }
+        Vector2 Clamp(Vector2 p){return new Vector2(Mathf.Clamp(p.x,-13,13),Mathf.Clamp(p.y,-6.5f,6.5f));}
+        Unit Nearest(Vector2 p,bool red,float range){Unit best=null;foreach(var u in units)if(u.red==red&&u.f.hp>0&&Vector2.Distance(p,u.p)<range){best=u;range=Vector2.Distance(p,u.p);}return best;}
+        void IssuePointerOrder(Vector2 point,bool moveOnGround)
+        {
+            Unit selected=null;float closest=float.MaxValue;
+            foreach(var u in units)
+            {
+                if(u.red==player.red||u.f.hp<=0)continue;
+                // Match the visible token/body instead of requiring a click on a tiny centre point.
+                Vector2 visual=(Vector2)u.art.bounds.ClosestPoint(new Vector3(point.x,point.y,0));
+                float distance=Vector2.Distance(point,visual);
+                if(distance<=.18f&&Vector2.Distance(point,u.p)<closest){selected=u;closest=Vector2.Distance(point,u.p);}
+            }
+            if(selected!=null){player.target=selected;player.goal=selected.p;Effect(MobaArt.Ring,selected.p,Pink,.4f,selected.tower?2.6f:1.8f);Say("Auto-attacking "+selected.f.champion+". S to stop.");}
+            else if(moveOnGround){player.target=null;player.goal=Clamp(point);Effect(MobaArt.Ring,player.goal,Cyan,.4f,.5f);}
+        }
+        void Wave(bool red){for(int i=0;i<4;i++)Spawn(new Fighter("Minion",false,0){hp=420,maxHp=420,ad=32,armor=15,mr=15},new Vector2(red?11:-11,(red?3.5f:-3.5f)+(i-1.5f)*.43f),red,true);}
+        void Step(Unit u,float dt)
+        {
+            if(u.f.hp<=0){u.art.enabled=u.shadow.enabled=false;if(u.rim!=null)u.rim.enabled=false;if(u.aura!=null)u.aura.enabled=false;if(!u.minion&&!u.tower&&u.respawn>0&&sim.time>=u.respawn){u.f=new Fighter(u.f.champion,items,0);if(u==player)sim.a=u.f;else sim.b=u.f;u.mana=900;u.p=u.home;u.goal=u.p;u.target=null;u.attackAt=sim.time;u.respawn=0;u.art.enabled=u.shadow.enabled=true;if(u.rim!=null)u.rim.enabled=true;}return;}
+            if(u.f.controlUntil<=sim.time)u.f.control="";if(u.f.shieldUntil<=sim.time)u.f.shield=0;
+            if(u.f.barrierUntil<=sim.time)u.f.barrier=0;if(u.f.overwhelmUntil<=sim.time)u.f.overwhelm=0;
+            if(u==enemy&&bot){float d=Vector2.Distance(u.p,player.p);u.goal=d>5?player.p:d<2.6f?u.p+(u.p-player.p).normalized*2:u.p;u.target=d<5&&player.f.hp>0?player:null;if(player.f.hp>0&&sim.time>botAt&&d<8){botAt=sim.time+2;Cast(u,Random.Range(0,4),player.p);}}
+            if(u.minion){u.target=Nearest(u.p,!u.red,3.4f);u.goal=u.target!=null?u.target.p:new Vector2(u.red?-12:12,u.red?-4:4);}
+            if(u.tower)u.target=Nearest(u.p,!u.red,5.8f);
+            if(u.target!=null&&u.target.f.hp<=0){u.target=null;u.goal=u.p;}
+            if(u.target!=null&&u.target.f.hp>0)
+            {
+                float d=Vector2.Distance(u.p,u.target.p),range=u.tower?5.8f:u.minion?2.2f:4.8f;
+                if(d>range&&!u.tower)u.goal=u.target.p;
+                else if(d<=range){u.goal=u.p;bool disabled=u.f.ActiveControl(sim.time)&&(u.f.control=="Stun"||u.f.control=="Charm");if(sim.time>=u.attackAt&&!disabled){u.attackAt=sim.time+(u.tower?1.2f:u.minion?1.4f:.9f);Shoot(u,-1,u.target.p,u.tower?175:u.f.ad,true,false,u.target);if(u.f.champion=="Mel"){int bolts=u.f.searing;u.f.searing=0;for(int n=0;n<bolts;n++)Shoot(u,-2,u.target.p,20+.04f*u.f.ap,false,false,u.target);}if(u==player)PlayCue(0);}}
+            }
+            if(!u.tower&&(!u.f.ActiveControl(sim.time)||u.f.control=="Ground"))
+            {
+                Vector2 travel=u.goal-u.p;
+                if(!u.minion&&travel.sqrMagnitude>.02f){u.art.sprite=MobaArt.Frame(u.f.champion,sim.time);u.art.flipX=travel.x<0&&u.art.sprite!=MobaArt.Portrait(u.f.champion);}
+                u.p=Vector2.MoveTowards(u.p,u.goal,dt*(u.minion?1.7f:3.3f)*(u.f.speedUntil>sim.time?1.2f:1)*(u.f.slowUntil>sim.time?.7f:1));
+                foreach(var v in units)if(v!=u&&v.f.hp>0){Vector2 away=u.p-v.p;float min=(u.radius+v.radius)*.8f;if(away.sqrMagnitude<min*min&&away.sqrMagnitude>.0001f)u.p+=away.normalized*dt*1.5f;}
+            }
+            if(u.f.control=="Charm")u.p=Vector2.MoveTowards(u.p,u==player?enemy.p:player.p,dt*.8f);
+            u.p=Clamp(u.p);u.f.x=u.p.x/25;u.art.transform.position=u.p+Vector2.up*(u.minion?0:.025f*Mathf.Sin(sim.time*5));u.shadow.transform.position=u.p+Vector2.down*.3f;u.art.sortingOrder=100-(int)(u.p.y*10);
+            u.art.color=sim.time-u.hitAt<.1f?new Color(1.6f,1.6f,1.6f):u.red?new Color(1,.85f,.9f):Color.white;
+            UpdateUnitVisuals(u);
+            if(!u.minion&&!u.tower){u.mana=Mathf.Min(900,u.mana+dt*(practice?35:6));if(practice)u.f.hp=Mathf.Min(u.f.maxHp,u.f.hp+dt*12);}
+        }
+        void Say(string s){notice=s;noticeUntil=sim.time+3;}
+        void Cast(Unit u,int slot,Vector2 target)
+        {
+            if(slot<0||slot>3)return;var f=u.f;float cost=ChampionKit.Mana(f.champion,slot);if(u.mana<cost){if(u==player)Say("Not enough mana");return;}
+            Unit castTarget=u==player?enemy:player;
+            if(f.champion=="Mel"&&slot==3){var marked=units.Find(v=>v.red!=u.red&&v.f.hp>0&&v.f.MarkedBy(f,sim.time));if(marked!=null)castTarget=marked;}
+            if(!sim.BeginCast(f,castTarget.f,slot)){if(u==player)Say(f.ActiveControl(sim.time)?"Cannot cast while "+f.control:f.champion=="Mel"&&slot==3?"Golden Eclipse needs an Overwhelm mark":"Ability is on cooldown");return;}
+            if(u==player)PlayCue(1);
+            Vector2 dir=(target-u.p).normalized;if(dir.sqrMagnitude<.1f)dir=Vector2.right;
+            if(f.champion=="Ahri")
+            {
+                if(slot==0)Shoot(u,slot,target,100+.5f*f.ap,false,true);
+                if(slot==1)for(int i=0;i<3;i++){var v=Nearest(u.p,!u.red,6);if(v!=null)Shoot(u,slot,v.p,(i==0?80:32)+f.ap*(i==0?.4f:.16f));}
+                if(slot==2)Shoot(u,slot,target,160+.85f*f.ap);
+                if(slot==3){Dash(u,dir);var v=Nearest(u.p,!u.red,6);if(v!=null)Shoot(u,slot,v.p,125+.35f*f.ap);if(--f.rushCharges>0)f.ready[3]=sim.time+1;}
+            }
+            else if(f.champion=="Morgana")
+            {
+                if(slot==0)Shoot(u,slot,target,160+.9f*f.ap);
+                if(slot==1){Vector2 p=u.p+Vector2.ClampMagnitude(target-u.p,7);zones.Add(new Zone{owner=u,p=p,until=sim.time+5,art=Art("Tormented Shadow",MobaArt.Disc,p,Vector2.one*3,new Color(.35f,.1f,.55f,.65f),-50)});}
+                if(slot==2){f.shield=210+.7f*f.ap;f.shieldUntil=sim.time+5;Effect(MobaArt.Ring,u.p,new Color(.7f,.3f,1),1,2);}
+                if(slot==3)foreach(var v in units)if(v.red!=u.red&&v.f.hp>0&&Vector2.Distance(u.p,v.p)<5){Hit(u,v,200+.7f*f.ap,false);v.f.tetherUntil=sim.time+3;Effect(MobaArt.Ring,v.p,new Color(.8f,.35f,1),3,2);}
+            }
+            else if(f.champion=="Ezreal")
+            {
+                if(slot==0)Shoot(u,slot,target,80+1.3f*f.ad+.15f*f.ap,true);
+                if(slot==1)Shoot(u,slot,target,0);
+                if(slot==2){Dash(u,dir);var v=Nearest(u.p,!u.red,6);if(v!=null)Shoot(u,slot,v.p,180+.5f*f.ad+.75f*f.ap);}
+                if(slot==3)Shoot(u,slot,target,500+f.ad+.9f*f.ap);
+            }
+            else if(f.champion=="Mel")CastMel(u,slot,target);
+        }
+        void Dash(Unit u,Vector2 dir){Vector2 from=u.p;u.p=Clamp(u.p+dir*2.8f);u.goal=u.p;u.target=null;for(int i=0;i<6;i++)Effect(MobaArt.Disc,Vector2.Lerp(from,u.p,i/5f),Cyan,.3f,.55f);}
+        void Shoot(Unit owner,int slot,Vector2 target,float damage,bool physical=false,bool orb=false,Unit homing=null)
+        {
+            Vector2 dir=(target-owner.p).normalized;if(dir.sqrMagnitude<.01f)dir=Vector2.right;
+            Color color=owner.f.champion=="Morgana"?new Color(.72f,.32f,1):owner.f.champion=="Ahri"?slot==2?Pink:Cyan:owner.f.champion=="Mel"?new Color(1,.82f,.38f):Gold;
+            var m=new Shot{owner=owner,slot=slot,p=owner.p,dir=dir,damage=damage,physical=physical,range=slot==3?25:8,width=slot==3?.8f:.2f,orb=orb,homing=homing};
+            m.art=Art("Skillshot",slot==2&&owner.f.champion=="Ahri"?MobaArt.Heart:MobaArt.Bolt,m.p,new Vector2(slot==3?2:.7f,slot==3?.8f:.35f),color,300);shots.Add(m);
+        }
+        static float SegmentDistance(Vector2 p,Vector2 a,Vector2 b){Vector2 d=b-a;return Vector2.Distance(p,a+d*Mathf.Clamp01(Vector2.Dot(p-a,d)/Mathf.Max(.0001f,d.sqrMagnitude)));}
+        void StepShots(float dt)
+        {
+            for(int i=shots.Count-1;i>=0;i--)
+            {
+                var m=shots[i];if(m.homing!=null&&m.homing.f.hp<=0){Destroy(m.art.gameObject);shots.RemoveAt(i);continue;}Vector2 prev=m.p;if(m.back)m.dir=(m.owner.p-m.p).normalized;else if(m.homing!=null)m.dir=(m.homing.p-m.p).normalized;m.p+=m.dir*m.speed*dt;m.range-=m.speed*dt;bool remove=false;
+                foreach(var defender in units)if(defender.red!=m.owner.red&&defender.f.hp>0&&defender.f.champion=="Mel"&&defender.f.novaUntil>sim.time)
+                {float radius=NovaRadius(defender.f);if(SegmentDistance(defender.p,prev,m.p)<radius&&sim.InterceptProjectile(defender.f,m.owner.f,true)){Effect(MobaArt.Ring,m.p,Gold,.35f,.7f);remove=true;break;}}
+                if(remove){Destroy(m.art.gameObject);shots.RemoveAt(i);continue;}
+                if(m.burst)
+                {
+                    if(m.range<=0||SegmentDistance(m.destination,prev,m.p)<.12f){BurstVolley(m);Destroy(m.art.gameObject);shots.RemoveAt(i);}else{m.art.transform.position=m.p;m.art.transform.rotation=Quaternion.Euler(0,0,Mathf.Atan2(m.dir.y,m.dir.x)*Mathf.Rad2Deg);}continue;
+                }
+                collisionOrder.Clear();collisionOrder.AddRange(units);
+                collisionOrder.Sort((a,b)=>Vector2.Dot(a.p-prev,m.dir).CompareTo(Vector2.Dot(b.p-prev,m.dir)));
+                foreach(var u in collisionOrder)
+                {
+                    if(u.red==m.owner.red||u.f.hp<=0||m.hit.Contains(u)||m.homing!=null&&u!=m.homing||SegmentDistance(u.p,prev,m.p)>m.width+u.radius)continue;
+                    if(m.owner.f.champion=="Ezreal"&&m.slot==1&&u.minion)continue;m.hit.Add(u);
+                    if(m.owner.f.champion=="Ezreal"&&m.slot==1)u.f.markUntil=sim.time+4;
+                    else
+                    {
+                        if(m.back){float old=u.f.hp;u.f.hp=Mathf.Max(0,u.f.hp-m.damage);TrackHit(m.owner,u,old-u.f.hp);}else Hit(m.owner,u,m.damage,m.physical);
+                        if(m.owner.f.champion=="Morgana"&&m.slot==0)sim.CC(u.f,"Root",2);
+                        if(m.owner.f.champion=="Ahri"&&m.slot==2)sim.CC(u.f,"Charm",1.5f);
+                        if(m.owner.f.champion=="Mel"&&m.slot==2){SolarBurst(m.owner,u.p,8-m.range);m.solarBloomed=true;}
+                        if(m.owner.f.champion=="Ezreal"&&m.slot==0)for(int k=0;k<4;k++)m.owner.f.ready[k]=Mathf.Max(sim.time,m.owner.f.ready[k]-1.5f);
+                        if(m.owner.f.champion=="Ezreal"&&u.f.markUntil>sim.time&&m.slot!=1){u.f.markUntil=0;Hit(m.owner,u,180+.9f*m.owner.f.ap,false);}
+                    }
+                    Effect(MobaArt.Ring,u.p,m.art.color,.3f,1);if(!m.orb&&m.slot!=3){remove=true;break;}
+                }
+                if(m.orb&&!m.back&&m.range<=0){m.back=true;m.hit.Clear();m.range=20;}else if(m.range<=0||m.back&&Vector2.Distance(m.p,m.owner.p)<.4f)remove=true;
+                if(m.owner.f.champion=="Mel"&&m.slot==2&&m.range<=0&&!m.solarBloomed)SolarBurst(m.owner,m.p,8);
+                if(remove){Destroy(m.art.gameObject);shots.RemoveAt(i);}else {m.art.transform.position=m.p;m.art.transform.rotation=Quaternion.Euler(0,0,Mathf.Atan2(m.dir.y,m.dir.x)*Mathf.Rad2Deg);}
+            }
+        }
+        void Hit(Unit source,Unit target,float amount,bool physical){float old=target.f.hp;sim.Damage(source.f,target.f,amount,physical);TrackHit(source,target,old-target.f.hp);}
+        void TrackHit(Unit source,Unit target,float amount)
+        {
+            target.hitAt=sim.time;if(amount>3)pops.Add(new Pop{p=target.p,born=sim.time,text=Mathf.RoundToInt(amount).ToString(),color=source==player?Gold:Pink});
+            if(amount>3&&(source==player||target==player))PlayCue(target.f.hp<=0?3:2);
+            if(target.f.hp<=0&&target.respawn==0)
+            {
+                target.respawn=sim.time+7;target.target=null;
+                if(source==player){gold+=target.minion?21:target.tower?250:300;if(target.minion)cs++;else if(!target.tower){kills++;Say("CHAMPION TAKEDOWN  +300 gold");}}
+                if(target==player){deaths++;Say("You have been slain. Respawning in 7 seconds.");}Effect(MobaArt.Ring,target.p,target.red?Pink:Cyan,1,3);
+                if(source.f.champion=="Ahri"&&!target.minion&&!target.tower)source.f.hp=Mathf.Min(source.f.maxHp,source.f.hp+120+.3f*source.f.ap);
+            }
+        }
+        void StepZones(float dt)
+        {
+            for(int i=zones.Count-1;i>=0;i--)
+            {
+                var z=zones[i];if(sim.time>z.until){Destroy(z.art.gameObject);zones.RemoveAt(i);continue;}
+                z.art.transform.Rotate(0,0,dt*12);bool pulse=!z.solar||sim.time>=z.nextTick;
+                foreach(var u in units)if(u.red!=z.owner.red&&u.f.hp>0&&Vector2.Distance(z.p,u.p)<1.5f)
+                {if(pulse)Hit(z.owner,u,(z.solar?18+.05f*z.owner.f.ap:45+.14f*z.owner.f.ap)*(z.solar?.25f:dt),false);if(z.solar)u.f.slowUntil=sim.time+.2f;}
+                if(z.solar&&pulse)z.nextTick=sim.time+.25f;
+            }
+            foreach(var u in units)if(u.f.tetherUntil>0&&sim.time>=u.f.tetherUntil){u.f.tetherUntil=0;Unit source=u.red?player:enemy;if(source.f.champion=="Morgana"&&source.f.hp>0&&Vector2.Distance(source.p,u.p)<6){Hit(source,u,200+.7f*source.f.ap,false);sim.CC(u.f,"Stun",1.5f);}}
+            ResolveNovaEffects();
+        }
+        void Effect(Sprite sprite,Vector2 p,Color color,float life,float size){fx.Add(new Fx{art=Art("VFX",sprite,p,Vector2.one*size,color,250),born=sim.time,life=life,size=size});}
+        void OnDestroy(){if(world!=null)Destroy(world.gameObject);ReleaseFeel();if(buttonTexture!=null)Destroy(buttonTexture);if(hoverTexture!=null)Destroy(hoverTexture);}
+    }
+}
+
+FILE Assets/Dex/Runtime/InteractionReplay.cs
+using UnityEngine;
+
+namespace Dex
+{
+    public partial class DexArena
+    {
+        int replayStep=-1;string replayCase="root-blink";bool replayWasBlocked,replayResourcesKept,replayPassed,replayControlLaunched;float replayOwnerHp;
+        string replayResult="F6  /  deterministic interaction replay";
+        public string ReplayResult {get{return replayResult;}}
+        public bool ReplayRunning {get{return replayStep>=0&&replayStep<2;}}
+        public bool ReplayCompleted {get{return replayStep==2;}}
+        public bool ReplayPassed {get{return ReplayCompleted&&replayPassed;}}
+        public string ReplayCase {get{return replayCase;}}
+        public void StartInteractionReplay(){StartInteractionReplay("root-blink");}
+        public void StartInteractionReplay(string id)
+        {
+            var item=DemoCases.Find(id);champion=System.Array.IndexOf(champions,item.player);opponent=System.Array.IndexOf(champions,item.opponent);
+            bot=false;waves=false;practice=false;menu=false;ResetWorld();replayCase=item.id;replayPassed=false;replayControlLaunched=false;
+            player.p=player.goal=new Vector2(-2,-.6f);enemy.p=enemy.goal=new Vector2(2,.6f);player.target=enemy.target=null;
+            replayStep=0;replayResult="REPLAY  /  "+item.title+"\nExpected: "+item.expected;replayOwnerHp=enemy.f.hp;
+            if(id=="mel-nova"){Cast(player,1,player.p);Cast(enemy,0,player.p);}
+            else if(id=="shield-charm"){Cast(player,2,player.p);Cast(enemy,2,player.p);}
+            else Cast(enemy,id=="root-dash"?2:0,player.p);
+            Say("Replay controls the encounter. Press F6 to restart.");
+        }
+        void StepReplay()
+        {
+            if(replayCase=="mel-nova")
+            {
+                if(replayStep==0&&sim.time>=1.6f)
+                {
+                    bool destroyed=sim.events.Exists(e=>e.Contains("Rebuttal destroys"));bool control=player.f.ActiveControl(sim.time);bool retaliated=enemy.f.hp<replayOwnerHp;
+                    replayWasBlocked=destroyed&&!control&&retaliated;
+                    replayResult=(replayWasBlocked?"PASS":"FAIL")+" / active nova: missile destroyed="+destroyed+", root leaked="+control+", retaliation="+retaliated;
+                    sim.Log(replayResult);replayStep=1;
+                }
+                if(replayStep==1&&sim.time>=2.8f&&!replayControlLaunched){replayControlLaunched=true;enemy.f.ready[0]=0;Cast(enemy,0,player.p);}
+                if(replayStep==1&&sim.time>=3.6f)
+                {bool expiredAllows=player.f.ActiveControl(sim.time);CompleteReplay(replayWasBlocked&&expiredAllows,"After nova expiry: expected incoming root; actual="+expiredAllows);}
+                return;
+            }
+            if(replayCase=="shield-charm")
+            {
+                if(replayStep==0&&sim.time>=1){replayWasBlocked=!player.f.ActiveControl(sim.time);replayResult=(replayWasBlocked?"PASS":"FAIL")+" / active Black Shield: expected no Charm; actual controlled="+player.f.ActiveControl(sim.time);sim.Log(replayResult);replayStep=1;}
+                if(replayStep==1&&sim.time>=5.6f&&!replayControlLaunched){replayControlLaunched=true;enemy.f.ready[2]=0;Cast(enemy,2,player.p);}
+                if(replayStep==1&&sim.time>=6.5f)CompleteReplay(replayWasBlocked&&player.f.ActiveControl(sim.time),"After shield expiry: expected Charm; actual="+player.f.ActiveControl(sim.time));
+                return;
+            }
+            int slot=replayCase=="root-dash"?3:2;
+            if(replayStep==0&&sim.time>=1)
+            {
+                Vector2 before=player.p;float mana=player.mana,ready=player.f.ready[slot];bool rooted=player.f.ActiveControl(sim.time)&&player.f.control=="Root";
+                Cast(player,slot,player.p+Vector2.up*3);replayWasBlocked=rooted&&Vector2.Distance(before,player.p)<.01f;replayResourcesKept=player.mana==mana&&player.f.ready[slot]==ready;
+                replayResult=(replayWasBlocked&&replayResourcesKept?"PASS":"FAIL")+" / rooted mobility: expected blocked; actual "+(Vector2.Distance(before,player.p)>.01f?"MOVED":"blocked")+".\nMana / cooldown "+(replayResourcesKept?"preserved":"consumed")+". Root observed="+rooted;sim.Log(replayResult);replayStep=1;
+            }
+            if(replayStep==1&&sim.time>=3)
+            {Vector2 before=player.p;Cast(player,slot,player.p+Vector2.down*3);bool allowed=Vector2.Distance(before,player.p)>.01f;CompleteReplay(replayWasBlocked&&replayResourcesKept&&allowed,"After root expiry: expected mobility; actual="+allowed);}
+        }
+        void CompleteReplay(bool passed,string detail)
+        {replayPassed=passed;replayResult+="\n"+detail+". "+(passed?"REPLAY PASSED":"REPLAY FAILED");replayStep=2;sim.Log(detail);PlayCue(passed?3:2);}
+    }
+}
+
+FILE Assets/Dex/Runtime/MelArena.cs
+using UnityEngine;
+
+namespace Dex
+{
+    public partial class DexArena
+    {
+        void CastMel(Unit u,int slot,Vector2 target)
+        {
+            var f=u.f;
+            if(slot==0)
+            {
+                var volley=new Volley();Vector2 centre=u.p+Vector2.ClampMagnitude(target-u.p,8);
+                for(int n=0;n<6;n++)
+                {
+                    Vector2 point=centre+new Vector2(Mathf.Cos(n*Mathf.PI/3),Mathf.Sin(n*Mathf.PI/3))*.4f;
+                    Shoot(u,0,point,22+.16f*f.ap);var shot=shots[shots.Count-1];shot.burst=true;shot.destination=point;shot.range=Vector2.Distance(u.p,point);shot.volley=volley;
+                }
+                Effect(MobaArt.Ring,centre,new Color(1,.8f,.3f,.5f),.55f,2.3f);
+            }
+            if(slot==1)
+            {
+                f.novaUntil=sim.time+.75f;
+                foreach(var ally in units)if(ally.red==u.red&&ally.f.hp>0&&Vector2.Distance(ally.p,u.p)<2.4f)
+                {ally.f.barrier=180+.7f*f.ap;ally.f.barrierUntil=sim.time+2;ally.f.speedUntil=sim.time+2;}
+                Effect(MobaArt.Ring,u.p,Gold,.75f,4.8f);sim.Log("Rebuttal nova active: missile destruction, not reflection");
+            }
+            if(slot==2)Shoot(u,2,target,100+.4f*f.ap);
+            if(slot==3)
+            {
+                foreach(var victim in units)if(victim.red!=u.red&&victim.f.hp>0&&victim.f.MarkedBy(f,sim.time))
+                {float old=victim.f.hp;sim.MelUltimate(f,victim.f);TrackHit(u,victim,old-victim.f.hp);Effect(MobaArt.Ring,victim.p,Gold,.65f,3);Effect(MobaArt.Disc,victim.p,new Color(1,.85f,.45f,.6f),.25f,1.7f);}
+            }
+        }
+        float NovaRadius(Fighter f){return Mathf.Lerp(.7f,2.4f,Mathf.Clamp01(1-(f.novaUntil-sim.time)/.75f));}
+        void BurstVolley(Shot shot)
+        {
+            Effect(MobaArt.Ring,shot.destination,Gold,.35f,2.2f);
+            foreach(var victim in units)if(victim.red!=shot.owner.red&&victim.f.hp>0&&Vector2.Distance(victim.p,shot.destination)<1.15f)
+            {
+                Hit(shot.owner,victim,shot.damage,false);
+                if(!victim.minion&&!victim.tower&&!shot.volley.refunded){shot.owner.f.ready[0]=Mathf.Max(sim.time,shot.owner.f.ready[0]-.75f);shot.volley.refunded=true;sim.Log("Radiant Volley champion hit: cooldown refund");}
+            }
+        }
+        void SolarBurst(Unit owner,Vector2 point,float travel)
+        {
+            foreach(var victim in units)if(victim.red!=owner.red&&victim.f.hp>0&&!victim.tower&&Vector2.Distance(victim.p,point)<.75f)
+                sim.CC(victim.f,"Root",Mathf.Lerp(1,2.2f,Mathf.Clamp01(travel/8)));
+            zones.Add(new Zone{owner=owner,p=point,solar=true,until=sim.time+2.5f,art=Art("Solar field",MobaArt.Disc,point,Vector2.one*3,new Color(.9f,.65f,.12f,.23f),-45)});
+            Effect(MobaArt.Ring,point,Gold,.55f,3);
+        }
+        void ResolveNovaEffects()
+        {
+            foreach(var mel in units)if(mel.f.champion=="Mel")
+            {
+                if(mel.f.hp>0&&mel.f.novaUntil>sim.time)
+                    foreach(var victim in units)if(victim.red!=mel.red&&victim.f.hp>0&&Vector2.Distance(victim.p,mel.p)<NovaRadius(mel.f)&&(victim.f.shield>0||victim.f.barrier>0))
+                    {victim.f.shield=0;victim.f.barrier=0;Effect(MobaArt.Ring,victim.p,Gold,.3f,1.5f);sim.Log("Rebuttal breaks an enemy shield");}
+                sim.ResolveRetaliations(mel.f,(from,to,amount)=>
+                {var victim=units.Find(v=>v.f==to&&v.f.hp>0);if(victim!=null){Shoot(mel,-3,victim.p,amount,false,false,victim);sim.Log("Rebuttal retaliates against "+to.champion);}});
+            }
+        }
+    }
+}
+
+FILE Assets/Dex/Runtime/MobaArt.cs
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Dex
+{
+    // Original arena art with official static champion portraits and optional user sprite sheets.
+    public static class MobaArt
+    {
+        static Dictionary<string,Sprite> cache=new Dictionary<string,Sprite>();
+        static Dictionary<string,Sprite[]> animation=new Dictionary<string,Sprite[]>();
+        static Dictionary<string,Texture2D> icons=new Dictionary<string,Texture2D>();
+        // Native runtime sprites are destroyed when Play ends, even if managed statics survive.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetCaches(){cache.Clear();animation.Clear();icons.Clear();}
+        public static Texture2D Ability(string champion,int slot)
+        {string key=champion+"_"+slot;Texture2D icon;if(icons.TryGetValue(key,out icon)&&icon!=null)return icon;icon=Resources.Load<Texture2D>("Dex/Abilities/"+key);icons[key]=icon;return icon;}
+        public static Sprite Square {get{return Get("square");}}
+        public static Sprite Frame(string name,float time)
+        {
+            if(!animation.ContainsKey(name))animation[name]=Resources.LoadAll<Sprite>("Dex/Champions/"+name);
+            var frames=animation[name];return frames.Length>0?frames[Mathf.FloorToInt(time*10)%frames.Length]:Champion(name);
+        }
+        public static Sprite Disc {get{return Get("disc");}} public static Sprite Ring {get{return Get("ring");}}
+        public static Sprite Tree {get{return Get("tree");}}public static Sprite Ground {get{return Get("ground");}}
+        public static Sprite Stone {get{return Get("stone");}}public static Sprite Crystal {get{return Get("crystal");}}
+        public static Sprite Minion {get{return Get("minion");}}public static Sprite Tower {get{return Get("tower");}}
+        public static Sprite Bolt {get{return Get("bolt");}}public static Sprite Heart {get{return Get("heart");}}
+        public static Sprite Champion(string name)
+        {
+            string key="external-"+name;Sprite saved;if(cache.TryGetValue(key,out saved)&&saved!=null)return saved;
+            var imported=Resources.Load<Sprite>("Dex/Champions/"+name);if(imported!=null){cache[key]=imported;return imported;}
+            var texture=Resources.Load<Texture2D>("Dex/Champions/"+name);
+            if(texture!=null){var s=Sprite.Create(texture,new Rect(0,0,texture.width,texture.height),new Vector2(.5f,.32f),texture.width);cache[key]=s;return s;}
+            return Portrait(name);
+        }
+        public static Sprite Portrait(string name)
+        {
+            string key="portrait-"+name;Sprite saved;if(cache.TryGetValue(key,out saved)&&saved!=null)return saved;
+            var sprite=Resources.Load<Sprite>("Dex/Portraits/"+name);
+            if(sprite!=null){cache[key]=sprite;return sprite;}
+            var texture=Resources.Load<Texture2D>("Dex/Portraits/"+name);
+            if(texture!=null){sprite=Sprite.Create(texture,new Rect(0,0,texture.width,texture.height),new Vector2(.5f,.5f),texture.width,0,SpriteMeshType.FullRect);cache[key]=sprite;return sprite;}
+            return Get(name);
+        }
+        static Sprite Get(string name)
+        {
+            Sprite saved;if(cache.TryGetValue(name,out saved)&&saved!=null)return saved;var p=new Paint(name=="ground"?512:256);var rng=new System.Random(39);
+            var ink=new Color(.055f,.08f,.12f);var gold=new Color(.83f,.67f,.31f);
+            switch(name)
+            {
+                case "square":p.Fill(Color.white);break;
+                case "disc":p.Ellipse(.5f,.5f,.48f,.48f,Color.white);break;
+                case "ring":p.Ellipse(.5f,.5f,.48f,.48f,Color.white);p.Ellipse(.5f,.5f,.455f,.455f,Color.clear);break;
+                case "ground":
+                    p.Fill(new Color(.075f,.16f,.13f));
+                    for(int i=0;i<17000;i++){float x=(float)rng.NextDouble(),y=(float)rng.NextDouble(),v=(float)rng.NextDouble();p.Ellipse(x,y,.0006f+v*.003f,.001f+v*.003f,new Color(.07f+v*.03f,.145f+v*.055f,.115f+v*.04f));}
+                    for(int i=0;i<120;i++){float x=(float)rng.NextDouble(),y=(float)rng.NextDouble();p.Line(x,y,x+.004f,y+.009f,.0015f,new Color(.13f,.24f,.17f));}break;
+                case "stone":
+                    p.Fill(new Color(.19f,.24f,.23f));
+                    for(int row=0;row<9;row++)for(int col=0;col<4;col++){float x=col*.29f+(row%2)*.13f,y=row*.12f;p.Polygon(new Color(.28f+row*.005f,.32f+row*.005f,.3f+row*.005f),x+.01f,y+.01f,x+.25f,y+.015f,x+.27f,y+.1f,x+.015f,y+.105f);p.Line(x+.025f,y+.1f,x+.25f,y+.1f,.004f,new Color(.39f,.42f,.36f));}break;
+                case "tree":
+                    p.Ellipse(.53f,.15f,.38f,.1f,new Color(0,0,0,.3f));p.Polygon(new Color(.17f,.12f,.085f),.44f,.1f,.55f,.1f,.52f,.55f,.47f,.55f);
+                    for(int i=0;i<5;i++){float y=.24f+i*.125f,w=.37f-i*.058f;p.Polygon(new Color(.035f+i*.012f,.15f+i*.025f,.13f+i*.015f),.5f-w,y,.5f+w,y+.025f,.5f,.95f);p.Line(.5f-w+.035f,y+.025f,.5f,.91f,.008f,new Color(.14f,.3f,.22f));}break;
+                case "crystal":
+                    p.Polygon(new Color(.3f,.4f,.46f),.13f,.18f,.5f,.05f,.87f,.18f,.8f,.3f,.2f,.3f);p.Polygon(Color.white,.5f,.25f,.29f,.58f,.5f,.95f,.7f,.58f);p.Polygon(new Color(.55f,.85f,1),.5f,.25f,.5f,.95f,.7f,.58f);break;
+                case "tower":
+                    p.Ellipse(.5f,.2f,.38f,.13f,ink);p.Ellipse(.5f,.23f,.34f,.13f,new Color(.3f,.36f,.38f));
+                    p.Polygon(new Color(.22f,.28f,.32f),.27f,.25f,.73f,.25f,.65f,.76f,.35f,.76f);p.Polygon(new Color(.38f,.44f,.46f),.3f,.29f,.46f,.25f,.47f,.76f,.37f,.76f);
+                    p.Line(.33f,.37f,.68f,.37f,.018f,gold);p.Line(.36f,.69f,.64f,.69f,.022f,gold);
+                    p.Polygon(new Color(.25f,.8f,.9f),.5f,.53f,.39f,.77f,.5f,.98f,.62f,.77f);p.Line(.5f,.6f,.5f,.92f,.018f,Color.white);break;
+                case "bolt":p.Ellipse(.55f,.5f,.43f,.22f,new Color(1,1,1,.25f));p.Polygon(Color.white,.05f,.5f,.63f,.65f,.98f,.5f,.63f,.35f);break;
+                case "heart":p.Ellipse(.34f,.6f,.23f,.23f,Color.white);p.Ellipse(.66f,.6f,.23f,.23f,Color.white);p.Polygon(Color.white,.12f,.58f,.88f,.58f,.5f,.13f);break;
+                case "minion":
+                    p.Polygon(ink,.2f,.08f,.8f,.08f,.72f,.6f,.5f,.87f,.28f,.6f);p.Polygon(new Color(.25f,.55f,.62f),.25f,.15f,.75f,.15f,.64f,.55f,.36f,.55f);p.Ellipse(.5f,.63f,.19f,.2f,new Color(.38f,.45f,.5f));p.Line(.38f,.63f,.62f,.63f,.03f,gold);p.Line(.78f,.1f,.85f,.8f,.04f,gold);break;
+                default:
+                    bool fox=name=="Ahri",witch=name=="Morgana";
+                    if(fox)for(int i=0;i<7;i++){float angle=(i-3)*.26f;float x=.5f+Mathf.Sin(angle)*.37f,y=.34f+Mathf.Cos(angle)*.04f;p.Ellipse(x,y,.12f,.25f,new Color(.77f,.82f,.83f));p.Ellipse(x-.015f,y+.025f,.075f,.18f,new Color(.95f,.95f,.9f));}
+                    if(witch)for(int side=-1;side<=1;side+=2)for(int i=0;i<4;i++){float x=.5f+side*(.14f+i*.06f);p.Polygon(new Color(.21f+i*.025f,.12f,.31f+i*.025f),.5f,.56f,x,.85f-i*.09f,x+side*.12f,.4f-i*.06f,.5f,.37f);}
+                    p.Ellipse(.5f,.15f,.17f,.07f,new Color(.03f,.04f,.06f));
+                    p.Line(.43f,.14f,.45f,.36f,.06f,ink);p.Line(.57f,.14f,.55f,.36f,.06f,ink);
+                    p.Polygon(ink,.3f,.29f,.7f,.29f,.63f,.62f,.5f,.69f,.37f,.62f);
+                    Color robe=fox?new Color(.68f,.13f,.23f):witch?new Color(.3f,.17f,.47f):new Color(.18f,.39f,.54f);
+                    p.Polygon(robe,.34f,.31f,.66f,.31f,.6f,.61f,.4f,.61f);
+                    p.Line(.4f,.52f,.29f,.38f,.045f,new Color(.91f,.72f,.57f));p.Line(.6f,.52f,.73f,.4f,.045f,new Color(.91f,.72f,.57f));
+                    p.Line(.4f,.36f,.6f,.36f,.018f,gold);
+                    p.Ellipse(.5f,.7f,.145f,.16f,ink);p.Ellipse(.5f,.69f,.115f,.135f,new Color(.95f,.78f,.65f));
+                    p.Polygon(fox||witch?new Color(.11f,.12f,.2f):new Color(.91f,.72f,.32f),.35f,.72f,.4f,.86f,.6f,.86f,.65f,.71f,.55f,.77f,.46f,.74f);
+                    if(fox){p.Polygon(ink,.37f,.79f,.37f,.98f,.48f,.83f);p.Polygon(ink,.53f,.83f,.64f,.98f,.63f,.79f);p.Ellipse(.24f,.4f,.09f,.09f,new Color(.2f,.8f,1));p.Ellipse(.24f,.42f,.04f,.04f,Color.white);}
+                    if(!fox&&!witch){p.Ellipse(.75f,.41f,.09f,.1f,gold);p.Ellipse(.75f,.42f,.045f,.055f,new Color(.27f,.8f,1));}
+                    break;
+            }
+            var texture=p.Texture();var sprite=Sprite.Create(texture,new Rect(0,0,texture.width,texture.height),new Vector2(.5f,.5f),texture.width);cache[name]=sprite;return sprite;
+        }
+        class Paint
+        {
+            int n;Color[] pixels;public Paint(int size){n=size;pixels=new Color[n*n];}
+            public void Fill(Color c){for(int i=0;i<pixels.Length;i++)pixels[i]=c;}
+            public void Ellipse(float x,float y,float rx,float ry,Color c)
+            {int x0=Mathf.Clamp((int)((x-rx)*n),0,n-1),x1=Mathf.Clamp((int)((x+rx)*n),0,n-1),y0=Mathf.Clamp((int)((y-ry)*n),0,n-1),y1=Mathf.Clamp((int)((y+ry)*n),0,n-1);for(int j=y0;j<=y1;j++)for(int i=x0;i<=x1;i++){float a=(i/(float)n-x)/rx,b=(j/(float)n-y)/ry;if(a*a+b*b<=1)pixels[j*n+i]=c;}}
+            public void Line(float ax,float ay,float bx,float by,float width,Color c){int steps=Mathf.Max(1,(int)(Vector2.Distance(new Vector2(ax,ay),new Vector2(bx,by))*n*1.5f));for(int i=0;i<=steps;i++){float t=i/(float)steps;Ellipse(Mathf.Lerp(ax,bx,t),Mathf.Lerp(ay,by,t),width,width,c);}}
+            public void Polygon(Color c,params float[] v)
+            {float lo=1,hi=0;for(int k=1;k<v.Length;k+=2){lo=Mathf.Min(lo,v[k]);hi=Mathf.Max(hi,v[k]);}for(int j=Mathf.Max(0,(int)(lo*n));j<=Mathf.Min(n-1,(int)(hi*n));j++){float y=j/(float)n;var xs=new List<float>();for(int k=0;k<v.Length;k+=2){int next=(k+2)%v.Length;float a=v[k+1],b=v[next+1];if((a<=y&&b>y)||(b<=y&&a>y))xs.Add(v[k]+(y-a)/(b-a)*(v[next]-v[k]));}xs.Sort();for(int k=0;k+1<xs.Count;k+=2)for(int i=Mathf.Max(0,(int)(xs[k]*n));i<=Mathf.Min(n-1,(int)(xs[k+1]*n));i++)pixels[j*n+i]=c;}}
+            public Texture2D Texture(){var t=new Texture2D(n,n,TextureFormat.RGBA32,false);t.SetPixels(pixels);t.Apply();t.filterMode=FilterMode.Bilinear;return t;}
+        }
+    }
+}
+
+FILE Assets/Dex/Runtime/MobaHud.cs
+using UnityEngine;
+
+namespace Dex
+{
+    public partial class DexArena
+    {
+        GUIStyle header,label,tiny,center,big,button,keyStyle;Texture2D pixel,buttonTexture,hoverTexture;bool trace;
+        static readonly Color Panel=new Color(.028f,.049f,.08f,.97f),Muted=new Color(.52f,.65f,.73f),Ink=new Color(.88f,.94f,.97f);
+        void RectFill(float x,float y,float w,float h,Color c){GUI.color=c;GUI.DrawTexture(new Rect(x,y,w,h),pixel);GUI.color=Color.white;}
+        void Text(float x,float y,float w,float h,string value,GUIStyle style,Color color){var old=GUI.color;GUI.color=color;GUI.Label(new Rect(x,y,w,h),value,style);GUI.color=old;}
+        void Frame(float x,float y,float w,float h){RectFill(x,y,w,h,Panel);RectFill(x,y,w,1,new Color(.18f,.31f,.39f));}
+        void Border(float x,float y,float w,float h,Color c){RectFill(x,y,w,1,c);RectFill(x,y+h-1,w,1,c);RectFill(x,y,1,h,c);RectFill(x+w-1,y,1,h,c);}
+        void Line(Vector2 a,Vector2 b,Color c,float width=1){Matrix4x4 before=GUI.matrix;Vector2 d=b-a;GUIUtility.RotateAroundPivot(Mathf.Atan2(d.y,d.x)*Mathf.Rad2Deg,a);RectFill(a.x,a.y,d.magnitude,width,c);GUI.matrix=before;}
+        Vector2 ScreenPoint(Vector2 p){Vector3 s=cam.WorldToScreenPoint(p);return new Vector2(s.x/Screen.width*1600,(1-s.y/Screen.height)*900);}
+        bool Click(float x,float y,float w,float h,string name){return GUI.Button(new Rect(x,y,w,h),name,button);}
+        Texture2D TintTexture(Color color){var t=new Texture2D(1,1);t.SetPixel(0,0,color);t.Apply();return t;}
+        void InitHud()
+        {
+            pixel=Texture2D.whiteTexture;label=new GUIStyle(GUI.skin.label){fontSize=16,wordWrap=true};label.normal.textColor=Ink;
+            tiny=new GUIStyle(label){fontSize=12};header=new GUIStyle(label){fontSize=20,fontStyle=FontStyle.Bold};big=new GUIStyle(header){fontSize=34};
+            center=new GUIStyle(label){alignment=TextAnchor.MiddleCenter};keyStyle=new GUIStyle(header){alignment=TextAnchor.MiddleCenter};
+            buttonTexture=TintTexture(new Color(.065f,.12f,.17f));hoverTexture=TintTexture(new Color(.1f,.23f,.29f));
+            button=new GUIStyle(GUI.skin.button){fontSize=14,fontStyle=FontStyle.Bold,padding=new RectOffset(12,12,7,7)};
+            button.normal.background=buttonTexture;button.normal.textColor=Ink;button.hover.background=hoverTexture;button.hover.textColor=Cyan;button.active.background=hoverTexture;button.active.textColor=Gold;
+        }
+        void OnGUI()
+        {
+            if(player==null)return;if(header==null)InitHud();GUI.matrix=Matrix4x4.Scale(new Vector3(Screen.width/1600f,Screen.height/900f,1));
+            foreach(var u in units)
+            {
+                if(u.f.hp<=0)continue;Vector2 p=ScreenPoint(u.p+Vector2.up*(u.tower?1.35f:.95f));float w=u.minion?42:u.tower?110:112;
+                RectFill(p.x-w/2-2,p.y-2,w+4,11,new Color(.014f,.025f,.04f));RectFill(p.x-w/2,p.y,w*Mathf.Clamp01(u.f.hp/u.f.maxHp),6,u.red?Pink:Cyan);
+                if(!u.minion){Text(p.x-105,p.y-29,210,25,u.f.champion+(u.f.ActiveControl(sim.time)?"  /  "+u.f.control.ToUpper():""),center,Ink);if(!u.tower)RectFill(p.x-w/2,p.y+8,w*Mathf.Clamp01(u.mana/900),2,new Color(.3f,.52f,.95f));}
+                if(u.f.Shielded(sim.time)||u.f.barrier>0)Text(p.x-90,p.y+16,180,23,"BARRIER  "+(u.f.shield+u.f.barrier).ToString("0"),center,Gold);
+                if(u.f.overwhelm>0&&u.f.overwhelmUntil>sim.time)Text(p.x-90,p.y+37,180,22,"OVERWHELM  "+u.f.overwhelm,center,Gold);
+                else if(u.f.markUntil>sim.time)Text(p.x-70,p.y+16,140,22,"FLUX MARK",center,Gold);
+            }
+            foreach(var pop in pops){Vector2 p=ScreenPoint(pop.p);Text(p.x-30,p.y-24-(sim.time-pop.born)*48,90,32,pop.text,header,pop.color);}
+            if(!menu&&player.f.hp>0&&!ReplayRunning){Vector2 to=ScreenPoint(aim);Line(to+Vector2.left*6,to+Vector2.right*6,Cyan);Line(to+Vector2.up*6,to+Vector2.down*6,Cyan);}
+            Frame(0,0,1600,66);Text(28,12,320,36,"DEX  /  INTERACTION LAB",header,Ink);Text(366,22,500,22,"PLAYABLE VERIFICATION  /  SIMPLIFIED KITS",tiny,Cyan);
+            Text(950,15,275,35,kills+" K   "+deaths+" D   "+cs+" CS    "+((int)sim.time/60).ToString("00")+":"+((int)sim.time%60).ToString("00"),center,Muted);
+            if(Click(1250,15,145,34,trace?"CLOSE TRACE":"COMBAT TRACE"))trace=!trace;if(Click(1407,15,165,34,"SANDBOX  /  ESC"))menu=!menu;
+            Frame(25,88,620,100);RectFill(25,88,3,100,replayResult.Contains("FAIL")?Pink:Cyan);
+            Text(43,96,580,82,replayResult,label,replayResult.Contains("FAIL")?Pink:Cyan);
+            if(player.f.hp<=0){Frame(610,285,380,115);Text(635,305,330,40,"RESPAWNING",big,Pink);Text(635,355,330,30,Mathf.CeilToInt(player.respawn-sim.time)+" seconds  /  fresh resources on return",center,Ink);}
+            else if(sim.time<noticeUntil&&!ReplayRunning)Text(660,90,540,55,notice,center,Gold);
+            DrawHud();if(trace)DrawTrace();if(menu)DrawMenu();GUI.matrix=Matrix4x4.identity;
+        }
+        void DrawTrace()
+        {
+            Frame(1240,85,335,340);Text(1258,99,300,27,"INTERACTION TRACE",header,Ink);Text(1258,129,300,25,"Actual combat events / newest first",tiny,Muted);
+            for(int i=0;i<Mathf.Min(8,sim.events.Count);i++)Text(1258,165+i*29,300,28,sim.events[i],tiny,i==0?Cyan:Ink);
+            Text(1258,405,300,55,"Stop Play to use the repair workbench.",tiny,Muted);
+        }
+        void DrawHud()
+        {
+            Frame(0,744,1600,156);RectFill(0,744,1600,2,new Color(.18f,.32f,.4f));
+            GUI.DrawTexture(new Rect(27,770,96,96),MobaArt.Portrait(player.f.champion).texture,ScaleMode.ScaleToFit);Border(26,769,98,98,Gold);
+            Text(143,770,174,30,player.f.champion.ToUpper(),header,Ink);Text(143,809,174,26,"LEVEL 11  /  "+gold+" G",tiny,Gold);Text(143,843,174,42,"AP "+player.f.ap+"  AD "+player.f.ad+"\nSIMPLIFIED PRESET",tiny,Muted);
+            var names=Combat.Names(player.f.champion);
+            for(int slot=0;slot<4;slot++)
+            {
+                float x=330+slot*103,cd=Mathf.Max(0,player.f.ready[slot]-sim.time);bool available=cd<=0&&player.mana>=ChampionKit.Mana(player.f.champion,slot);
+                RectFill(x,758,94,88,new Color(.045f,.08f,.12f));var icon=MobaArt.Ability(player.f.champion,slot);
+                if(icon!=null){GUI.color=available?Color.white:new Color(.4f,.45f,.5f);GUI.DrawTexture(new Rect(x+14,769,64,64),icon);GUI.color=Color.white;}
+                Border(x,758,94,88,available?Cyan:new Color(.14f,.22f,.29f));RectFill(x+3,761,23,23,Panel);Text(x+3,759,23,25,"QWER"[slot].ToString(),keyStyle,Ink);
+                Text(x+62,820,28,22,ChampionKit.Mana(player.f.champion,slot).ToString("0"),tiny,new Color(.45f,.66f,1));
+                if(cd>0){RectFill(x+1,759,92,86,new Color(.015f,.025f,.04f,.65f));Text(x,779,94,44,cd.ToString("0.0"),keyStyle,Gold);}
+                if(GUI.Button(new Rect(x,758,94,88),GUIContent.none,GUIStyle.none)&&!menu&&!ReplayRunning)Cast(player,slot,lastArenaAim);
+                if(new Rect(x,758,94,88).Contains(Event.current.mousePosition))
+                {Frame(x-40,574,360,150);Text(x-22,590,324,32,names[slot],header,Gold);Text(x-22,628,324,80,ChampionKit.Description(player.f.champion,slot),label,Ink);}
+            }
+            RectFill(330,858,403,13,new Color(.05f,.13f,.14f));RectFill(330,858,403*Mathf.Clamp01(player.f.hp/player.f.maxHp),13,Cyan);Text(330,853,403,24,Mathf.CeilToInt(player.f.hp)+" / "+player.f.maxHp,center,Ink);
+            RectFill(330,879,403,7,new Color(.06f,.1f,.2f));RectFill(330,879,403*player.mana/900,7,new Color(.33f,.51f,.95f));
+            Text(765,765,470,23,player.f.champion=="Mel"?"SEARING BRILLIANCE  /  "+player.f.searing+" BANKED BOLTS":"COMBAT STATUS",tiny,Gold);
+            Text(765,796,450,47,player.f.champion=="Mel"?ChampionKit.Passive("Mel"):player.target!=null?"AUTO-ATTACKING  /  "+player.target.f.champion:ChampionKit.Passive(player.f.champion),tiny,Ink);
+            Text(765,856,480,34,"LMB enemy: auto-attack   RMB: move / attack\nQ W E R: cast   S: stop   F6: replay   ESC: sandbox",tiny,Muted);
+            Frame(1275,764,298,118);Text(1291,771,265,20,"TEST CHAMBER  /  TEAM POSITIONS",tiny,Muted);
+            for(int i=0;i<5;i++)RectFill(1294+i*60,801,1,65,new Color(.09f,.19f,.24f));
+            foreach(var u in units){if(u.f.hp<=0)continue;float x=1295+(u.p.x+13)/26*260,y=863-(u.p.y+6.5f)/13*62;RectFill(x,y,u==player?7:4,u==player?7:4,u.red?Pink:Cyan);}
+        }
+        bool Toggle(float x,float y,float w,bool value,string title)
+        {if(Click(x,y,w,34,(value?"ON  /  ":"OFF  /  ")+title))value=!value;return value;}
+        void ChampionCards(float x,float y,bool yours)
+        {
+            for(int index=0;index<champions.Length;index++)
+            {
+                float left=x+index*138;bool selected=(yours?champion:opponent)==index;
+                if(Click(left,y,126,150,"")){if(yours)champion=index;else opponent=index;}
+                GUI.DrawTexture(new Rect(left+20,y+12,86,86),MobaArt.Portrait(champions[index]).texture,ScaleMode.ScaleToFit);
+                Text(left+3,y+107,120,28,champions[index],center,selected?Gold:Ink);Border(left,y,126,150,selected?Gold:new Color(.14f,.24f,.31f));
+            }
+        }
+        void DrawMenu()
+        {
+            RectFill(0,66,1600,678,new Color(.008f,.015f,.028f,.95f));Frame(155,95,1290,625);
+            Text(185,112,730,45,"THE INTERACTION SANDBOX",big,Ink);Text(185,161,1040,27,"Four simplified kits. Reproduce a failure, then let the development agent repair the shared rule.",label,Muted);
+            items=Toggle(1135,117,264,items,"Item preset on reset");
+            Text(185,207,560,25,"YOUR CHAMPION",tiny,Cyan);Text(855,207,560,25,"OPPONENT",tiny,Pink);ChampionCards(185,241,true);ChampionCards(855,241,false);
+            bot=Toggle(185,412,264,bot,"Opponent AI");waves=Toggle(465,412,264,waves,"Minion waves");practice=Toggle(855,412,264,practice,"Practice regeneration");sound=Toggle(1135,412,264,sound,"Sound cues");
+            if(Click(185,462,264,42,"APPLY MATCHUP / RESET")){ResetWorld();menu=false;}
+            if(Click(465,462,264,42,"REFILL HEALTH / MANA")){player.f.hp=player.f.maxHp;player.mana=900;}
+            if(Click(855,462,264,42,"RESET COOLDOWNS")){for(int i=0;i<4;i++)player.f.ready[i]=0;player.f.rushCharges=3;}
+            if(Click(1135,462,264,42,"RETURN TO ARENA"))menu=false;
+            Text(185,531,1100,23,"REPEATABLE REGRESSION REPLAYS",tiny,Gold);
+            for(int n=0;n<DemoCases.All.Length;n++){var item=DemoCases.All[n];if(Click(185+n*306,564,292,48,item.title))StartInteractionReplay(item.id);}
+            Text(185,642,1210,48,"Current Mel kit: projectile-destroying Rebuttal nova with retaliation. Official portrait / ability art: Riot Games. Original chamber art. All balance and geometry are demo tuning.",tiny,Muted);
+        }
+    }
+}
+
+FILE Assets/Welcome/Welcome2DScript.cs
+using UnityEngine;
+
+namespace Unity.U2D.Welcome
+{
+    [CreateAssetMenu(fileName = "Welcome2DScript", menuName = "Welcome/Welcome2DScript")]
+    class Welcome2DScript : ScriptableObject
+    {
+        public static void Open2DLandingPage()
+        {
+            Application.OpenURL("https://unity.com/features/2d");
+        }
+    }
+}
+

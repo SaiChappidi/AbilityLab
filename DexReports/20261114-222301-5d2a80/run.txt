@@ -1,0 +1,34 @@
+17:23:01  Run type: Intentional mel-nova fixture reset. No manual baseline or time-savings measurement.
+
+17:23:01  Investigating / elapsed 0.0s
+
+17:23:01  root-blink: PASS | expected=False actual=False | 0.00s  Mobility blocked by Root; 0.00s  Ezreal receives Root; 0.00s  Morgana casts Dark Binding
+root-dash: PASS | expected dash=False actual=False | 0.00s  Mobility blocked by Root; 0.00s  Ahri receives Root; 0.00s  Mel casts Solar Snare
+mel-nova: PASS | expected missile hit=False actual=False | 0.00s  Rebuttal destroys Morgana missile; 0.00s  Mel casts Rebuttal
+shield-charm: PASS | expected=False actual=False | 0.00s  Black Shield resists Charm; 0.00s  Ahri casts Charm; 0.00s  Morgana casts Black Shield
+free-blink: PASS | expected=True actual=True | 0.00s  Ezreal casts Arcane Shift
+stun-blink: PASS | expected=False actual=False | 0.00s  Cast blocked by Stun; 0.00s  Ezreal receives Stun
+expired-root: PASS | expected=True actual=True | 2.01s  Ezreal casts Arcane Shift; 0.00s  Ezreal receives Root
+
+17:23:01  Repairing / elapsed 0.0s
+
+17:23:01  --- Assets/Dex/Runtime/CombatRules.cs
++++ Assets/Dex/Runtime/CombatRules.cs
+-             return true;
++             return false;
+
+
+17:23:01  Compiling / elapsed 0.0s
+
+17:23:03  Failed / elapsed 1.9s
+
+17:23:03  Compilation failed. Source and backups preserved.
+Assets\Dex\Editor\AgentWorkbench.cs(139,34): error CS0103: The name 'ManualBaseline' does not exist in the current context
+Assets\Dex\Editor\AgentWorkbench.cs(210,58): error CS0103: The name 'ManualBaseline' does not exist in the current context
+Assets\Dex\Editor\WorkbenchDashboard.cs(45,65): error CS0103: The name 'ManualBaseline' does not exist in the current context
+Assets\Dex\Editor\WorkbenchDashboard.cs(106,115): error CS0103: The name 'ManualBaseline' does not exist in the current context
+Assets\Dex\Editor\WorkbenchDashboard.cs(107,37): error CS0103: The name 'ManualBaseline' does not exist in the current context
+Assets\Dex\Editor\WorkbenchDashboard.cs(107,157): error CS0103: The name 'ManualBaseline' does not exist in the current context
+Assets\Dex\Editor\WorkbenchDashboard.cs(107,179): error CS0103: The name 'ManualBaseline' does not exist in the current context
+Assets\Dex\Editor\WorkbenchDashboard.cs(107,215): error CS0103: The name 'ManualBaseline' does not exist in the current context
+

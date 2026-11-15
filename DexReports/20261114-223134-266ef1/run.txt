@@ -1,0 +1,26 @@
+17:31:34  Run type: Intentional root-blink fixture reset. No manual baseline or time-savings measurement.
+
+17:31:34  Investigating / elapsed 0.0s
+
+17:31:34  root-blink: PASS | expected=False actual=False | 0.00s  Mobility blocked by Root; 0.00s  Ezreal receives Root; 0.00s  Morgana casts Dark Binding
+root-dash: PASS | expected dash=False actual=False | 0.00s  Mobility blocked by Root; 0.00s  Ahri receives Root; 0.00s  Mel casts Solar Snare
+mel-nova: PASS | expected missile hit=False actual=False | 0.00s  Rebuttal destroys Morgana missile; 0.00s  Mel casts Rebuttal
+shield-charm: PASS | expected=False actual=False | 0.00s  Black Shield resists Charm; 0.00s  Ahri casts Charm; 0.00s  Morgana casts Black Shield
+free-blink: PASS | expected=True actual=True | 0.00s  Ezreal casts Arcane Shift
+stun-blink: PASS | expected=False actual=False | 0.00s  Cast blocked by Stun; 0.00s  Ezreal receives Stun
+expired-root: PASS | expected=True actual=True | 2.01s  Ezreal casts Arcane Shift; 0.00s  Ezreal receives Root
+
+17:31:34  Repairing / elapsed 0.0s
+
+17:31:34  --- Assets/Dex/Runtime/CombatRules.cs
++++ Assets/Dex/Runtime/CombatRules.cs
+-             return !stunned && !rooted && !charmed && !grounded;
++             return !stunned;
+
+
+17:31:34  Compiling / elapsed 0.0s
+
+17:31:34  Failed / elapsed 0.0s
+
+17:31:34  Unable to remove the file to be replaced
+

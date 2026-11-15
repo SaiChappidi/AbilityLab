@@ -1,0 +1,10 @@
+Captured UTC: 2026-11-14T22:49:08.6538006Z
+Unity: 6000.6.9f1
+Scene: Assets/Scenes/SampleScene.unity
+Build target: StandaloneWindows64
+Compiling: False
+Compilation failed: False
+Play: False
+Background override: False
+Play options enabled: True / DisableDomainReload
+Auto-tick restored to False after the snapshot (CLI confirmed enabled=false).

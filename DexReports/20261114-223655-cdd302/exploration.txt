@@ -1,0 +1,15 @@
+Deterministic exploration: 43 generated timing/matchup cases; 16 failures.
+Morgana -> Ezreal at 0.000s: expected cast=False, actual=True
+Morgana -> Ezreal at 0.500s: expected cast=False, actual=True
+Morgana -> Ezreal at 1.499s: expected cast=False, actual=True
+Morgana -> Ezreal at 1.500s: expected cast=False, actual=True
+Morgana -> Ezreal at 1.999s: expected cast=False, actual=True
+Morgana -> Ahri at 0.000s: expected cast=False, actual=True
+Morgana -> Ahri at 0.500s: expected cast=False, actual=True
+Morgana -> Ahri at 1.499s: expected cast=False, actual=True
+Morgana -> Ahri at 1.500s: expected cast=False, actual=True
+Morgana -> Ahri at 1.999s: expected cast=False, actual=True
+Mel -> Ezreal at 0.000s: expected cast=False, actual=True
+Mel -> Ezreal at 0.500s: expected cast=False, actual=True
+Action deletion: 6 original actions -> 2 required actions (root -> cast)
+Scope: finite generated simplified scenarios, not arbitrary gameplay discovery.

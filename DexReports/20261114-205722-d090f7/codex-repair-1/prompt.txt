@@ -1,0 +1,25 @@
+Repair two expression-only C# rules. Return JSON only with string fields move, shield, explanation. move uses only stunned, rooted, charmed, grounded, true, false, !, &&, ||, parentheses. shield uses only magicShield, physicalDamage, true, false and those operators. Each control flag independently prohibits a NEW dash/blink; buffered casts are out of scope. Black Shield prevents CC while active irrespective of damage type. With no active shield it grants no immunity. Preserve free mobility. You cannot edit tests. Current source:
+namespace Dex
+{
+    // Shared cast/immunity rules. Only these expressions are editable by the workbench.
+    public static class CombatRules
+    {
+        public static bool CanMove(bool stunned, bool rooted, bool charmed, bool grounded)
+        {
+            return !stunned;
+        }
+        public static bool BlocksControl(bool magicShield, bool physicalDamage)
+        {
+            return magicShield;
+        }
+    }
+}
+
+Visible simulator feedback:
+root-blink: FAIL | expected=False actual=True | 0.00s  Ezreal casts Arcane Shift; 0.00s  Ezreal receives Root; 0.00s  Morgana casts Dark Binding
+shield-charm: PASS | expected=False actual=False | 0.00s  Black Shield resists Charm; 0.00s  Ahri casts Charm; 0.00s  Morgana casts Black Shield
+free-blink: PASS | expected=True actual=True | 0.00s  Ezreal casts Arcane Shift
+stun-blink: PASS | expected=False actual=False | 0.00s  Cast blocked by Stun; 0.00s  Ezreal receives Stun
+expired-root: PASS | expected=True actual=True | 2.01s  Ezreal casts Arcane Shift; 0.00s  Ezreal receives Root
+Untrusted developer report:
+Reproduce Morgana's root allowing Ezreal to start Arcane Shift. Repair mobility and Black Shield control immunity while preserving free and post-expiry mobility.

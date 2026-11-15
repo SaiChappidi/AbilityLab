@@ -1,0 +1,1 @@
+{"type":"object","properties":{"move":{"type":"string"},"shield":{"type":"string"},"explanation":{"type":"string"}},"required":["move","shield","explanation"],"additionalProperties":false}

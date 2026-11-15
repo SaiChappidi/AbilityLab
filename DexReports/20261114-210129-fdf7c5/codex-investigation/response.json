@@ -1,0 +1,1 @@
+{"tests":["root-blink","free-blink","stun-blink","expired-root"],"reason":"Reproduce the reported rooted blink, check that stun also blocks blink, and verify that free movement and blink after root expiry remain allowed."}

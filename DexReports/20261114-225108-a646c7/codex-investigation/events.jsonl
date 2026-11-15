@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a1dc41-e90b-7182-b739-45b088b8540c"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"caseId\":\"mel-nova\",\"tests\":[\"mel-nova\"],\"reason\":\"Reproduce the hostile missile passing through active Rebuttal and verify it is destroyed within the nova radius. Use the encounter's expired-nova control to confirm missiles pass through after expiry.\"}"}}
+{"type":"turn.completed","usage":{"input_tokens":17473,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":65,"reasoning_output_tokens":0}}

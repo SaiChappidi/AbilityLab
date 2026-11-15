@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a1dbd9-c050-72e0-a887-6ddc07b22c8c"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"tests\":[\"root-blink\",\"shield-charm\",\"free-blink\",\"stun-blink\",\"expired-root\"],\"reason\":\"Reproduce rooted Arcane Shift, check Black Shield control immunity and stun blocking, and establish free-movement and expired-root mobility controls.\"}"}}
+{"type":"turn.completed","usage":{"input_tokens":17365,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":64,"reasoning_output_tokens":0}}

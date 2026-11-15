@@ -1,0 +1,9 @@
+{
+    "caseId": "root-dash",
+    "phase": "root-dash",
+    "result": "FAIL / rooted mobility: expected blocked; actual blocked.\nMana / cooldown preserved. Root observed=False\nAfter root expiry: expected mobility; actual=False. REPLAY FAILED",
+    "capturedUtc": "2026-11-14T22:15:39.1085633Z",
+    "screenshot": "C:\\Users\\gamer\\Downloads\\dex\\My project\\DexReports\\evidence\\v2\\replays\\root-dash-replay.png",
+    "passed": false,
+    "seconds": 3.2816611
+}

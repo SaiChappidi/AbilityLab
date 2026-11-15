@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a1dc2c-954c-7010-b0c4-f46a16146353"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"caseId\":\"mel-nova\",\"tests\":[\"mel-nova\"],\"reason\":\"Reproduce the reported hostile missile passing through active Rebuttal and verify that active nova destroys missiles within its radius while expired nova allows them through. No separate normal or expiry missile control IDs are available.\"}"}}
+{"type":"turn.completed","usage":{"input_tokens":17471,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":68,"reasoning_output_tokens":0}}

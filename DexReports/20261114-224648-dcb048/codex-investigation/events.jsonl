@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a1dc3d-f06c-7293-bc96-5638369b1acf"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"caseId\":\"mel-nova\",\"tests\":[\"mel-nova\"],\"reason\":\"Test that active Rebuttal destroys Morgana's hostile missile within its radius and that the missile passes after nova expiry. The mel-nova encounter covers both active behavior and the expiry control; no separate missile control test is available.\"}"}}
+{"type":"turn.completed","usage":{"input_tokens":17471,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":74,"reasoning_output_tokens":0}}

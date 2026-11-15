@@ -1,0 +1,10 @@
+15:05:27  Run type: Live AI. No manual baseline or time-savings measurement.
+
+15:05:27  Failed / elapsed 0.0s
+
+15:05:27  Missing OPENAI_API_KEY. No AI request was sent. Offline verification, reference repair and replay remain available.
+
+15:05:27  Failed / elapsed 0.0s
+
+15:05:27  Compilation/domain reload timed out after 120s. Inspect Console; original and proposed source are saved. No verification success assumed.
+

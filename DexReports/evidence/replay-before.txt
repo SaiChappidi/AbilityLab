@@ -1,0 +1,3 @@
+Observed in the live Unity arena before repair. See before-replay.png and broken-fixture.source.txt.
+FAIL / rooted E: expected blocked; actual BLINKED. Mana/CD consumed. Root observed=True
+After root expiry: expected blink; actual blocked. REPLAY FAILED

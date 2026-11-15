@@ -1,0 +1,3 @@
+Generic driver projectile accounting: 2/2
+PASS Q damages target: observed 1660.625 lt expected 1800 @ impact
+PASS Nonpiercing missile is removed: observed 0 eq expected 0 @ impact

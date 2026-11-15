@@ -1,0 +1,4 @@
+﻿Ahri: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/champion/Ahri.png
+Morgana: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/champion/Morgana.png
+Ezreal: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/champion/Ezreal.png
+Mel: https://ddragon.leagueoflegends.com/cdn/16.22.1/img/champion/Mel.png
