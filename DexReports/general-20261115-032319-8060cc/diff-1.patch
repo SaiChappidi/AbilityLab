@@ -1,0 +1,5 @@
+--- a/Assets/Dex/Runtime/DexArena.cs
++++ b/Assets/Dex/Runtime/DexArena.cs
+              if(world!=null)Destroy(world.gameObject);world=new GameObject("Sandbox World").transform;
++             units.Clear();shots.Clear();zones.Clear();fx.Clear();pops.Clear();sim=new Combat(champions[champion],champions[opponent],items);
+-             units.Clear();zones.Clear();fx.Clear();pops.Clear();sim=new Combat(champions[champion],champions[opponent],items);

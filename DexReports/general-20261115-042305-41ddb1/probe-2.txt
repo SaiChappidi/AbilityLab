@@ -1,0 +1,14 @@
+Actual arena mana costs and cooldown rejection across champions: 13/13
+PASS Ahri Q charges once: observed 845 eq expected 845 @ ahri_q
+PASS Ahri Q starts cooldown: observed 7 eq expected 7 @ ahri_q
+PASS Ahri Q creates projectile: observed 1 eq expected 1 @ ahri_q
+PASS Uninvolved opponent keeps mana: observed 900 eq expected 900 @ ahri_q
+PASS Ahri rejection preserves mana: observed 845 eq expected 845 @ ahri_rejected
+PASS Ahri rejection preserves ready time: observed 7 eq expected 7 @ ahri_rejected
+PASS Ahri rejection creates no projectile: observed 1 eq expected 1 @ ahri_rejected
+PASS Morgana W charges once: observed 840 eq expected 840 @ morgana_w
+PASS Morgana W starts cooldown: observed 9 eq expected 9 @ morgana_w
+PASS Morgana W creates zone: observed 1 eq expected 1 @ morgana_w
+PASS Morgana rejection preserves mana: observed 840 eq expected 840 @ morgana_rejected
+PASS Morgana rejection preserves ready time: observed 9 eq expected 9 @ morgana_rejected
+PASS Morgana rejection creates no zone: observed 1 eq expected 1 @ morgana_rejected

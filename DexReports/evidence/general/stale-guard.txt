@@ -1,0 +1,4 @@
+PASS stale investigation is rejected without source application
+Outcome: Needs developer review
+Reason: The investigation is stale; start a fresh investigation before repairing. Protected verification/host source changed during this run.
+Source or frozen evidence changed during investigation: Protected verification/host source changed during this run.

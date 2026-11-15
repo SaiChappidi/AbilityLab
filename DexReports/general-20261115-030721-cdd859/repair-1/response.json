@@ -1,0 +1,17 @@
+{
+  "analysis": "Both DexArena.Step and Combat.Tick clear barriers while barrierUntil is still in the future because their expiration comparisons are reversed. Change both to clear at or after the deadline, consistent with shield expiration and the existing damage absorption gate. The supplied replay reproduces premature clearing; this proposal has not yet been verified by the host.",
+  "edits": [
+    {
+      "path": "Assets/Dex/Runtime/DexArena.cs",
+      "find": "if(u.f.barrierUntil>=sim.time)u.f.barrier=0;",
+      "replace": "if(u.f.barrierUntil<=sim.time)u.f.barrier=0;",
+      "create": false
+    },
+    {
+      "path": "Assets/Dex/Runtime/Combat.cs",
+      "find": "if(f.barrierUntil>=time)f.barrier=0;",
+      "replace": "if(f.barrierUntil<=time)f.barrier=0;",
+      "create": false
+    }
+  ]
+}

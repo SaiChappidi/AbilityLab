@@ -1,0 +1,11 @@
+0.0s / Investigating
+0.2s / Investigating
+36.9s / Reproducing
+38.1s / Reproduced
+38.1s / Reviewing specification
+54.7s / Bug reproduced — no repair attempted
+0.0s / Repairing
+7.1s / Compiling
+13.6s / Verifying
+18.0s / Needs developer review
+781.7s / Needs developer review

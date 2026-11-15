@@ -1,0 +1,3 @@
+projectile-accounting
+Ahri's Orb of Deception damages a stationary enemy repeatedly while passing through it. It should hit that enemy once outward and once returning, independent of simulation step size.
+This is injected by a developer menu, not discovered by the agent. Baseline and mutant are saved separately.

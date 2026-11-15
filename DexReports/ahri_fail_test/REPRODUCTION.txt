@@ -1,0 +1,33 @@
+Ahri orb hits once per enemy per leg across timesteps
+Seed: 12345 / Ahri vs Morgana
+Expected: A stationary enemy on the orb path loses approximately 71.4286 health outward and 100 health returning, independently of timestep. An off-path enemy remains unharmed, and the orb disappears after returning.
+
+1. Place player at (-6, 0) → observe [fine_player]
+2. Place enemy at (-2, 0) → observe [fine_target]
+3. Spawn offpath (Morgana, red) at (-2, 3) → observe [fine_control]
+4. Cast player Q toward (2, 0) → observe [fine_cast]
+5. Advance 0.5s at dt=0.01 → observe [fine_outward]
+6. Advance 0.7s at dt=0.01 → observe [fine_return]
+7. Advance 0.5s at dt=0.01 → observe [fine_finished]
+8. Reset the actual arena → observe [coarse_reset]
+9. Place player at (-6, 0) → observe [coarse_player]
+10. Place enemy at (-2, 0) → observe [coarse_target]
+11. Spawn offpath (Morgana, red) at (-2, 3) → observe [coarse_control]
+12. Cast player Q toward (2, 0) → observe [coarse_cast]
+13. Advance 0.5s at dt=0.1 → observe [coarse_outward]
+14. Advance 0.7s at dt=0.1 → observe [coarse_return]
+15. Advance 0.5s at dt=0.1 → observe [coarse_finished]
+
+Assertions:
+Fine outward single hit @ fine_outward: enemy.hp eq -71.42857 + fine_cast.enemy.hp
+Fine return single true-damage hit @ fine_return: enemy.hp eq -100 + fine_outward.enemy.hp
+Fine no later damage @ fine_finished: enemy.hp eq 0 + fine_return.enemy.hp
+Fine off-path control @ fine_finished: offpath.hp eq 0 + fine_cast.offpath.hp
+Fine orb completed @ fine_finished: world.shots eq 0
+Coarse outward single hit @ coarse_outward: enemy.hp eq -71.42857 + coarse_cast.enemy.hp
+Coarse return single true-damage hit @ coarse_return: enemy.hp eq -100 + coarse_outward.enemy.hp
+Coarse no later damage @ coarse_finished: enemy.hp eq 0 + coarse_return.enemy.hp
+Coarse off-path control @ coarse_finished: offpath.hp eq 0 + coarse_cast.offpath.hp
+Coarse orb completed @ coarse_finished: world.shots eq 0
+Target remains stationary @ coarse_finished: enemy.x eq -2
+Fine target remains stationary @ fine_finished: enemy.x eq -2

@@ -1,1 +1,1 @@
-Mel's Rebuttal barrier disappears on the next simulation tick even though its duration is still active. With no incoming damage, it should remain during its active duration, then disappear when the duration expires. Investigate expiration handling and preserve consistent combat behavior.
+Casting an ability takes twice its listed mana cost. A successful cast should charge the listed cost once; a rejected cooldown recast must not spend more mana or extend its cooldown. Reproduce and fix this using actual arena casts.

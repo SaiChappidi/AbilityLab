@@ -1,0 +1,5 @@
+--- a/Assets/Dex/Runtime/DexArena.cs
++++ b/Assets/Dex/Runtime/DexArena.cs
+                      if(u.red==m.owner.red||u.f.hp<=0||m.hit.Contains(u)||m.homing!=null&&u!=m.homing||SegmentDistance(u.p,prev,m.p)>m.width+u.radius)continue;
++                     if(m.owner.f.champion=="Ezreal"&&m.slot==1&&u.minion)continue;m.hit.Add(u);
+-                     if(m.owner.f.champion=="Ezreal"&&m.slot==1&&u.minion)continue;m.hit.Clear();

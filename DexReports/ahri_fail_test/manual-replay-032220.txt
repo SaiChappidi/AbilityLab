@@ -1,0 +1,13 @@
+Ahri orb hits once per enemy per leg across timesteps: 12/12
+PASS Fine outward single hit: observed 1728.571 eq expected 1728.571 @ fine_outward
+PASS Fine return single true-damage hit: observed 1628.571 eq expected 1628.571 @ fine_return
+PASS Fine no later damage: observed 1628.571 eq expected 1628.571 @ fine_finished
+PASS Fine off-path control: observed 1800 eq expected 1800 @ fine_finished
+PASS Fine orb completed: observed 0 eq expected 0 @ fine_finished
+PASS Coarse outward single hit: observed 1728.571 eq expected 1728.571 @ coarse_outward
+PASS Coarse return single true-damage hit: observed 1628.571 eq expected 1628.571 @ coarse_return
+PASS Coarse no later damage: observed 1628.571 eq expected 1628.571 @ coarse_finished
+PASS Coarse off-path control: observed 1800 eq expected 1800 @ coarse_finished
+PASS Coarse orb completed: observed 0 eq expected 0 @ coarse_finished
+PASS Target remains stationary: observed -2 eq expected -2 @ coarse_finished
+PASS Fine target remains stationary: observed -2 eq expected -2 @ fine_finished

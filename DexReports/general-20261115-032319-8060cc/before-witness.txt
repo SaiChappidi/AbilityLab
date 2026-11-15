@@ -1,0 +1,17 @@
+Independent witness: Reset clears active arena objects and restores fresh resources: 15/16
+PASS projectile_exists_before_reset: observed 1 gt expected 0 @ active_before_reset
+PASS zone_exists_before_reset: observed 1 gt expected 0 @ active_before_reset
+PASS effect_exists_before_reset: observed 1 gt expected 0 @ active_before_reset
+PASS health_depleted_before_reset: observed 1700 lt expected 1800 @ active_before_reset
+PASS mana_spent_before_reset: observed 715 lt expected 900 @ active_before_reset
+PASS q_cooldown_active_before_reset: observed 7 gt expected 0 @ active_before_reset
+PASS w_cooldown_active_before_reset: observed 9 gt expected 0 @ active_before_reset
+PASS e_cooldown_active_before_reset: observed 14 gt expected 0 @ active_before_reset
+FAIL reset_clears_projectiles: observed 1 eq expected 0 @ fresh_match
+PASS reset_clears_zones: observed 0 eq expected 0 @ fresh_match
+PASS reset_clears_effects: observed 0 eq expected 0 @ fresh_match
+PASS reset_restores_health: observed 1800 eq expected 1800 @ fresh_match
+PASS reset_restores_mana: observed 900 eq expected 900 @ fresh_match
+PASS reset_restores_q_availability: observed 0 eq expected 0 @ fresh_match
+PASS reset_restores_w_availability: observed 0 eq expected 0 @ fresh_match
+PASS reset_restores_e_availability: observed 0 eq expected 0 @ fresh_match

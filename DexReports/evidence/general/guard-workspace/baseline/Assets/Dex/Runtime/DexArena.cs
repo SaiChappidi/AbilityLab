@@ -27,7 +27,7 @@ namespace Dex
         readonly string[] champions=ChampionKit.Roster;int champion=3,opponent=2,kills,deaths,cs,gold=500;
         bool bot=true,waves=true,items=true,practice=true,menu;
         // The Editor's deterministic driver calls the same gameplay tick as Update.
-        bool manualSimulation;float nextWave,botAt;Vector2 aim,lastArenaAim;
+        bool manualSimulation;string scenarioStatus="";float nextWave,botAt;Vector2 aim,lastArenaAim;
         string notice="Left-click an enemy to auto-attack. Right-click to move or attack. Aim Q / W / E / R.";float noticeUntil=8;
         static readonly Color Cyan=new Color(.27f,.85f,.94f),Gold=new Color(.83f,.7f,.38f),Pink=new Color(.96f,.39f,.55f);
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -59,6 +59,7 @@ namespace Dex
         {
             Art("Test chamber",MobaArt.Square,Vector2.zero,new Vector2(32,19),new Color(.024f,.04f,.065f),-100);
             Art("Inner board",MobaArt.Square,Vector2.zero,new Vector2(27.5f,14.2f),new Color(.035f,.065f,.095f),-99);
+            Art("Arcane stone grain",MobaArt.Ground,Vector2.zero,new Vector2(27.3f,14f),new Color(.58f,.73f,.82f,.33f),-98);
             for(int x=-13;x<=13;x++)Art("Grid",MobaArt.Square,new Vector2(x,0),new Vector2(x%5==0?.018f:.008f,13.5f),new Color(.12f,.24f,.3f,x%5==0?.45f:.28f),-95);
             for(int y=-6;y<=6;y++)Art("Grid",MobaArt.Square,new Vector2(0,y),new Vector2(26.5f,y%3==0?.018f:.008f),new Color(.12f,.24f,.3f,y%3==0?.45f:.28f),-95);
             var lane=Art("Interaction lane",MobaArt.Square,Vector2.zero,new Vector2(27,3),new Color(.045f,.095f,.13f),-94);lane.transform.rotation=Quaternion.Euler(0,0,18);
@@ -211,7 +212,7 @@ namespace Dex
                 foreach(var u in collisionOrder)
                 {
                     if(u.red==m.owner.red||u.f.hp<=0||m.hit.Contains(u)||m.homing!=null&&u!=m.homing||SegmentDistance(u.p,prev,m.p)>m.width+u.radius)continue;
-                    if(m.owner.f.champion=="Ezreal"&&m.slot==1&&u.minion)continue;m.hit.Clear();
+                    if(m.owner.f.champion=="Ezreal"&&m.slot==1&&u.minion)continue;m.hit.Add(u);
                     if(m.owner.f.champion=="Ezreal"&&m.slot==1)u.f.markUntil=sim.time+4;
                     else
                     {

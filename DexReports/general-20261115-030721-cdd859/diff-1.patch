@@ -1,0 +1,10 @@
+--- a/Assets/Dex/Runtime/Combat.cs
++++ b/Assets/Dex/Runtime/Combat.cs
+                  if(f.shieldUntil <= time) f.shield = 0;
++                 if(f.barrierUntil<=time)f.barrier=0;
+-                 if(f.barrierUntil>=time)f.barrier=0;
+--- a/Assets/Dex/Runtime/DexArena.cs
++++ b/Assets/Dex/Runtime/DexArena.cs
+              if(u.f.controlUntil<=sim.time)u.f.control="";if(u.f.shieldUntil<=sim.time)u.f.shield=0;
++             if(u.f.barrierUntil<=sim.time)u.f.barrier=0;if(u.f.overwhelmUntil<=sim.time)u.f.overwhelm=0;
+-             if(u.f.barrierUntil>=sim.time)u.f.barrier=0;if(u.f.overwhelmUntil<=sim.time)u.f.overwhelm=0;

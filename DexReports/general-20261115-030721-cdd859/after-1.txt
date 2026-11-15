@@ -1,0 +1,12 @@
+Rebuttal barrier persists until expiration without damage: 11/11
+PASS Rebuttal grants barrier: observed 180 gt expected 0 @ rebuttal_cast
+PASS Barrier survives first tick unchanged: observed 180 eq expected 180 @ first_tick
+PASS Barrier persists after nova ends: observed 180 eq expected 180 @ after_nova
+PASS Barrier persists just before expiration: observed 180 eq expected 180 @ before_expiration
+PASS Pre-expiration checkpoint precedes deadline: observed 1.98 lt expected 2 @ before_expiration
+PASS Barrier clears after expiration: observed 0 eq expected 0 @ after_expiration
+PASS Mel health unchanged without damage: observed 1800 eq expected 1800 @ black_shield_expired
+PASS Black Shield control granted: observed 210 gt expected 0 @ black_shield_cast
+PASS Black Shield control persists beyond barrier duration: observed 210 eq expected 210 @ after_expiration
+PASS Black Shield control expires: observed 0 eq expected 0 @ black_shield_expired
+PASS Morgana health unchanged without damage: observed 1800 eq expected 1800 @ black_shield_expired

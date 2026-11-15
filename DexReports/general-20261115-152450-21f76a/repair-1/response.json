@@ -1,0 +1,11 @@
+{
+  "analysis": "The supplied arena run reproduces repeated hits: the fine-step flight dealt 1650 total damage, while the coarse-step flight dealt 300. StepShots checks m.hit.Contains(u), but clears that set on every collision and never records the victim. Record each hit instead. The existing clear when the orb turns around then permits one new hit per enemy on return, preserving damage values and collision geometry. This proposal requires host verification against the frozen scenario.",
+  "edits": [
+    {
+      "path": "Assets/Dex/Runtime/DexArena.cs",
+      "find": "if(m.owner.f.champion==\"Ezreal\"&&m.slot==1&&u.minion)continue;m.hit.Clear();",
+      "replace": "if(m.owner.f.champion==\"Ezreal\"&&m.slot==1&&u.minion)continue;m.hit.Add(u);",
+      "create": false
+    }
+  ]
+}

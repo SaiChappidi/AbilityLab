@@ -1,0 +1,14 @@
+Ahri orb hits once per direction across simulation step sizes: 9/13
+PASS Fine cast launches one orb: observed 1 eq expected 1 @ fineCast
+FAIL Fine outward hits once: observed 1350 eq expected 1750 @ fineOutward
+FAIL Fine full flight hits once each direction: observed 150 eq expected 1650 @ fineComplete
+PASS Fine off-path control unharmed: observed 1800 eq expected 1800 @ fineComplete
+PASS Fine target stays stationary: observed 0 eq expected 0 @ fineComplete
+PASS Fine orb completes return: observed 0 eq expected 0 @ fineComplete
+PASS Coarse cast launches one orb: observed 1 eq expected 1 @ coarseCast
+PASS Coarse outward hits once: observed 1750 eq expected 1750 @ coarseOutward
+FAIL Coarse full flight hits once each direction: observed 1500 eq expected 1650 @ coarseComplete
+PASS Coarse off-path control unharmed: observed 1800 eq expected 1800 @ coarseComplete
+PASS Coarse target stays stationary: observed 0 eq expected 0 @ coarseComplete
+PASS Coarse orb completes return: observed 0 eq expected 0 @ coarseComplete
+FAIL Completed damage independent of step size: observed 1500 eq expected 150 @ coarseComplete

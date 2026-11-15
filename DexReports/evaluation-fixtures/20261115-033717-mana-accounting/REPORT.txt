@@ -1,0 +1,3 @@
+INTENTIONAL DEVELOPER EVALUATION FIXTURE: mana-accounting
+Casting an ability takes twice its listed mana cost. A successful cast should charge the listed cost once; a rejected cooldown recast must not spend more mana or extend its cooldown. Reproduce and fix this using actual arena casts.
+Target: Assets/Dex/Runtime/Combat.cs

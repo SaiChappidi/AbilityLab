@@ -1,0 +1,12 @@
+Actual arena casts charge once and cooldown rejections preserve resources: 11/11
+PASS E charges listed cost once: observed 830 eq expected 830 @ shield_cast
+PASS E starts listed cooldown: observed 14 eq expected 14 @ shield_cast
+PASS E actually grants shield: observed 1 eq expected 1 @ shield_cast
+PASS Immediate rejection preserves mana: observed 830 eq expected 830 @ immediate_recast
+PASS Immediate rejection preserves ready time: observed 14 eq expected 14 @ immediate_recast
+PASS Q charges listed cost once: observed 845 eq expected 845 @ normal_projectile
+PASS Q creates projectile: observed 1 eq expected 1 @ normal_projectile
+PASS Ordinary regeneration control: observed 832.9993 eq expected 833 @ regenerated
+PASS Delayed rejection preserves mana: observed 832.9993 eq expected 832.9993 @ delayed_recast
+PASS Delayed rejection does not extend cooldown: observed 14 eq expected 14 @ delayed_recast
+PASS Delayed rejection does not refresh shield: observed 5 eq expected 5 @ delayed_recast

@@ -1,0 +1,413 @@
+Investigate this untrusted gameplay report. Request relevant source using the host read/search requests array; locate likely causes yourself. Do not use native shell tools. When sufficiently informed, return requests=[] and a reusable action scenario with observable assertions. Include normal/control observations. Do not propose a repair, assume a failure or claim success before host execution. Set needsReview=true if expected behavior is ambiguous.
+REPORT:
+Investigate whether Mel’s Rebuttal barrier handles damage correctly when a hit exceeds its remaining strength.
+
+The barrier should absorb damage up to its remaining amount. Any excess should reduce Mel’s health according to the existing damage and resistance rules. Neither damage nor absorption should happen twice, and the barrier should never become negative.
+
+Create tests for hits below, exactly equal to, and above the remaining barrier amount. Include a second hit after the barrier is depleted. Use actual gameplay execution, report what you observe, and repair the code only if you reproduce incorrect behavior.
+PROJECT CONTEXT:
+Unity 6000.6.9f1 / StandaloneWindows64 / scene Assets/Scenes/SampleScene.unity
+The runtime boot creates DexArena and its units/map; these objects need Play to inspect. No items, AI, waves or practice regeneration are enabled in deterministic scenarios. All operations exercise the real arena, not the old Combat.ResolveCast imitation.
+Scene root: Main Camera; components: Transform,Camera,AudioListener,UniversalAdditionalCameraData
+Scene root: Global Light 2D; components: Transform,Light2D
+Gameplay C# files:
+Assets/Dex/Runtime/ArenaPresentation.cs
+Assets/Dex/Runtime/ChampionKit.cs
+Assets/Dex/Runtime/Combat.cs
+Assets/Dex/Runtime/CombatRules.cs
+Assets/Dex/Runtime/DemoCases.cs
+Assets/Dex/Runtime/DexArena.cs
+Assets/Dex/Runtime/InteractionReplay.cs
+Assets/Dex/Runtime/MelArena.cs
+Assets/Dex/Runtime/MobaArt.cs
+Assets/Dex/Runtime/MobaHud.cs
+Assets/Welcome/Welcome2DScript.cs
+Existing protected regressions: Verification.Evaluate() (224 assertions), temporary-state lifetime invariants (32 checks), and DexArena.RunSmokeChecks() (38 actual arena checks). The host runs these after repairs. Their implementation is not editable or copied into this workspace. Existing saved declarative regressions are also run.
+Recent Editor Console (may include unrelated packages):
+No current entries.
+Packages:
+{
+  "dependencies": {
+    "com.unity.2d.animation": "16.0.1",
+    "com.unity.2d.aseprite": "6.0.0",
+    "com.unity.2d.psdimporter": "15.0.1",
+    "com.unity.2d.sprite": "1.0.0",
+    "com.unity.2d.spriteshape": "16.0.0",
+    "com.unity.2d.tilemap": "1.0.0",
+    "com.unity.2d.tilemap.extras": "9.0.1",
+    "com.unity.2d.tooling": "4.0.1",
+    "com.unity.ai.assistant": "2.21.0-pre.2",
+    "com.unity.ai.inference": "2.6.1",
+    "com.unity.collab-proxy": "2.14.0",
+    "com.unity.ide.rider": "3.1.0",
+    "com.unity.ide.visualstudio": "2.0.26",
+    "com.unity.inputsystem": "1.20.1",
+    "com.unity.learn.iet-framework": "6.0.7",
+    "com.unity.render-pipelines.universal": "17.6.0",
+    "com.unity.test-framework": "1.8.0",
+    "com.unity.timeline": "6.6.0",
+    "com.unity.ugui": "2.6.0",
+    "com.unity.visualscripting": "1.9.13",
+    "com.unity.modules.accessibility": "1.0.0",
+    "com.unity.modules.adaptiveperformance": "1.0.0",
+    "com.unity.modules.ai": "1.0.0",
+    "com.unity.modules.androidjni": "1.0.0",
+    "com.unity.modules.animation": "1.0.0",
+    "com.unity.modules.assetbundle": "1.0.0",
+    "com.unity.modules.audio": "1.0.0",
+    "com.unity.modules.cloth": "1.0.0",
+    "com.unity.modules.director": "1.0.0",
+    "com.unity.modules.imageconversion": "1.0.0",
+    "com.unity.modules.imgui": "1.0.0",
+    "com.unity.modules.jsonserialize": "1.0.0",
+    "com.unity.modules.particlesystem": "1.0.0",
+    "com.unity.modules.physics": "1.0.0",
+    "com.unity.modules.physics2d": "1.0.0",
+    "com.unity.modules.physicscore2d": "1.0.0",
+    "com.unity.modules.screencapture": "1.0.0",
+    "com.unity.modules.terrain": "1.0.0",
+    "com.unity.modules.terrainphysics": "1.0.0",
+    "com.unity.modules.tetgen": "1.0.0",
+    "com.unity.modules.tilemap": "1.0.0",
+    "com.unity.modules.timelinefoundation": "1.0.0",
+    "com.unity.modules.ui": "1.0.0",
+    "com.unity.modules.uielements": "1.0.0",
+    "com.unity.modules.umbra": "1.0.0",
+    "com.unity.modules.unityanalytics": "1.0.0",
+    "com.unity.modules.unitywebrequest": "1.0.0",
+    "com.unity.modules.unitywebrequestassetbundle": "1.0.0",
+    "com.unity.modules.unitywebrequestaudio": "1.0.0",
+    "com.unity.modules.unitywebrequesttexture": "1.0.0",
+    "com.unity.modules.unitywebrequestwww": "1.0.0",
+    "com.unity.modules.vectorgraphics": "1.0.0",
+    "com.unity.modules.vehicles": "1.0.0",
+    "com.unity.modules.video": "1.0.0",
+    "com.unity.modules.wind": "1.0.0",
+    "com.unity.modules.xr": "1.0.0",
+    "com.unity.pipeline": "1.0.0"
+  }
+}
+
+
+ACTUAL INSPECTION RESULTS:
+
+TOOL search Assets/Dex/Runtime query=barrier
+Assets/Dex/Runtime/ArenaPresentation.cs:36:                 u.aura=Art("Control / barrier aura",MobaArt.Ring,u.p,Vector2.one*1.95f,Gold,98);u.aura.enabled=false;
+Assets/Dex/Runtime/ArenaPresentation.cs:44:                 u.aura.enabled=u.f.novaUntil>sim.time||u.f.barrier>0||u.f.Shielded(sim.time)||u.f.ActiveControl(sim.time);
+Assets/Dex/Runtime/ChampionKit.cs:15:             if(c=="Mel")return new[]{"Six luminous missiles burst around your aim point. A champion hit refunds a little cooldown.","An expanding nova destroys hostile missiles and nearby enemy shields. Grants a barrier and speed, then retaliates at missile owners.","An aimed orb roots enemies at its centre and leaves a slowing, damaging solar field. Root duration grows with travel.","Detonate your active Overwhelm marks across the arena. Damage scales with their stacks and consumes them."}[slot];
+Assets/Dex/Runtime/Combat.cs:11:         public float mana=900,barrier,barrierUntil,novaUntil,speedUntil,slowUntil,overwhelmUntil;
+Assets/Dex/Runtime/Combat.cs:44:                 if(f.barrierUntil<=time)f.barrier=0;
+Assets/Dex/Runtime/Combat.cs:59:             if(target.barrierUntil>time&&target.barrier>0){float absorbed=Math.Min(target.barrier,dealt);target.barrier-=absorbed;dealt-=absorbed;}
+Assets/Dex/Runtime/Combat.cs:142:                 if(slot==1){source.novaUntil=time+.75f;source.barrier=180+.7f*p;source.barrierUntil=time+2;source.speedUntil=time+2;}
+Assets/Dex/Runtime/DexArena.cs:133:             if(u.f.barrierUntil<=sim.time)u.f.barrier=0;if(u.f.overwhelmUntil<=sim.time)u.f.overwhelm=0;
+Assets/Dex/Runtime/MelArena.cs:24:                 {ally.f.barrier=180+.7f*f.ap;ally.f.barrierUntil=sim.time+2;ally.f.speedUntil=sim.time+2;}
+Assets/Dex/Runtime/MelArena.cs:56:                     foreach(var victim in units)if(victim.red!=mel.red&&victim.f.hp>0&&Vector2.Distance(victim.p,mel.p)<NovaRadius(mel.f)&&(victim.f.shield>0||victim.f.barrier>0))
+Assets/Dex/Runtime/MelArena.cs:57:                     {victim.f.shield=0;victim.f.barrier=0;Effect(MobaArt.Ring,victim.p,Gold,.3f,1.5f);sim.Log("Rebuttal breaks an enemy shield");}
+Assets/Dex/Runtime/MobaHud.cs:34:                 if(u.f.Shielded(sim.time)||u.f.barrier>0)Text(p.x-90,p.y+16,180,23,"BARRIER  "+(u.f.shield+u.f.barrier).ToString("0"),center,Gold);
+Matches returned: 12
+TOOL search Assets/Dex/Runtime query=void Hit
+Assets/Dex/Runtime/DexArena.cs:233:         void Hit(Unit source,Unit target,float amount,bool physical){float old=target.f.hp;sim.Damage(source.f,target.f,amount,physical);TrackHit(source,target,old-target.f.hp);}
+Matches returned: 1
+TOOL search Assets/Dex/Runtime query=Rebuttal
+Assets/Dex/Runtime/ChampionKit.cs:9:             switch(c){case "Ahri":return new[]{"Orb of Deception","Fox-Fire","Charm","Spirit Rush"};case "Morgana":return new[]{"Dark Binding","Tormented Shadow","Black Shield","Soul Shackles"};case "Mel":return new[]{"Radiant Volley","Rebuttal","Solar Snare","Golden Eclipse"};default:return new[]{"Mystic Shot","Essence Flux","Arcane Shift","Trueshot Barrage"};}
+Assets/Dex/Runtime/Combat.cs:75:             int n;defender.retaliations.TryGetValue(owner,out n);defender.retaliations[owner]=Math.Min(7,n+1);Log("Rebuttal destroys "+owner.champion+" missile");return true;
+Assets/Dex/Runtime/DemoCases.cs:13:             new DemoCase("mel-nova","Rebuttal / hostile missile","Mel's Rebuttal nova lets Morgana's projectile through. Repair missile destruction without blocking missiles after the nova expires.","Mel","Morgana","Active nova destroys hostile missiles inside its radius; expired nova does not."),
+Assets/Dex/Runtime/InteractionReplay.cs:32:                     bool destroyed=sim.events.Exists(e=>e.Contains("Rebuttal destroys"));bool control=player.f.ActiveControl(sim.time);bool retaliated=enemy.f.hp<replayOwnerHp;
+Assets/Dex/Runtime/MelArena.cs:25:                 Effect(MobaArt.Ring,u.p,Gold,.75f,4.8f);sim.Log("Rebuttal nova active: missile destruction, not reflection");
+Assets/Dex/Runtime/MelArena.cs:57:                     {victim.f.shield=0;victim.f.barrier=0;Effect(MobaArt.Ring,victim.p,Gold,.3f,1.5f);sim.Log("Rebuttal breaks an enemy shield");}
+Assets/Dex/Runtime/MelArena.cs:59:                 {var victim=units.Find(v=>v.f==to&&v.f.hp>0);if(victim!=null){Shoot(mel,-3,victim.p,amount,false,false,victim);sim.Log("Rebuttal retaliates against "+to.champion);}});
+Assets/Dex/Runtime/MobaHud.cs:111:             Text(185,642,1210,48,"Current Mel kit: projectile-destroying Rebuttal nova with retaliation. Official portrait / ability art: Riot Games. Original chamber art. All balance and geometry are demo tuning.",tiny,Muted);
+Matches returned: 8
+
+TOOL read Assets/Dex/Runtime/Combat.cs query=
+1: using System;
+2: using System.Collections.Generic;
+3: 
+4: namespace Dex
+5: {
+6:     [Serializable] public class Fighter
+7:     {
+8:         public string champion, build;
+9:         public float hp = 1800, maxHp = 1800, ap, ad = 110, armor = 60, mr = 40, haste;
+10:         public float x, controlUntil, shield, shieldUntil, markUntil, poolUntil, tetherUntil;
+11:         public float mana=900,barrier,barrierUntil,novaUntil,speedUntil,slowUntil,overwhelmUntil;
+12:         public int searing,overwhelm;public Fighter overwhelmOwner;
+13:         public readonly Dictionary<Fighter,int> retaliations=new Dictionary<Fighter,int>();
+14:         public string control = "";
+15:         public int stacks, rushCharges = 3;
+16:         public float[] ready = new float[4];
+17:         public Fighter(string name, bool equipped, float position)
+18:         {
+19:             champion = name; x = position;
+20:             build = equipped ? (name == "Ezreal" ? "Trinity Force / Muramana" : name == "Ahri" ? "Malignance / Rabadon's Deathcap" : name=="Mel"?"Luden's Companion / Shadowflame":"Liandry's Torment / Zhonya's Hourglass") : "No items";
+21:             // Demonstration aggregate stats; item procs and exact live balance are not modeled.
+22:             if(equipped) { ap = name == "Ezreal" ? 0 : 230; ad += name == "Ezreal" ? 100 : 0; haste = 30; }
+23:         }
+24:         public bool ActiveControl(float t) { return hp > 0 && controlUntil > t; }
+25:         public bool Shielded(float t) { return shield > 0 && shieldUntil > t; }
+26:         public bool MarkedBy(Fighter owner,float t){return overwhelm>0&&overwhelmUntil>t&&overwhelmOwner==owner;}
+27:     }
+28:     public class Combat
+29:     {
+30:         public Fighter a, b;
+31:         public float time;
+32:         public readonly List<string> events = new List<string>();
+33:         public Combat(string left = "Morgana", string right = "Ezreal", bool items = true)
+34:         { a = new Fighter(left, items, 0.28f); b = new Fighter(right, items, 0.7f); }
+35:         public void Log(string message) { events.Insert(0, time.ToString("0.00") + "s  " + message); if(events.Count > 30) events.RemoveAt(30); }
+36:         public void Tick(float dt)
+37:         {
+38:             time += dt;
+39:             foreach(var f in new[]{a,b})
+40:             {
+41:                 var enemy = f == a ? b : a;
+42:                 if(f.controlUntil <= time) f.control = "";
+43:                 if(f.shieldUntil <= time) f.shield = 0;
+44:                 if(f.barrierUntil<=time)f.barrier=0;
+45:                 if(f.overwhelmUntil<=time)f.overwhelm=0;
+46:                 if(f.hp <= 0) continue;
+47:                 if(f.control == "Charm") f.x = Approach(f.x, enemy.x, dt * 0.025f);
+48:                 if(f.poolUntil > time) Damage(enemy, f, (35 + enemy.ap * 0.1f) * dt, false);
+49:                 if(f.tetherUntil > 0 && time >= f.tetherUntil)
+50:                 { f.tetherUntil = 0; if(Math.Abs(f.x - enemy.x) < 0.55f) { Damage(enemy,f,200+enemy.ap*0.7f,false); CC(f,"Stun",1.5f); Log("Soul Shackles detonates"); } else Log("Soul Shackles tether broken"); }
+51:             }
+52:             ResolveRetaliations(a,(from,to,amount)=>Damage(from,to,amount,false));ResolveRetaliations(b,(from,to,amount)=>Damage(from,to,amount,false));
+53:         }
+54:         static float Approach(float v,float target,float step) { return v < target ? Math.Min(v+step,target) : Math.Max(v-step,target); }
+55:         public void Damage(Fighter source, Fighter target, float amount, bool physical,bool applyMark=true)
+56:         {
+57:             if(target.hp<=0||amount<=0)return;
+58:             float dealt = amount * 100f / (100f + (physical ? target.armor : target.mr));
+59:             if(target.barrierUntil>time&&target.barrier>0){float absorbed=Math.Min(target.barrier,dealt);target.barrier-=absorbed;dealt-=absorbed;}
+60:             if(!physical && target.Shielded(time)) { float absorbed = Math.Min(target.shield,dealt); target.shield -= absorbed; dealt -= absorbed; }
+61:             target.hp = Math.Max(0,target.hp-dealt);
+62:             if(source.champion == "Morgana"&&source.hp>0) source.hp = Math.Min(source.maxHp,source.hp+dealt*0.18f);
+63:             if(source.champion == "Ezreal") source.stacks = Math.Min(5,source.stacks+1);
+64:             if(source.champion=="Mel"&&applyMark&&dealt>0&&target.champion!="Turret")
+65:             {
+66:                 if(!target.MarkedBy(source,time))target.overwhelm=0;
+67:                 if(target.overwhelm<int.MaxValue)target.overwhelm++;
+68:                 target.overwhelmOwner=source;target.overwhelmUntil=time+5;
+69:                 if(target.hp>0&&target.hp<40+.1f*source.ap+target.overwhelm*6){target.hp=0;target.overwhelm=0;Log("Overwhelm executes "+target.champion);}
+70:             }
+71:         }
+72:         public bool InterceptProjectile(Fighter defender,Fighter owner,bool insideNova)
+73:         {
+74:             if(defender.champion!="Mel"||!CombatRules.DestroysProjectile(defender.novaUntil>time,defender!=owner,insideNova))return false;
+75:             int n;defender.retaliations.TryGetValue(owner,out n);defender.retaliations[owner]=Math.Min(7,n+1);Log("Rebuttal destroys "+owner.champion+" missile");return true;
+76:         }
+77:         public bool Projectile(Fighter source,Fighter target,float damage,bool physical,string control="",float duration=0)
+78:         {if(InterceptProjectile(target,source,true))return false;Damage(source,target,damage,physical);if(control!=""&&target.hp>0)CC(target,control,duration);return true;}
+79:         public void ResolveRetaliations(Fighter defender,Action<Fighter,Fighter,float> hit)
+80:         {
+81:             if(defender.retaliations.Count==0||time<defender.novaUntil)return;
+82:             if(defender.hp>0)foreach(var pair in defender.retaliations)if(pair.Key.hp>0)hit(defender,pair.Key,45+.1f*defender.ap+(pair.Value-1)*(15+.05f*defender.ap));
+83:             defender.retaliations.Clear();
+84:         }
+85:         public void Attack(Fighter source,Fighter target)
+86:         {Damage(source,target,source.ad,true);if(source.champion=="Mel"){int bolts=source.searing;source.searing=0;for(int i=0;i<bolts;i++)Damage(source,target,20+.04f*source.ap,false);}}
+87:         public void MelUltimate(Fighter source,Fighter target)
+88:         {if(!target.MarkedBy(source,time))return;int count=target.overwhelm;target.overwhelm=0;Damage(source,target,150+.5f*source.ap+count*(8+.02f*source.ap),false,false);Log("Golden Eclipse detonates "+count+" stacks");}
+89:         public void CC(Fighter target,string kind,float seconds)
+90:         { if(CombatRules.BlocksControl(target.Shielded(time),false)) { Log("Black Shield resists " + kind); return; } target.control = kind; target.controlUntil = time+seconds; Log(target.champion+" receives "+kind); }
+91:         public bool Mobility(Fighter f)
+92:         { bool active=f.ActiveControl(time); return CombatRules.CanMove(active&&f.control=="Stun",active&&f.control=="Root",active&&f.control=="Charm",active&&f.control=="Ground"); }
+93:         public bool Cast(Fighter source,Fighter target,int slot)
+94:         {
+95:             if(!BeginCast(source,target,slot)) return false;
+96:             ResolveCast(source,target,slot);
+97:             return true;
+98:         }
+99:         public bool BeginCast(Fighter source,Fighter target,int slot)
+100:         {
+101:             if(slot<0 || slot>3 || source.hp<=0 || time<source.ready[slot]||source.mana<ChampionKit.Mana(source.champion,slot)) return false;
+102:             if(source.champion=="Mel"&&slot==3&&!target.MarkedBy(source,time)){Log("Golden Eclipse needs an active Overwhelm mark");return false;}
+103:             if(source.ActiveControl(time) && (source.control=="Stun" || source.control=="Charm")) { Log("Cast blocked by "+source.control); return false; }
+104:             bool move=(source.champion=="Ezreal"&&slot==2)||(source.champion=="Ahri"&&slot==3);
+105:             if(move&&!Mobility(source)) { Log("Mobility blocked by "+source.control); return false; }
+106:             source.mana-=ChampionKit.Mana(source.champion,slot);
+107:             source.ready[slot]=time+ChampionKit.Cooldown(source.champion,slot)/(1+source.haste/100);
+108:             if(source.champion=="Ahri"&&slot==3&&source.rushCharges<=0) source.rushCharges=3;
+109:             if(source.champion=="Mel")source.searing=Math.Min(9,source.searing+3);
+110:             Log(source.champion+" casts "+Names(source.champion)[slot]);
+111:             return true;
+112:         }
+113:         public void ResolveCast(Fighter source,Fighter target,int slot)
+114:         {
+115:             float p=source.ap;
+116:             if(source.champion=="Morgana")
+117:             {
+118:                 if(slot==0) Projectile(source,target,160+.9f*p,false,"Root",2);
+119:                 if(slot==1) target.poolUntil=time+5;
+120:                 if(slot==2) { source.shield=210+0.7f*p; source.shieldUntil=time+5; }
+121:                 if(slot==3) { Damage(source,target,200+0.7f*p,false); target.tetherUntil=time+3; }
+122:             }
+123:             if(source.champion=="Ahri")
+124:             {
+125:                 if(slot==0) { Damage(source,target,100+0.5f*p,false); target.hp=Math.Max(0,target.hp-100-0.5f*p); }
+126:                 if(slot==1) Damage(source,target,144+0.72f*p,false);
+127:                 if(slot==2) Projectile(source,target,160+.85f*p,false,"Charm",1.5f);
+128:                 if(slot==3) { source.x=Approach(source.x,target.x,0.14f); Damage(source,target,125+0.35f*p,false); if(--source.rushCharges>0) source.ready[slot]=time+1; }
+129:                 if(target.hp<=0) source.hp=Math.Min(source.maxHp,source.hp+120+0.3f*p);
+130:             }
+131:             if(source.champion=="Ezreal")
+132:             {
+133:                 if(slot==0&&Projectile(source,target,80+1.3f*source.ad+.15f*p,true))for(int i=0;i<4;i++)source.ready[i]=Math.Max(time,source.ready[i]-1.5f);
+134:                 if(slot==1) target.markUntil=time+4;
+135:                 if(slot==2) { source.x=Math.Min(0.94f,source.x+0.16f); Damage(source,target,180+0.5f*source.ad+0.75f*p,false); }
+136:                 if(slot==3) Damage(source,target,500+source.ad+0.9f*p,false);
+137:                 if(slot!=1 && target.markUntil>time) { target.markUntil=0; Damage(source,target,180+0.9f*p,false); Log("Essence Flux detonates"); }
+138:             }
+139:             if(source.champion=="Mel")
+140:             {
+141:                 if(slot==0){for(int i=0;i<6;i++)Projectile(source,target,22+.16f*p,false);source.ready[0]=Math.Max(time,source.ready[0]-.75f);}
+142:                 if(slot==1){source.novaUntil=time+.75f;source.barrier=180+.7f*p;source.barrierUntil=time+2;source.speedUntil=time+2;}
+143:                 if(slot==2){if(Projectile(source,target,100+.4f*p,false,"Root",1.5f))target.slowUntil=time+3;}
+144:                 if(slot==3)MelUltimate(source,target);
+145:             }
+146:         }
+147:         public static string[] Names(string c)
+148:         {return ChampionKit.Names(c);}
+149:     }
+150: }
+TOOL read Assets/Dex/Runtime/MelArena.cs query=
+1: using UnityEngine;
+2: 
+3: namespace Dex
+4: {
+5:     public partial class DexArena
+6:     {
+7:         void CastMel(Unit u,int slot,Vector2 target)
+8:         {
+9:             var f=u.f;
+10:             if(slot==0)
+11:             {
+12:                 var volley=new Volley();Vector2 centre=u.p+Vector2.ClampMagnitude(target-u.p,8);
+13:                 for(int n=0;n<6;n++)
+14:                 {
+15:                     Vector2 point=centre+new Vector2(Mathf.Cos(n*Mathf.PI/3),Mathf.Sin(n*Mathf.PI/3))*.4f;
+16:                     Shoot(u,0,point,22+.16f*f.ap);var shot=shots[shots.Count-1];shot.burst=true;shot.destination=point;shot.range=Vector2.Distance(u.p,point);shot.volley=volley;
+17:                 }
+18:                 Effect(MobaArt.Ring,centre,new Color(1,.8f,.3f,.5f),.55f,2.3f);
+19:             }
+20:             if(slot==1)
+21:             {
+22:                 f.novaUntil=sim.time+.75f;
+23:                 foreach(var ally in units)if(ally.red==u.red&&ally.f.hp>0&&Vector2.Distance(ally.p,u.p)<2.4f)
+24:                 {ally.f.barrier=180+.7f*f.ap;ally.f.barrierUntil=sim.time+2;ally.f.speedUntil=sim.time+2;}
+25:                 Effect(MobaArt.Ring,u.p,Gold,.75f,4.8f);sim.Log("Rebuttal nova active: missile destruction, not reflection");
+26:             }
+27:             if(slot==2)Shoot(u,2,target,100+.4f*f.ap);
+28:             if(slot==3)
+29:             {
+30:                 foreach(var victim in units)if(victim.red!=u.red&&victim.f.hp>0&&victim.f.MarkedBy(f,sim.time))
+31:                 {float old=victim.f.hp;sim.MelUltimate(f,victim.f);TrackHit(u,victim,old-victim.f.hp);Effect(MobaArt.Ring,victim.p,Gold,.65f,3);Effect(MobaArt.Disc,victim.p,new Color(1,.85f,.45f,.6f),.25f,1.7f);}
+32:             }
+33:         }
+34:         float NovaRadius(Fighter f){return Mathf.Lerp(.7f,2.4f,Mathf.Clamp01(1-(f.novaUntil-sim.time)/.75f));}
+35:         void BurstVolley(Shot shot)
+36:         {
+37:             Effect(MobaArt.Ring,shot.destination,Gold,.35f,2.2f);
+38:             foreach(var victim in units)if(victim.red!=shot.owner.red&&victim.f.hp>0&&Vector2.Distance(victim.p,shot.destination)<1.15f)
+39:             {
+40:                 Hit(shot.owner,victim,shot.damage,false);
+41:                 if(!victim.minion&&!victim.tower&&!shot.volley.refunded){shot.owner.f.ready[0]=Mathf.Max(sim.time,shot.owner.f.ready[0]-.75f);shot.volley.refunded=true;sim.Log("Radiant Volley champion hit: cooldown refund");}
+42:             }
+43:         }
+44:         void SolarBurst(Unit owner,Vector2 point,float travel)
+45:         {
+46:             foreach(var victim in units)if(victim.red!=owner.red&&victim.f.hp>0&&!victim.tower&&Vector2.Distance(victim.p,point)<.75f)
+47:                 sim.CC(victim.f,"Root",Mathf.Lerp(1,2.2f,Mathf.Clamp01(travel/8)));
+48:             zones.Add(new Zone{owner=owner,p=point,solar=true,until=sim.time+2.5f,art=Art("Solar field",MobaArt.Disc,point,Vector2.one*3,new Color(.9f,.65f,.12f,.23f),-45)});
+49:             Effect(MobaArt.Ring,point,Gold,.55f,3);
+50:         }
+51:         void ResolveNovaEffects()
+52:         {
+53:             foreach(var mel in units)if(mel.f.champion=="Mel")
+54:             {
+55:                 if(mel.f.hp>0&&mel.f.novaUntil>sim.time)
+56:                     foreach(var victim in units)if(victim.red!=mel.red&&victim.f.hp>0&&Vector2.Distance(victim.p,mel.p)<NovaRadius(mel.f)&&(victim.f.shield>0||victim.f.barrier>0))
+57:                     {victim.f.shield=0;victim.f.barrier=0;Effect(MobaArt.Ring,victim.p,Gold,.3f,1.5f);sim.Log("Rebuttal breaks an enemy shield");}
+58:                 sim.ResolveRetaliations(mel.f,(from,to,amount)=>
+59:                 {var victim=units.Find(v=>v.f==to&&v.f.hp>0);if(victim!=null){Shoot(mel,-3,victim.p,amount,false,false,victim);sim.Log("Rebuttal retaliates against "+to.champion);}});
+60:             }
+61:         }
+62:     }
+63: }
+TOOL read Assets/Dex/Runtime/DexArena.cs query=
+190:         void Shoot(Unit owner,int slot,Vector2 target,float damage,bool physical=false,bool orb=false,Unit homing=null)
+191:         {
+192:             Vector2 dir=(target-owner.p).normalized;if(dir.sqrMagnitude<.01f)dir=Vector2.right;
+193:             Color color=owner.f.champion=="Morgana"?new Color(.72f,.32f,1):owner.f.champion=="Ahri"?slot==2?Pink:Cyan:owner.f.champion=="Mel"?new Color(1,.82f,.38f):Gold;
+194:             var m=new Shot{owner=owner,slot=slot,p=owner.p,dir=dir,damage=damage,physical=physical,range=slot==3?25:8,width=slot==3?.8f:.2f,orb=orb,homing=homing};
+195:             m.art=Art("Skillshot",slot==2&&owner.f.champion=="Ahri"?MobaArt.Heart:MobaArt.Bolt,m.p,new Vector2(slot==3?2:.7f,slot==3?.8f:.35f),color,300);shots.Add(m);
+196:         }
+197:         static float SegmentDistance(Vector2 p,Vector2 a,Vector2 b){Vector2 d=b-a;return Vector2.Distance(p,a+d*Mathf.Clamp01(Vector2.Dot(p-a,d)/Mathf.Max(.0001f,d.sqrMagnitude)));}
+198:         void StepShots(float dt)
+199:         {
+200:             for(int i=shots.Count-1;i>=0;i--)
+201:             {
+202:                 var m=shots[i];if(m.homing!=null&&m.homing.f.hp<=0){Destroy(m.art.gameObject);shots.RemoveAt(i);continue;}Vector2 prev=m.p;if(m.back)m.dir=(m.owner.p-m.p).normalized;else if(m.homing!=null)m.dir=(m.homing.p-m.p).normalized;m.p+=m.dir*m.speed*dt;m.range-=m.speed*dt;bool remove=false;
+203:                 foreach(var defender in units)if(defender.red!=m.owner.red&&defender.f.hp>0&&defender.f.champion=="Mel"&&defender.f.novaUntil>sim.time)
+204:                 {float radius=NovaRadius(defender.f);if(SegmentDistance(defender.p,prev,m.p)<radius&&sim.InterceptProjectile(defender.f,m.owner.f,true)){Effect(MobaArt.Ring,m.p,Gold,.35f,.7f);remove=true;break;}}
+205:                 if(remove){Destroy(m.art.gameObject);shots.RemoveAt(i);continue;}
+206:                 if(m.burst)
+207:                 {
+208:                     if(m.range<=0||SegmentDistance(m.destination,prev,m.p)<.12f){BurstVolley(m);Destroy(m.art.gameObject);shots.RemoveAt(i);}else{m.art.transform.position=m.p;m.art.transform.rotation=Quaternion.Euler(0,0,Mathf.Atan2(m.dir.y,m.dir.x)*Mathf.Rad2Deg);}continue;
+209:                 }
+210:                 collisionOrder.Clear();collisionOrder.AddRange(units);
+211:                 collisionOrder.Sort((a,b)=>Vector2.Dot(a.p-prev,m.dir).CompareTo(Vector2.Dot(b.p-prev,m.dir)));
+212:                 foreach(var u in collisionOrder)
+213:                 {
+214:                     if(u.red==m.owner.red||u.f.hp<=0||m.hit.Contains(u)||m.homing!=null&&u!=m.homing||SegmentDistance(u.p,prev,m.p)>m.width+u.radius)continue;
+215:                     if(m.owner.f.champion=="Ezreal"&&m.slot==1&&u.minion)continue;m.hit.Add(u);
+216:                     if(m.owner.f.champion=="Ezreal"&&m.slot==1)u.f.markUntil=sim.time+4;
+217:                     else
+218:                     {
+219:                         if(m.back){float old=u.f.hp;u.f.hp=Mathf.Max(0,u.f.hp-m.damage);TrackHit(m.owner,u,old-u.f.hp);}else Hit(m.owner,u,m.damage,m.physical);
+220:                         if(m.owner.f.champion=="Morgana"&&m.slot==0)sim.CC(u.f,"Root",2);
+221:                         if(m.owner.f.champion=="Ahri"&&m.slot==2)sim.CC(u.f,"Charm",1.5f);
+222:                         if(m.owner.f.champion=="Mel"&&m.slot==2){SolarBurst(m.owner,u.p,8-m.range);m.solarBloomed=true;}
+223:                         if(m.owner.f.champion=="Ezreal"&&m.slot==0)for(int k=0;k<4;k++)m.owner.f.ready[k]=Mathf.Max(sim.time,m.owner.f.ready[k]-1.5f);
+224:                         if(m.owner.f.champion=="Ezreal"&&u.f.markUntil>sim.time&&m.slot!=1){u.f.markUntil=0;Hit(m.owner,u,180+.9f*m.owner.f.ap,false);}
+225:                     }
+226:                     Effect(MobaArt.Ring,u.p,m.art.color,.3f,1);if(!m.orb&&m.slot!=3){remove=true;break;}
+227:                 }
+228:                 if(m.orb&&!m.back&&m.range<=0){m.back=true;m.hit.Clear();m.range=20;}else if(m.range<=0||m.back&&Vector2.Distance(m.p,m.owner.p)<.4f)remove=true;
+229:                 if(m.owner.f.champion=="Mel"&&m.slot==2&&m.range<=0&&!m.solarBloomed)SolarBurst(m.owner,m.p,8);
+230:                 if(remove){Destroy(m.art.gameObject);shots.RemoveAt(i);}else {m.art.transform.position=m.p;m.art.transform.rotation=Quaternion.Euler(0,0,Mathf.Atan2(m.dir.y,m.dir.x)*Mathf.Rad2Deg);}
+231:             }
+232:         }
+233:         void Hit(Unit source,Unit target,float amount,bool physical){float old=target.f.hp;sim.Damage(source.f,target.f,amount,physical);TrackHit(source,target,old-target.f.hp);}
+234:         void TrackHit(Unit source,Unit target,float amount)
+235:         {
+236:             target.hitAt=sim.time;if(amount>3)pops.Add(new Pop{p=target.p,born=sim.time,text=Mathf.RoundToInt(amount).ToString(),color=source==player?Gold:Pink});
+237:             if(amount>3&&(source==player||target==player))PlayCue(target.f.hp<=0?3:2);
+238:             if(target.f.hp<=0&&target.respawn==0)
+239:             {
+240:                 target.respawn=sim.time+7;target.target=null;
+241:                 if(source==player){gold+=target.minion?21:target.tower?250:300;if(target.minion)cs++;else if(!target.tower){kills++;Say("CHAMPION TAKEDOWN  +300 gold");}}
+242:                 if(target==player){deaths++;Say("You have been slain. Respawning in 7 seconds.");}Effect(MobaArt.Ring,target.p,target.red?Pink:Cyan,1,3);
+243:                 if(source.f.champion=="Ahri"&&!target.minion&&!target.tower)source.f.hp=Mathf.Min(source.f.maxHp,source.f.hp+120+.3f*source.f.ap);
+244:             }
+245:         }
+246:         void StepZones(float dt)
+247:         {
+248:             for(int i=zones.Count-1;i>=0;i--)
+249:             {
+250:                 var z=zones[i];if(sim.time>z.until){Destroy(z.art.gameObject);zones.RemoveAt(i);continue;}
+251:                 z.art.transform.Rotate(0,0,dt*12);bool pulse=!z.solar||sim.time>=z.nextTick;
+252:                 foreach(var u in units)if(u.red!=z.owner.red&&u.f.hp>0&&Vector2.Distance(z.p,u.p)<1.5f)
+253:                 {if(pulse)Hit(z.owner,u,(z.solar?18+.05f*z.owner.f.ap:45+.14f*z.owner.f.ap)*(z.solar?.25f:dt),false);if(z.solar)u.f.slowUntil=sim.time+.2f;}
+254:                 if(z.solar&&pulse)z.nextTick=sim.time+.25f;
+255:             }
+256:             foreach(var u in units)if(u.f.tetherUntil>0&&sim.time>=u.f.tetherUntil){u.f.tetherUntil=0;Unit source=u.red?player:enemy;if(source.f.champion=="Morgana"&&source.f.hp>0&&Vector2.Distance(source.p,u.p)<6){Hit(source,u,200+.7f*source.f.ap,false);sim.CC(u.f,"Stun",1.5f);}}
+257:             ResolveNovaEffects();
+258:         }
+259:         void Effect(Sprite sprite,Vector2 p,Color color,float life,float size){fx.Add(new Fx{art=Art("VFX",sprite,p,Vector2.one*size,color,250),born=sim.time,life=life,size=size});}
+260:         void OnDestroy(){if(world!=null)Destroy(world.gameObject);ReleaseFeel();if(buttonTexture!=null)Destroy(buttonTexture);if(hoverTexture!=null)Destroy(hoverTexture);}
+261:     }
+262: }
+
+ACTUAL PRIOR PROBE FEEDBACK:
+Invalid scenario: A scenario needs 1..100 actions and 1..60 observable assertions.

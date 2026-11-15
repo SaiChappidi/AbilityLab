@@ -1,0 +1,11 @@
+Arena cast mana charge and rejection controls: 10/10
+PASS unaffordable cast preserves mana: observed 54 eq expected 54 @ unaffordable_q
+PASS unaffordable cast preserves readiness: observed 0 eq expected 0 @ unaffordable_q
+PASS unaffordable cast emits no projectile: observed 0 eq expected 0 @ unaffordable_q
+PASS successful E charges listed cost once: observed 830 eq expected 830 @ successful_e
+PASS successful E grants shield: observed 1 eq expected 1 @ successful_e
+PASS successful E starts listed cooldown: observed 14 eq expected 14 @ successful_e
+PASS normal mana regeneration continues: observed 832.9993 eq expected 833 @ before_recast
+PASS cooldown recast spends no mana: observed 832.9993 eq expected 832.9993 @ cooldown_recast
+PASS cooldown recast preserves deadline: observed 14 eq expected 14 @ cooldown_recast
+PASS cooldown recast does not refresh shield duration: observed 5 eq expected 5 @ cooldown_recast

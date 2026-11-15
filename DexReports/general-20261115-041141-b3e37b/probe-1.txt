@@ -1,0 +1,10 @@
+Actual arena cast charges listed mana once and cooldown rejection preserves resources: 8/9
+FAIL successful cast spends listed cost once: observed 760 eq expected 830 @ successful_cast
+PASS successful cast grants shield: observed 210 gt expected 0 @ successful_cast
+PASS successful cast starts listed cooldown: observed 14 eq expected 14 @ successful_cast
+PASS ordinary mana regeneration control: observed 762.9993 eq expected 763 @ before_recast
+PASS recast occurs during cooldown: observed 13.5 gt expected 0 @ before_recast
+PASS rejected recast preserves mana: observed 762.9993 eq expected 762.9993 @ cooldown_recast
+PASS rejected recast preserves cooldown deadline: observed 14 eq expected 14 @ cooldown_recast
+PASS rejected recast preserves shield lifetime: observed 5 eq expected 5 @ cooldown_recast
+PASS idle opponent mana control: observed 900 eq expected 900 @ cooldown_recast

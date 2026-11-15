@@ -1,0 +1,7 @@
+0.0s / Investigating
+0.2s / Investigating
+37.3s / Reproducing
+37.6s / Investigating
+64.1s / Investigating
+89.1s / Reproducing
+89.5s / No failure reproduced in tested cases

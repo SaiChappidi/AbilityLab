@@ -1,0 +1,24 @@
+Rebuttal barrier persists until expiration without damage
+Seed: 713 / Mel vs Morgana
+Expected: Mel's Rebuttal grants a barrier that remains unchanged through simulation ticks before its two-second expiration and becomes zero afterward. Health remains unchanged without incoming damage. Morgana's independently cast Black Shield persists until its five-second expiration.
+
+1. Cast enemy E toward (6, 2) → observe [black_shield_cast]
+2. Cast player W toward (-6, -2) → observe [rebuttal_cast]
+3. Advance 0.02s at dt=0.02 → observe [first_tick]
+4. Advance 0.98s at dt=0.02 → observe [after_nova]
+5. Advance 0.98s at dt=0.02 → observe [before_expiration]
+6. Advance 0.04s at dt=0.02 → observe [after_expiration]
+7. Advance 3.04s at dt=0.02 → observe [black_shield_expired]
+
+Assertions:
+Rebuttal grants barrier @ rebuttal_cast: player.barrier gt 0
+Barrier survives first tick unchanged @ first_tick: player.barrier eq 0 + rebuttal_cast.player.barrier
+Barrier persists after nova ends @ after_nova: player.barrier eq 0 + rebuttal_cast.player.barrier
+Barrier persists just before expiration @ before_expiration: player.barrier eq 0 + rebuttal_cast.player.barrier
+Pre-expiration checkpoint precedes deadline @ before_expiration: world.time lt 0 + rebuttal_cast.player.barrierUntil
+Barrier clears after expiration @ after_expiration: player.barrier eq 0
+Mel health unchanged without damage @ black_shield_expired: player.hp eq 0 + initial.player.hp
+Black Shield control granted @ black_shield_cast: enemy.shield gt 0
+Black Shield control persists beyond barrier duration @ after_expiration: enemy.shield eq 0 + black_shield_cast.enemy.shield
+Black Shield control expires @ black_shield_expired: enemy.shield eq 0
+Morgana health unchanged without damage @ black_shield_expired: enemy.hp eq 0 + initial.enemy.hp

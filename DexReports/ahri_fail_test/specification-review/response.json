@@ -1,0 +1,102 @@
+{
+  "clearExpectedBehavior": true,
+  "rationale": "The report explicitly requires one hit per enemy on each leg, independent of timestep. Original source sets orb damage to 100 + 0.5*AP: with AP 0 and MR 40, one outward hit deals 100*100/140 = 71.42857 health; one return hit directly removes 100 health. These preserve existing per-hit balance. Speed 11 and outward range 8 support the selected outward and return checkpoints at both timesteps. No post-cast state is manufactured. The trace reproduces excess damage, including timestep-dependent outward damage. Retained cumulative checks prevent a passing return delta or death from concealing earlier excess damage. Off-path checks provide controls. This witness covers the supplied stationary-target cases, not all enemies or all timesteps.",
+  "checks": [
+    {
+      "label": "Fine outward hits once",
+      "at": "fine_outward",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "fine_cast",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": -71.428571,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Fine return hits once",
+      "at": "fine_return",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "fine_outward",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": -100,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Fine completed cast deals exactly two hits",
+      "at": "fine_finished",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "fine_cast",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": -171.428571,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Coarse outward hits once",
+      "at": "coarse_outward",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "coarse_cast",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": -71.428571,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Coarse return hits once",
+      "at": "coarse_return",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "coarse_outward",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": -100,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Coarse completed cast deals exactly two hits",
+      "at": "coarse_finished",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "coarse_cast",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": -171.428571,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Fine off-path control remains unharmed",
+      "at": "fine_finished",
+      "unit": "offpath",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "fine_cast",
+      "compareUnit": "offpath",
+      "compareField": "hp",
+      "value": 0,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Coarse off-path control remains unharmed",
+      "at": "coarse_finished",
+      "unit": "offpath",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "coarse_cast",
+      "compareUnit": "offpath",
+      "compareField": "hp",
+      "value": 0,
+      "tolerance": 0.01
+    }
+  ]
+}

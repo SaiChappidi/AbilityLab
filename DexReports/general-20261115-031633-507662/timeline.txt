@@ -1,0 +1,8 @@
+0.0s / Investigating
+0.2s / Investigating
+46.5s / Reproducing
+47.6s / Investigating
+79.1s / Reproducing
+79.5s / Investigating
+108.9s / Reproducing
+109.3s / Unresolved

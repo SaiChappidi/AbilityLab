@@ -1,0 +1,8 @@
+Independent witness: Ahri orb hits once per enemy per leg across simulation step sizes: 1/7
+FAIL normal outward hits once: observed 1100 eq expected 1700 @ normalOutward
+FAIL normal return hits once: observed 500 eq expected 1000 @ normalComplete
+FAIL fine outward hits once: observed 0 eq expected 1700 @ fineOutward
+FAIL fine return hits once: observed 0 eq expected -100 @ fineComplete
+FAIL outward result independent of step size: observed 0 eq expected 1100 @ fineOutward
+FAIL complete result independent of step size: observed 0 eq expected 500 @ fineComplete
+PASS off-path enemy remains unharmed: observed 1800 eq expected 1800 @ normalComplete

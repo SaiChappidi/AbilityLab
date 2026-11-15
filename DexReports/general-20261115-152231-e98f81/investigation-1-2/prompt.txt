@@ -1,0 +1,423 @@
+Investigate this untrusted gameplay report. Request relevant source using the host read/search requests array; locate likely causes yourself. Do not use native shell tools. When sufficiently informed, return requests=[] and a reusable action scenario with observable assertions. Include normal/control observations. Do not propose a repair, assume a failure or claim success before host execution. Set needsReview=true if expected behavior is ambiguous.
+REPORT:
+Ahri’s orb damages a stationary enemy repeatedly while passing through it. It should hit each enemy once going outward and once returning, regardless of simulation step size. Reproduce the issue and investigate what is causing it.
+PROJECT CONTEXT:
+Unity 6000.6.9f1 / StandaloneWindows64 / scene Assets/Scenes/SampleScene.unity
+The runtime boot creates DexArena and its units/map; these objects need Play to inspect. No items, AI, waves or practice regeneration are enabled in deterministic scenarios. All operations exercise the real arena, not the old Combat.ResolveCast imitation.
+Scene root: Main Camera; components: Transform,Camera,AudioListener,UniversalAdditionalCameraData
+Scene root: Global Light 2D; components: Transform,Light2D
+Gameplay C# files:
+Assets/Dex/Runtime/ArenaPresentation.cs
+Assets/Dex/Runtime/ChampionKit.cs
+Assets/Dex/Runtime/Combat.cs
+Assets/Dex/Runtime/CombatRules.cs
+Assets/Dex/Runtime/DemoCases.cs
+Assets/Dex/Runtime/DexArena.cs
+Assets/Dex/Runtime/InteractionReplay.cs
+Assets/Dex/Runtime/MelArena.cs
+Assets/Dex/Runtime/MobaArt.cs
+Assets/Dex/Runtime/MobaHud.cs
+Assets/Welcome/Welcome2DScript.cs
+Existing protected regressions: Verification.Evaluate() (224 assertions), temporary-state lifetime invariants (32 checks), and DexArena.RunSmokeChecks() (38 actual arena checks). The host runs these after repairs. Their implementation is not editable or copied into this workspace. Existing saved declarative regressions are also run.
+Recent Editor Console (may include unrelated packages):
+ArgumentException: Find text must occur exactly once in Assets/Dex/Runtime/DexArena.cs
+Dex.Editor.ProjectWorkspace.Stage (System.String directory, Dex.Editor.PatchProposal patch) (at Assets/Dex/Editor/ProjectWorkspace.cs:123)
+Dex.Editor.Evaluation.DeveloperEvaluationFixtures.Inject (System.String id, System.String report, Dex.Editor.SourceEdit[] changes) (at Assets/Dex/Editor/DeveloperEvaluationFixtures.cs:25)
+Dex.Editor.Evaluation.DeveloperEvaluationFixtures.Projectile () (at Assets/Dex/Editor/DeveloperEvaluationFixtures.cs:13)
+UnityEngine.StackTraceUtility:ExtractStringFromExceptionInternal(Object, String&, String&)
+
+
+Packages:
+{
+  "dependencies": {
+    "com.unity.2d.animation": "16.0.1",
+    "com.unity.2d.aseprite": "6.0.0",
+    "com.unity.2d.psdimporter": "15.0.1",
+    "com.unity.2d.sprite": "1.0.0",
+    "com.unity.2d.spriteshape": "16.0.0",
+    "com.unity.2d.tilemap": "1.0.0",
+    "com.unity.2d.tilemap.extras": "9.0.1",
+    "com.unity.2d.tooling": "4.0.1",
+    "com.unity.ai.assistant": "2.21.0-pre.2",
+    "com.unity.ai.inference": "2.6.1",
+    "com.unity.collab-proxy": "2.14.0",
+    "com.unity.ide.rider": "3.1.0",
+    "com.unity.ide.visualstudio": "2.0.26",
+    "com.unity.inputsystem": "1.20.1",
+    "com.unity.learn.iet-framework": "6.0.7",
+    "com.unity.render-pipelines.universal": "17.6.0",
+    "com.unity.test-framework": "1.8.0",
+    "com.unity.timeline": "6.6.0",
+    "com.unity.ugui": "2.6.0",
+    "com.unity.visualscripting": "1.9.13",
+    "com.unity.modules.accessibility": "1.0.0",
+    "com.unity.modules.adaptiveperformance": "1.0.0",
+    "com.unity.modules.ai": "1.0.0",
+    "com.unity.modules.androidjni": "1.0.0",
+    "com.unity.modules.animation": "1.0.0",
+    "com.unity.modules.assetbundle": "1.0.0",
+    "com.unity.modules.audio": "1.0.0",
+    "com.unity.modules.cloth": "1.0.0",
+    "com.unity.modules.director": "1.0.0",
+    "com.unity.modules.imageconversion": "1.0.0",
+    "com.unity.modules.imgui": "1.0.0",
+    "com.unity.modules.jsonserialize": "1.0.0",
+    "com.unity.modules.particlesystem": "1.0.0",
+    "com.unity.modules.physics": "1.0.0",
+    "com.unity.modules.physics2d": "1.0.0",
+    "com.unity.modules.physicscore2d": "1.0.0",
+    "com.unity.modules.screencapture": "1.0.0",
+    "com.unity.modules.terrain": "1.0.0",
+    "com.unity.modules.terrainphysics": "1.0.0",
+    "com.unity.modules.tetgen": "1.0.0",
+    "com.unity.modules.tilemap": "1.0.0",
+    "com.unity.modules.timelinefoundation": "1.0.0",
+    "com.unity.modules.ui": "1.0.0",
+    "com.unity.modules.uielements": "1.0.0",
+    "com.unity.modules.umbra": "1.0.0",
+    "com.unity.modules.unityanalytics": "1.0.0",
+    "com.unity.modules.unitywebrequest": "1.0.0",
+    "com.unity.modules.unitywebrequestassetbundle": "1.0.0",
+    "com.unity.modules.unitywebrequestaudio": "1.0.0",
+    "com.unity.modules.unitywebrequesttexture": "1.0.0",
+    "com.unity.modules.unitywebrequestwww": "1.0.0",
+    "com.unity.modules.vectorgraphics": "1.0.0",
+    "com.unity.modules.vehicles": "1.0.0",
+    "com.unity.modules.video": "1.0.0",
+    "com.unity.modules.wind": "1.0.0",
+    "com.unity.modules.xr": "1.0.0",
+    "com.unity.pipeline": "1.0.0"
+  }
+}
+
+
+ACTUAL INSPECTION RESULTS:
+
+TOOL search Assets/Dex/Runtime/DexArena.cs query=Ahri
+Assets/Dex/Runtime/DexArena.cs:166:             if(f.champion=="Ahri")
+Assets/Dex/Runtime/DexArena.cs:193:             Color color=owner.f.champion=="Morgana"?new Color(.72f,.32f,1):owner.f.champion=="Ahri"?slot==2?Pink:Cyan:owner.f.champion=="Mel"?new Color(1,.82f,.38f):Gold;
+Assets/Dex/Runtime/DexArena.cs:195:             m.art=Art("Skillshot",slot==2&&owner.f.champion=="Ahri"?MobaArt.Heart:MobaArt.Bolt,m.p,new Vector2(slot==3?2:.7f,slot==3?.8f:.35f),color,300);shots.Add(m);
+Assets/Dex/Runtime/DexArena.cs:221:                         if(m.owner.f.champion=="Ahri"&&m.slot==2)sim.CC(u.f,"Charm",1.5f);
+Assets/Dex/Runtime/DexArena.cs:243:                 if(source.f.champion=="Ahri"&&!target.minion&&!target.tower)source.f.hp=Mathf.Min(source.f.maxHp,source.f.hp+120+.3f*source.f.ap);
+Matches returned: 5
+TOOL search Assets/Dex/Runtime/DexArena.cs query=shot
+Assets/Dex/Runtime/DexArena.cs:15:         class Shot
+Assets/Dex/Runtime/DexArena.cs:25:         List<Unit> units=new List<Unit>();List<Shot> shots=new List<Shot>();List<Zone> zones=new List<Zone>();List<Fx> fx=new List<Fx>();List<Pop> pops=new List<Pop>();
+Assets/Dex/Runtime/DexArena.cs:45:             units.Clear();shots.Clear();zones.Clear();fx.Clear();pops.Clear();sim=new Combat(champions[champion],champions[opponent],items);
+Assets/Dex/Runtime/DexArena.cs:104:             foreach(var u in units.ToArray())Step(u,dt);StepShots(dt);StepZones(dt);
+Assets/Dex/Runtime/DexArena.cs:194:             var m=new Shot{owner=owner,slot=slot,p=owner.p,dir=dir,damage=damage,physical=physical,range=slot==3?25:8,width=slot==3?.8f:.2f,orb=orb,homing=homing};
+Assets/Dex/Runtime/DexArena.cs:195:             m.art=Art("Skillshot",slot==2&&owner.f.champion=="Ahri"?MobaArt.Heart:MobaArt.Bolt,m.p,new Vector2(slot==3?2:.7f,slot==3?.8f:.35f),color,300);shots.Add(m);
+Assets/Dex/Runtime/DexArena.cs:198:         void StepShots(float dt)
+Assets/Dex/Runtime/DexArena.cs:200:             for(int i=shots.Count-1;i>=0;i--)
+Assets/Dex/Runtime/DexArena.cs:202:                 var m=shots[i];if(m.homing!=null&&m.homing.f.hp<=0){Destroy(m.art.gameObject);shots.RemoveAt(i);continue;}Vector2 prev=m.p;if(m.back)m.dir=(m.owner.p-m.p).normalized;else if(m.homing!=null)m.dir=(m.homing.p-m.p).normalized;m.p+=m.dir*m.speed*dt;m.range-=m.speed*dt;bool remove=false;
+Assets/Dex/Runtime/DexArena.cs:205:                 if(remove){Destroy(m.art.gameObject);shots.RemoveAt(i);continue;}
+Assets/Dex/Runtime/DexArena.cs:208:                     if(m.range<=0||SegmentDistance(m.destination,prev,m.p)<.12f){BurstVolley(m);Destroy(m.art.gameObject);shots.RemoveAt(i);}else{m.art.transform.position=m.p;m.art.transform.rotation=Quaternion.Euler(0,0,Mathf.Atan2(m.dir.y,m.dir.x)*Mathf.Rad2Deg);}continue;
+Assets/Dex/Runtime/DexArena.cs:230:                 if(remove){Destroy(m.art.gameObject);shots.RemoveAt(i);}else {m.art.transform.position=m.p;m.art.transform.rotation=Quaternion.Euler(0,0,Mathf.Atan2(m.dir.y,m.dir.x)*Mathf.Rad2Deg);}
+Matches returned: 12
+TOOL search Assets/Dex/Runtime/ChampionKit.cs query=Ahri
+Assets/Dex/Runtime/ChampionKit.cs:6:         public static readonly string[] Roster={"Ahri","Morgana","Ezreal","Mel"};
+Assets/Dex/Runtime/ChampionKit.cs:9:             switch(c){case "Ahri":return new[]{"Orb of Deception","Fox-Fire","Charm","Spirit Rush"};case "Morgana":return new[]{"Dark Binding","Tormented Shadow","Black Shield","Soul Shackles"};case "Mel":return new[]{"Radiant Volley","Rebuttal","Solar Snare","Golden Eclipse"};default:return new[]{"Mystic Shot","Essence Flux","Arcane Shift","Trueshot Barrage"};}
+Assets/Dex/Runtime/ChampionKit.cs:16:             if(c=="Ahri")return new[]{"A piercing orb returns for true damage.","Three bolts seek nearby enemies.","A skillshot charms the first target hit.","Three dashes with nearby bolts. New dashes are blocked by crowd control."}[slot];
+Assets/Dex/Runtime/ChampionKit.cs:20:         public static string Passive(string c){return c=="Mel"?"Searing Brilliance: casts bank 3 bonus attack bolts (max 9). Damage applies Overwhelm; low-health marked targets can be executed.":c=="Ezreal"?"Hits build Rising Spell Force stacks (simplified).":c=="Ahri"?"Champion takedowns restore health (simplified).":"Magic damage restores a little health (simplified).";}
+Matches returned: 4
+
+TOOL read Assets/Dex/Runtime/DexArena.cs query=
+1: using System.Collections.Generic;
+2: using UnityEngine;
+3: using UnityEngine.InputSystem;
+4: 
+5: namespace Dex
+6: {
+7:     public partial class DexArena : MonoBehaviour
+8:     {
+9:         class Unit
+10:         {
+11:             public Fighter f; public Vector2 p,goal,home; public SpriteRenderer art,shadow;
+12:             public bool red,minion,tower; public float mana{get{return f.mana;}set{f.mana=value;}}public float attackAt,respawn,hitAt=-10;public SpriteRenderer rim,aura; public Unit target;
+13:             public float radius {get{return tower?.7f:minion?.22f:.38f;}}
+14:         }
+15:         class Shot
+16:         {
+17:             public Unit owner;public Vector2 p,dir;public float range=8,speed=11,damage,width=.2f;
+18:             public int slot;public Unit homing;public bool physical,orb,back,burst,solarBloomed;public Vector2 destination;public Volley volley;public SpriteRenderer art;public HashSet<Unit> hit=new HashSet<Unit>();
+19:         }
+20:         class Volley {public bool refunded;}
+21:         class Zone {public Unit owner;public Vector2 p;public float until,nextTick;public bool solar;public SpriteRenderer art;}
+22:         class Fx {public SpriteRenderer art;public float born,life,size;}
+23:         class Pop {public Vector2 p;public float born;public string text;public Color color;}
+24:         Combat sim;Unit player,enemy;Transform world;Camera cam;SpriteRenderer targetRing;
+25:         List<Unit> units=new List<Unit>();List<Shot> shots=new List<Shot>();List<Zone> zones=new List<Zone>();List<Fx> fx=new List<Fx>();List<Pop> pops=new List<Pop>();
+26:         readonly List<Unit> collisionOrder=new List<Unit>();
+27:         readonly string[] champions=ChampionKit.Roster;int champion=3,opponent=2,kills,deaths,cs,gold=500;
+28:         bool bot=true,waves=true,items=true,practice=true,menu;
+29:         // The Editor's deterministic driver calls the same gameplay tick as Update.
+30:         bool manualSimulation;string scenarioStatus="";float nextWave,botAt;Vector2 aim,lastArenaAim;
+31:         string notice="Left-click an enemy to auto-attack. Right-click to move or attack. Aim Q / W / E / R.";float noticeUntil=8;
+32:         static readonly Color Cyan=new Color(.27f,.85f,.94f),Gold=new Color(.83f,.7f,.38f),Pink=new Color(.96f,.39f,.55f);
+33:         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+34:         static void Boot(){if(FindAnyObjectByType<DexArena>()==null)new GameObject("Dex MOBA Sandbox").AddComponent<DexArena>();}
+35:         void Awake()
+36:         {
+37:             cam=Camera.main;if(cam==null)cam=new GameObject("Sandbox Camera").AddComponent<Camera>();
+38:             cam.transform.position=new Vector3(0,0,-10);cam.transform.rotation=Quaternion.identity;cam.orthographic=true;cam.orthographicSize=8.2f;cam.backgroundColor=new Color(.018f,.028f,.05f);SetupFeel();ResetWorld();
+39:         }
+40:         void ResetWorld()
+41:         {
+42:             notice="Left-click enemy: auto-attack. Aim Q / W / E / R. Esc opens the sandbox.";noticeUntil=4;
+43:             replayStep=-1;replayResult="F6: replay Morgana root > Ezreal E";
+44:             if(world!=null)Destroy(world.gameObject);world=new GameObject("Sandbox World").transform;
+45:             units.Clear();shots.Clear();zones.Clear();fx.Clear();pops.Clear();sim=new Combat(champions[champion],champions[opponent],items);
+46:             Map();player=Spawn(sim.a,new Vector2(-6,-2),false);enemy=Spawn(sim.b,new Vector2(6,2),true);
+47:             Tower(new Vector2(-10,-3.5f),false);Tower(new Vector2(10,3.5f),true);nextWave=2;botAt=3;kills=deaths=cs=0;gold=500;
+48:             targetRing=Art("Auto-attack target",MobaArt.Ring,Vector2.zero,Vector2.one*1.9f,Pink,75);targetRing.enabled=false;
+49:         }
+50:         SpriteRenderer Art(string name,Sprite sprite,Vector2 p,Vector2 scale,Color color,int layer)
+51:         {var go=new GameObject(name);go.transform.SetParent(world);go.transform.position=p;go.transform.localScale=scale;var r=go.AddComponent<SpriteRenderer>();r.sprite=sprite;r.color=color;r.sortingOrder=layer;return r;}
+52:         Unit Spawn(Fighter f,Vector2 p,bool red,bool minion=false)
+53:         {
+54:             var u=new Unit{f=f,p=p,goal=p,home=p,red=red,minion=minion};u.shadow=Art("Shadow",MobaArt.Disc,p+Vector2.down*.28f,new Vector2(.9f,.38f),new Color(0,0,0,.4f),10);
+55:             u.art=Art(f.champion,minion?MobaArt.Minion:MobaArt.Champion(f.champion),p,Vector2.one*(minion?.65f:1.5f),Color.white,100);AddUnitVisuals(u);units.Add(u);return u;
+56:         }
+57:         void Tower(Vector2 p,bool red){var u=Spawn(new Fighter("Turret",false,0){hp=4000,maxHp=4000,armor=90,mr=90},p,red);u.tower=true;u.art.sprite=MobaArt.Tower;u.art.transform.localScale=Vector3.one*2.4f;}
+58:         void Map()
+59:         {
+60:             Art("Test chamber",MobaArt.Square,Vector2.zero,new Vector2(32,19),new Color(.024f,.04f,.065f),-100);
+61:             Art("Inner board",MobaArt.Square,Vector2.zero,new Vector2(27.5f,14.2f),new Color(.035f,.065f,.095f),-99);
+62:             Art("Arcane stone grain",MobaArt.Ground,Vector2.zero,new Vector2(27.3f,14f),new Color(.58f,.73f,.82f,.33f),-98);
+63:             for(int x=-13;x<=13;x++)Art("Grid",MobaArt.Square,new Vector2(x,0),new Vector2(x%5==0?.018f:.008f,13.5f),new Color(.12f,.24f,.3f,x%5==0?.45f:.28f),-95);
+64:             for(int y=-6;y<=6;y++)Art("Grid",MobaArt.Square,new Vector2(0,y),new Vector2(26.5f,y%3==0?.018f:.008f),new Color(.12f,.24f,.3f,y%3==0?.45f:.28f),-95);
+65:             var lane=Art("Interaction lane",MobaArt.Square,Vector2.zero,new Vector2(27,3),new Color(.045f,.095f,.13f),-94);lane.transform.rotation=Quaternion.Euler(0,0,18);
+66:             for(int side=-1;side<=1;side+=2)
+67:             {
+68:                 Color team=side<0?Cyan:Pink;Vector2 p=new Vector2(side*11,side*3.7f);
+69:                 Art("Base pad",MobaArt.Disc,p,Vector2.one*4.8f,new Color(team.r,team.g,team.b,.08f),-88);
+70:                 Art("Base perimeter",MobaArt.Ring,p,Vector2.one*4.8f,new Color(team.r,team.g,team.b,.4f),-87);
+71:                 Art("Core",MobaArt.Crystal,p,Vector2.one*1.45f,team,25);
+72:                 Art("Chamber border",MobaArt.Square,new Vector2(0,side*6.9f),new Vector2(27.5f,.035f),new Color(.25f,.45f,.53f,.6f),-85);
+73:             }
+74:             Art("Centre marker",MobaArt.Ring,Vector2.zero,Vector2.one*3.3f,new Color(.4f,.7f,.8f,.12f),-87);
+75:             Art("Centre marker inner",MobaArt.Ring,Vector2.zero,Vector2.one*3,new Color(.4f,.7f,.8f,.12f),-87);
+76:         }
+77:         void Update()
+78:         {
+79:             if(manualSimulation)return;
+80:             var kb=Keyboard.current;var mouse=Mouse.current;if(kb!=null&&kb.f6Key.wasPressedThisFrame)StartInteractionReplay();if(kb!=null&&kb.escapeKey.wasPressedThisFrame)menu=!menu;if(menu)return;
+81:             float dt=Mathf.Min(Time.deltaTime,.04f);Vector2 mp=mouse!=null?mouse.position.ReadValue():new Vector2(Screen.width/2,Screen.height/2);aim=cam.ScreenToWorldPoint(mp);
+82:             bool hud=mp.y<Screen.height*.19f||mp.y>Screen.height*.92f;
+83:             // GUI overlays must not issue arena orders when clicked.
+84:             Vector2 ui=new Vector2(mp.x/Screen.width*1600,(1-mp.y/Screen.height)*900);
+85:             hud|=new Rect(25,88,620,100).Contains(ui)||(trace&&new Rect(1240,85,335,375).Contains(ui));
+86:             if(!hud)lastArenaAim=aim;
+87:             if(mouse!=null&&!hud&&player.f.hp>0&&!ReplayRunning)
+88:             {
+89:                 if(mouse.rightButton.wasPressedThisFrame)IssuePointerOrder(aim,true);
+90:                 else if(mouse.leftButton.wasPressedThisFrame)IssuePointerOrder(aim,false);
+91:             }
+92:             if(kb!=null&&player.f.hp>0&&!hud&&!ReplayRunning)
+93:             {
+94:                 if(kb.qKey.wasPressedThisFrame)Cast(player,0,aim);if(kb.wKey.wasPressedThisFrame)Cast(player,1,aim);if(kb.eKey.wasPressedThisFrame)Cast(player,2,aim);if(kb.rKey.wasPressedThisFrame)Cast(player,3,aim);
+95:                 if(kb.aKey.wasPressedThisFrame)player.target=Nearest(player.p,true,6);
+96:                 if(kb.sKey.wasPressedThisFrame){player.goal=player.p;player.target=null;}
+97:             }
+98:             TickSimulation(dt);
+99:         }
+100:         void TickSimulation(float dt)
+101:         {
+102:             sim.time+=dt;
+103:             if(waves&&sim.time>nextWave){nextWave=sim.time+18;Wave(false);Wave(true);}
+104:             foreach(var u in units.ToArray())Step(u,dt);StepShots(dt);StepZones(dt);
+105:             targetRing.enabled=player.target!=null&&player.target.f.hp>0;
+106:             if(targetRing.enabled){targetRing.transform.position=player.target.p;targetRing.transform.localScale=Vector3.one*(player.target.tower?2.6f:player.target.minion?1:1.9f);}
+107:             StepReplay();
+108:             for(int i=units.Count-1;i>=0;i--){var u=units[i];if(u.minion&&u.f.hp<=0&&sim.time>u.respawn){Destroy(u.art.gameObject);Destroy(u.shadow.gameObject);units.RemoveAt(i);}}
+109:             for(int i=fx.Count-1;i>=0;i--){var f=fx[i];float t=(sim.time-f.born)/f.life;if(t>=1){Destroy(f.art.gameObject);fx.RemoveAt(i);}else {f.art.transform.localScale=Vector3.one*f.size*(.5f+t);var c=f.art.color;c.a=1-t;f.art.color=c;}}
+110:             pops.RemoveAll(p=>sim.time-p.born>1.1f);
+111:         }
+112:         Vector2 Clamp(Vector2 p){return new Vector2(Mathf.Clamp(p.x,-13,13),Mathf.Clamp(p.y,-6.5f,6.5f));}
+113:         Unit Nearest(Vector2 p,bool red,float range){Unit best=null;foreach(var u in units)if(u.red==red&&u.f.hp>0&&Vector2.Distance(p,u.p)<range){best=u;range=Vector2.Distance(p,u.p);}return best;}
+114:         void IssuePointerOrder(Vector2 point,bool moveOnGround)
+115:         {
+116:             Unit selected=null;float closest=float.MaxValue;
+117:             foreach(var u in units)
+118:             {
+119:                 if(u.red==player.red||u.f.hp<=0)continue;
+120:                 // Match the visible token/body instead of requiring a click on a tiny centre point.
+121:                 Vector2 visual=(Vector2)u.art.bounds.ClosestPoint(new Vector3(point.x,point.y,0));
+122:                 float distance=Vector2.Distance(point,visual);
+123:                 if(distance<=.18f&&Vector2.Distance(point,u.p)<closest){selected=u;closest=Vector2.Distance(point,u.p);}
+124:             }
+125:             if(selected!=null){player.target=selected;player.goal=selected.p;Effect(MobaArt.Ring,selected.p,Pink,.4f,selected.tower?2.6f:1.8f);Say("Auto-attacking "+selected.f.champion+". S to stop.");}
+126:             else if(moveOnGround){player.target=null;player.goal=Clamp(point);Effect(MobaArt.Ring,player.goal,Cyan,.4f,.5f);}
+127:         }
+128:         void Wave(bool red){for(int i=0;i<4;i++)Spawn(new Fighter("Minion",false,0){hp=420,maxHp=420,ad=32,armor=15,mr=15},new Vector2(red?11:-11,(red?3.5f:-3.5f)+(i-1.5f)*.43f),red,true);}
+129:         void Step(Unit u,float dt)
+130:         {
+131:             if(u.f.hp<=0){u.art.enabled=u.shadow.enabled=false;if(u.rim!=null)u.rim.enabled=false;if(u.aura!=null)u.aura.enabled=false;if(!u.minion&&!u.tower&&u.respawn>0&&sim.time>=u.respawn){u.f=new Fighter(u.f.champion,items,0);if(u==player)sim.a=u.f;else sim.b=u.f;u.mana=900;u.p=u.home;u.goal=u.p;u.target=null;u.attackAt=sim.time;u.respawn=0;u.art.enabled=u.shadow.enabled=true;if(u.rim!=null)u.rim.enabled=true;}return;}
+132:             if(u.f.controlUntil<=sim.time)u.f.control="";if(u.f.shieldUntil<=sim.time)u.f.shield=0;
+133:             if(u.f.barrierUntil<=sim.time)u.f.barrier=0;if(u.f.overwhelmUntil<=sim.time)u.f.overwhelm=0;
+134:             if(u==enemy&&bot){float d=Vector2.Distance(u.p,player.p);u.goal=d>5?player.p:d<2.6f?u.p+(u.p-player.p).normalized*2:u.p;u.target=d<5&&player.f.hp>0?player:null;if(player.f.hp>0&&sim.time>botAt&&d<8){botAt=sim.time+2;Cast(u,Random.Range(0,4),player.p);}}
+135:             if(u.minion){u.target=Nearest(u.p,!u.red,3.4f);u.goal=u.target!=null?u.target.p:new Vector2(u.red?-12:12,u.red?-4:4);}
+136:             if(u.tower)u.target=Nearest(u.p,!u.red,5.8f);
+137:             if(u.target!=null&&u.target.f.hp<=0){u.target=null;u.goal=u.p;}
+138:             if(u.target!=null&&u.target.f.hp>0)
+139:             {
+140:                 float d=Vector2.Distance(u.p,u.target.p),range=u.tower?5.8f:u.minion?2.2f:4.8f;
+141:                 if(d>range&&!u.tower)u.goal=u.target.p;
+142:                 else if(d<=range){u.goal=u.p;bool disabled=u.f.ActiveControl(sim.time)&&(u.f.control=="Stun"||u.f.control=="Charm");if(sim.time>=u.attackAt&&!disabled){u.attackAt=sim.time+(u.tower?1.2f:u.minion?1.4f:.9f);Shoot(u,-1,u.target.p,u.tower?175:u.f.ad,true,false,u.target);if(u.f.champion=="Mel"){int bolts=u.f.searing;u.f.searing=0;for(int n=0;n<bolts;n++)Shoot(u,-2,u.target.p,20+.04f*u.f.ap,false,false,u.target);}if(u==player)PlayCue(0);}}
+143:             }
+144:             if(!u.tower&&(!u.f.ActiveControl(sim.time)||u.f.control=="Ground"))
+145:             {
+146:                 Vector2 travel=u.goal-u.p;
+147:                 if(!u.minion&&travel.sqrMagnitude>.02f){u.art.sprite=MobaArt.Frame(u.f.champion,sim.time);u.art.flipX=travel.x<0&&u.art.sprite!=MobaArt.Portrait(u.f.champion);}
+148:                 u.p=Vector2.MoveTowards(u.p,u.goal,dt*(u.minion?1.7f:3.3f)*(u.f.speedUntil>sim.time?1.2f:1)*(u.f.slowUntil>sim.time?.7f:1));
+149:                 foreach(var v in units)if(v!=u&&v.f.hp>0){Vector2 away=u.p-v.p;float min=(u.radius+v.radius)*.8f;if(away.sqrMagnitude<min*min&&away.sqrMagnitude>.0001f)u.p+=away.normalized*dt*1.5f;}
+150:             }
+151:             if(u.f.control=="Charm")u.p=Vector2.MoveTowards(u.p,u==player?enemy.p:player.p,dt*.8f);
+152:             u.p=Clamp(u.p);u.f.x=u.p.x/25;u.art.transform.position=u.p+Vector2.up*(u.minion?0:.025f*Mathf.Sin(sim.time*5));u.shadow.transform.position=u.p+Vector2.down*.3f;u.art.sortingOrder=100-(int)(u.p.y*10);
+153:             u.art.color=sim.time-u.hitAt<.1f?new Color(1.6f,1.6f,1.6f):u.red?new Color(1,.85f,.9f):Color.white;
+154:             UpdateUnitVisuals(u);
+155:             if(!u.minion&&!u.tower){u.mana=Mathf.Min(900,u.mana+dt*(practice?35:6));if(practice)u.f.hp=Mathf.Min(u.f.maxHp,u.f.hp+dt*12);}
+156:         }
+157:         void Say(string s){notice=s;noticeUntil=sim.time+3;}
+158:         void Cast(Unit u,int slot,Vector2 target)
+159:         {
+160:             if(slot<0||slot>3)return;var f=u.f;float cost=ChampionKit.Mana(f.champion,slot);if(u.mana<cost){if(u==player)Say("Not enough mana");return;}
+161:             Unit castTarget=u==player?enemy:player;
+162:             if(f.champion=="Mel"&&slot==3){var marked=units.Find(v=>v.red!=u.red&&v.f.hp>0&&v.f.MarkedBy(f,sim.time));if(marked!=null)castTarget=marked;}
+163:             if(!sim.BeginCast(f,castTarget.f,slot)){if(u==player)Say(f.ActiveControl(sim.time)?"Cannot cast while "+f.control:f.champion=="Mel"&&slot==3?"Golden Eclipse needs an Overwhelm mark":"Ability is on cooldown");return;}
+164:             if(u==player)PlayCue(1);
+165:             Vector2 dir=(target-u.p).normalized;if(dir.sqrMagnitude<.1f)dir=Vector2.right;
+166:             if(f.champion=="Ahri")
+167:             {
+168:                 if(slot==0)Shoot(u,slot,target,100+.5f*f.ap,false,true);
+169:                 if(slot==1)for(int i=0;i<3;i++){var v=Nearest(u.p,!u.red,6);if(v!=null)Shoot(u,slot,v.p,(i==0?80:32)+f.ap*(i==0?.4f:.16f));}
+170:                 if(slot==2)Shoot(u,slot,target,160+.85f*f.ap);
+171:                 if(slot==3){Dash(u,dir);var v=Nearest(u.p,!u.red,6);if(v!=null)Shoot(u,slot,v.p,125+.35f*f.ap);if(--f.rushCharges>0)f.ready[3]=sim.time+1;}
+172:             }
+173:             else if(f.champion=="Morgana")
+174:             {
+175:                 if(slot==0)Shoot(u,slot,target,160+.9f*f.ap);
+176:                 if(slot==1){Vector2 p=u.p+Vector2.ClampMagnitude(target-u.p,7);zones.Add(new Zone{owner=u,p=p,until=sim.time+5,art=Art("Tormented Shadow",MobaArt.Disc,p,Vector2.one*3,new Color(.35f,.1f,.55f,.65f),-50)});}
+177:                 if(slot==2){f.shield=210+.7f*f.ap;f.shieldUntil=sim.time+5;Effect(MobaArt.Ring,u.p,new Color(.7f,.3f,1),1,2);}
+178:                 if(slot==3)foreach(var v in units)if(v.red!=u.red&&v.f.hp>0&&Vector2.Distance(u.p,v.p)<5){Hit(u,v,200+.7f*f.ap,false);v.f.tetherUntil=sim.time+3;Effect(MobaArt.Ring,v.p,new Color(.8f,.35f,1),3,2);}
+179:             }
+180:             else if(f.champion=="Ezreal")
+181:             {
+182:                 if(slot==0)Shoot(u,slot,target,80+1.3f*f.ad+.15f*f.ap,true);
+183:                 if(slot==1)Shoot(u,slot,target,0);
+184:                 if(slot==2){Dash(u,dir);var v=Nearest(u.p,!u.red,6);if(v!=null)Shoot(u,slot,v.p,180+.5f*f.ad+.75f*f.ap);}
+185:                 if(slot==3)Shoot(u,slot,target,500+f.ad+.9f*f.ap);
+186:             }
+187:             else if(f.champion=="Mel")CastMel(u,slot,target);
+188:         }
+189:         void Dash(Unit u,Vector2 dir){Vector2 from=u.p;u.p=Clamp(u.p+dir*2.8f);u.goal=u.p;u.target=null;for(int i=0;i<6;i++)Effect(MobaArt.Disc,Vector2.Lerp(from,u.p,i/5f),Cyan,.3f,.55f);}
+190:         void Shoot(Unit owner,int slot,Vector2 target,float damage,bool physical=false,bool orb=false,Unit homing=null)
+191:         {
+192:             Vector2 dir=(target-owner.p).normalized;if(dir.sqrMagnitude<.01f)dir=Vector2.right;
+193:             Color color=owner.f.champion=="Morgana"?new Color(.72f,.32f,1):owner.f.champion=="Ahri"?slot==2?Pink:Cyan:owner.f.champion=="Mel"?new Color(1,.82f,.38f):Gold;
+194:             var m=new Shot{owner=owner,slot=slot,p=owner.p,dir=dir,damage=damage,physical=physical,range=slot==3?25:8,width=slot==3?.8f:.2f,orb=orb,homing=homing};
+195:             m.art=Art("Skillshot",slot==2&&owner.f.champion=="Ahri"?MobaArt.Heart:MobaArt.Bolt,m.p,new Vector2(slot==3?2:.7f,slot==3?.8f:.35f),color,300);shots.Add(m);
+196:         }
+197:         static float SegmentDistance(Vector2 p,Vector2 a,Vector2 b){Vector2 d=b-a;return Vector2.Distance(p,a+d*Mathf.Clamp01(Vector2.Dot(p-a,d)/Mathf.Max(.0001f,d.sqrMagnitude)));}
+198:         void StepShots(float dt)
+199:         {
+200:             for(int i=shots.Count-1;i>=0;i--)
+201:             {
+202:                 var m=shots[i];if(m.homing!=null&&m.homing.f.hp<=0){Destroy(m.art.gameObject);shots.RemoveAt(i);continue;}Vector2 prev=m.p;if(m.back)m.dir=(m.owner.p-m.p).normalized;else if(m.homing!=null)m.dir=(m.homing.p-m.p).normalized;m.p+=m.dir*m.speed*dt;m.range-=m.speed*dt;bool remove=false;
+203:                 foreach(var defender in units)if(defender.red!=m.owner.red&&defender.f.hp>0&&defender.f.champion=="Mel"&&defender.f.novaUntil>sim.time)
+204:                 {float radius=NovaRadius(defender.f);if(SegmentDistance(defender.p,prev,m.p)<radius&&sim.InterceptProjectile(defender.f,m.owner.f,true)){Effect(MobaArt.Ring,m.p,Gold,.35f,.7f);remove=true;break;}}
+205:                 if(remove){Destroy(m.art.gameObject);shots.RemoveAt(i);continue;}
+206:                 if(m.burst)
+207:                 {
+208:                     if(m.range<=0||SegmentDistance(m.destination,prev,m.p)<.12f){BurstVolley(m);Destroy(m.art.gameObject);shots.RemoveAt(i);}else{m.art.transform.position=m.p;m.art.transform.rotation=Quaternion.Euler(0,0,Mathf.Atan2(m.dir.y,m.dir.x)*Mathf.Rad2Deg);}continue;
+209:                 }
+210:                 collisionOrder.Clear();collisionOrder.AddRange(units);
+211:                 collisionOrder.Sort((a,b)=>Vector2.Dot(a.p-prev,m.dir).CompareTo(Vector2.Dot(b.p-prev,m.dir)));
+212:                 foreach(var u in collisionOrder)
+213:                 {
+214:                     if(u.red==m.owner.red||u.f.hp<=0||m.hit.Contains(u)||m.homing!=null&&u!=m.homing||SegmentDistance(u.p,prev,m.p)>m.width+u.radius)continue;
+215:                     if(m.owner.f.champion=="Ezreal"&&m.slot==1&&u.minion)continue;m.hit.Clear();
+216:                     if(m.owner.f.champion=="Ezreal"&&m.slot==1)u.f.markUntil=sim.time+4;
+217:                     else
+218:                     {
+219:                         if(m.back){float old=u.f.hp;u.f.hp=Mathf.Max(0,u.f.hp-m.damage);TrackHit(m.owner,u,old-u.f.hp);}else Hit(m.owner,u,m.damage,m.physical);
+220:                         if(m.owner.f.champion=="Morgana"&&m.slot==0)sim.CC(u.f,"Root",2);
+221:                         if(m.owner.f.champion=="Ahri"&&m.slot==2)sim.CC(u.f,"Charm",1.5f);
+222:                         if(m.owner.f.champion=="Mel"&&m.slot==2){SolarBurst(m.owner,u.p,8-m.range);m.solarBloomed=true;}
+223:                         if(m.owner.f.champion=="Ezreal"&&m.slot==0)for(int k=0;k<4;k++)m.owner.f.ready[k]=Mathf.Max(sim.time,m.owner.f.ready[k]-1.5f);
+224:                         if(m.owner.f.champion=="Ezreal"&&u.f.markUntil>sim.time&&m.slot!=1){u.f.markUntil=0;Hit(m.owner,u,180+.9f*m.owner.f.ap,false);}
+225:                     }
+226:                     Effect(MobaArt.Ring,u.p,m.art.color,.3f,1);if(!m.orb&&m.slot!=3){remove=true;break;}
+227:                 }
+228:                 if(m.orb&&!m.back&&m.range<=0){m.back=true;m.hit.Clear();m.range=20;}else if(m.range<=0||m.back&&Vector2.Distance(m.p,m.owner.p)<.4f)remove=true;
+229:                 if(m.owner.f.champion=="Mel"&&m.slot==2&&m.range<=0&&!m.solarBloomed)SolarBurst(m.owner,m.p,8);
+230:                 if(remove){Destroy(m.art.gameObject);shots.RemoveAt(i);}else {m.art.transform.position=m.p;m.art.transform.rotation=Quaternion.Euler(0,0,Mathf.Atan2(m.dir.y,m.dir.x)*Mathf.Rad2Deg);}
+231:             }
+232:         }
+233:         void Hit(Unit source,Unit target,float amount,bool physical){float old=target.f.hp;sim.Damage(source.f,target.f,amount,physical);TrackHit(source,target,old-target.f.hp);}
+234:         void TrackHit(Unit source,Unit target,float amount)
+235:         {
+236:             target.hitAt=sim.time;if(amount>3)pops.Add(new Pop{p=target.p,born=sim.time,text=Mathf.RoundToInt(amount).ToString(),color=source==player?Gold:Pink});
+237:             if(amount>3&&(source==player||target==player))PlayCue(target.f.hp<=0?3:2);
+238:             if(target.f.hp<=0&&target.respawn==0)
+239:             {
+240:                 target.respawn=sim.time+7;target.target=null;
+241:                 if(source==player){gold+=target.minion?21:target.tower?250:300;if(target.minion)cs++;else if(!target.tower){kills++;Say("CHAMPION TAKEDOWN  +300 gold");}}
+242:                 if(target==player){deaths++;Say("You have been slain. Respawning in 7 seconds.");}Effect(MobaArt.Ring,target.p,target.red?Pink:Cyan,1,3);
+243:                 if(source.f.champion=="Ahri"&&!target.minion&&!target.tower)source.f.hp=Mathf.Min(source.f.maxHp,source.f.hp+120+.3f*source.f.ap);
+244:             }
+245:         }
+246:         void StepZones(float dt)
+247:         {
+248:             for(int i=zones.Count-1;i>=0;i--)
+249:             {
+250:                 var z=zones[i];if(sim.time>z.until){Destroy(z.art.gameObject);zones.RemoveAt(i);continue;}
+251:                 z.art.transform.Rotate(0,0,dt*12);bool pulse=!z.solar||sim.time>=z.nextTick;
+252:                 foreach(var u in units)if(u.red!=z.owner.red&&u.f.hp>0&&Vector2.Distance(z.p,u.p)<1.5f)
+253:                 {if(pulse)Hit(z.owner,u,(z.solar?18+.05f*z.owner.f.ap:45+.14f*z.owner.f.ap)*(z.solar?.25f:dt),false);if(z.solar)u.f.slowUntil=sim.time+.2f;}
+254:                 if(z.solar&&pulse)z.nextTick=sim.time+.25f;
+255:             }
+256:             foreach(var u in units)if(u.f.tetherUntil>0&&sim.time>=u.f.tetherUntil){u.f.tetherUntil=0;Unit source=u.red?player:enemy;if(source.f.champion=="Morgana"&&source.f.hp>0&&Vector2.Distance(source.p,u.p)<6){Hit(source,u,200+.7f*source.f.ap,false);sim.CC(u.f,"Stun",1.5f);}}
+257:             ResolveNovaEffects();
+258:         }
+259:         void Effect(Sprite sprite,Vector2 p,Color color,float life,float size){fx.Add(new Fx{art=Art("VFX",sprite,p,Vector2.one*size,color,250),born=sim.time,life=life,size=size});}
+260:         void OnDestroy(){if(world!=null)Destroy(world.gameObject);ReleaseFeel();if(buttonTexture!=null)Destroy(buttonTexture);if(hoverTexture!=null)Destroy(hoverTexture);}
+TOOL search Assets/Dex/Runtime/Combat.cs query=Damage
+Assets/Dex/Runtime/Combat.cs:48:                 if(f.poolUntil > time) Damage(enemy, f, (35 + enemy.ap * 0.1f) * dt, false);
+Assets/Dex/Runtime/Combat.cs:50:                 { f.tetherUntil = 0; if(Math.Abs(f.x - enemy.x) < 0.55f) { Damage(enemy,f,200+enemy.ap*0.7f,false); CC(f,"Stun",1.5f); Log("Soul Shackles detonates"); } else Log("Soul Shackles tether broken"); }
+Assets/Dex/Runtime/Combat.cs:52:             ResolveRetaliations(a,(from,to,amount)=>Damage(from,to,amount,false));ResolveRetaliations(b,(from,to,amount)=>Damage(from,to,amount,false));
+Assets/Dex/Runtime/Combat.cs:55:         public void Damage(Fighter source, Fighter target, float amount, bool physical,bool applyMark=true)
+Assets/Dex/Runtime/Combat.cs:77:         public bool Projectile(Fighter source,Fighter target,float damage,bool physical,string control="",float duration=0)
+Assets/Dex/Runtime/Combat.cs:78:         {if(InterceptProjectile(target,source,true))return false;Damage(source,target,damage,physical);if(control!=""&&target.hp>0)CC(target,control,duration);return true;}
+Assets/Dex/Runtime/Combat.cs:86:         {Damage(source,target,source.ad,true);if(source.champion=="Mel"){int bolts=source.searing;source.searing=0;for(int i=0;i<bolts;i++)Damage(source,target,20+.04f*source.ap,false);}}
+Assets/Dex/Runtime/Combat.cs:88:         {if(!target.MarkedBy(source,time))return;int count=target.overwhelm;target.overwhelm=0;Damage(source,target,150+.5f*source.ap+count*(8+.02f*source.ap),false,false);Log("Golden Eclipse detonates "+count+" stacks");}
+Assets/Dex/Runtime/Combat.cs:121:                 if(slot==3) { Damage(source,target,200+0.7f*p,false); target.tetherUntil=time+3; }
+Assets/Dex/Runtime/Combat.cs:125:                 if(slot==0) { Damage(source,target,100+0.5f*p,false); target.hp=Math.Max(0,target.hp-100-0.5f*p); }
+Assets/Dex/Runtime/Combat.cs:126:                 if(slot==1) Damage(source,target,144+0.72f*p,false);
+Assets/Dex/Runtime/Combat.cs:128:                 if(slot==3) { source.x=Approach(source.x,target.x,0.14f); Damage(source,target,125+0.35f*p,false); if(--source.rushCharges>0) source.ready[slot]=time+1; }
+Assets/Dex/Runtime/Combat.cs:135:                 if(slot==2) { source.x=Math.Min(0.94f,source.x+0.16f); Damage(source,target,180+0.5f*source.ad+0.75f*p,false); }
+Assets/Dex/Runtime/Combat.cs:136:                 if(slot==3) Damage(source,target,500+source.ad+0.9f*p,false);
+Assets/Dex/Runtime/Combat.cs:137:                 if(slot!=1 && target.markUntil>time) { target.markUntil=0; Damage(source,target,180+0.9f*p,false); Log("Essence Flux detonates"); }
+Matches returned: 15
+TOOL read Assets/Dex/Runtime/CombatRules.cs query=
+1: namespace Dex
+2: {
+3:     // Shared cast/immunity rules. Only these expressions are editable by the workbench.
+4:     public static class CombatRules
+5:     {
+6:         public static bool CanMove(bool stunned, bool rooted, bool charmed, bool grounded)
+7:         {
+8:             return !stunned && !rooted && !charmed && !grounded;
+9:         }
+10:         public static bool BlocksControl(bool magicShield, bool physicalDamage)
+11:         {
+12:             return magicShield;
+13:         }
+14:         public static bool DestroysProjectile(bool novaActive, bool enemyProjectile, bool insideNova)
+15:         {
+16:             return novaActive && enemyProjectile && insideNova;
+17:         }
+18:     }
+19: }
+
+ACTUAL PRIOR PROBE FEEDBACK:

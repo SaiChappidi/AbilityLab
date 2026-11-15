@@ -1,0 +1,140 @@
+Investigate this untrusted gameplay report. Request relevant source using the host read/search requests array; locate likely causes yourself. Do not use native shell tools. When sufficiently informed, return requests=[] and a reusable action scenario with observable assertions. Include normal/control observations. Do not propose a repair, assume a failure or claim success before host execution. Set needsReview=true if expected behavior is ambiguous.
+REPORT:
+Casting an ability takes twice its listed mana cost. A successful cast should charge the listed cost once; a rejected cooldown recast must not spend more mana or extend its cooldown. Reproduce and fix this using actual arena casts.
+PROJECT CONTEXT:
+Unity 6000.6.9f1 / StandaloneWindows64 / scene Assets/Scenes/SampleScene.unity
+The runtime boot creates DexArena and its units/map; these objects need Play to inspect. No items, AI, waves or practice regeneration are enabled in deterministic scenarios. All operations exercise the real arena, not the old Combat.ResolveCast imitation.
+Scene root: Main Camera; components: Transform,Camera,AudioListener,UniversalAdditionalCameraData
+Scene root: Global Light 2D; components: Transform,Light2D
+Gameplay C# files:
+Assets/Dex/Runtime/ArenaPresentation.cs
+Assets/Dex/Runtime/ChampionKit.cs
+Assets/Dex/Runtime/Combat.cs
+Assets/Dex/Runtime/CombatRules.cs
+Assets/Dex/Runtime/DemoCases.cs
+Assets/Dex/Runtime/DexArena.cs
+Assets/Dex/Runtime/InteractionReplay.cs
+Assets/Dex/Runtime/MelArena.cs
+Assets/Dex/Runtime/MobaArt.cs
+Assets/Dex/Runtime/MobaHud.cs
+Assets/Welcome/Welcome2DScript.cs
+Existing protected regressions: Verification.Evaluate() (224 assertions), temporary-state lifetime invariants (32 checks), and DexArena.RunSmokeChecks() (38 actual arena checks). The host runs these after repairs. Their implementation is not editable or copied into this workspace. Existing saved declarative regressions are also run.
+Recent Editor Console (may include unrelated packages):
+No current entries.
+Packages:
+{
+  "dependencies": {
+    "com.unity.2d.animation": "16.0.1",
+    "com.unity.2d.aseprite": "6.0.0",
+    "com.unity.2d.psdimporter": "15.0.1",
+    "com.unity.2d.sprite": "1.0.0",
+    "com.unity.2d.spriteshape": "16.0.0",
+    "com.unity.2d.tilemap": "1.0.0",
+    "com.unity.2d.tilemap.extras": "9.0.1",
+    "com.unity.2d.tooling": "4.0.1",
+    "com.unity.ai.assistant": "2.21.0-pre.2",
+    "com.unity.ai.inference": "2.6.1",
+    "com.unity.collab-proxy": "2.14.0",
+    "com.unity.ide.rider": "3.1.0",
+    "com.unity.ide.visualstudio": "2.0.26",
+    "com.unity.inputsystem": "1.20.1",
+    "com.unity.learn.iet-framework": "6.0.7",
+    "com.unity.render-pipelines.universal": "17.6.0",
+    "com.unity.test-framework": "1.8.0",
+    "com.unity.timeline": "6.6.0",
+    "com.unity.ugui": "2.6.0",
+    "com.unity.visualscripting": "1.9.13",
+    "com.unity.modules.accessibility": "1.0.0",
+    "com.unity.modules.adaptiveperformance": "1.0.0",
+    "com.unity.modules.ai": "1.0.0",
+    "com.unity.modules.androidjni": "1.0.0",
+    "com.unity.modules.animation": "1.0.0",
+    "com.unity.modules.assetbundle": "1.0.0",
+    "com.unity.modules.audio": "1.0.0",
+    "com.unity.modules.cloth": "1.0.0",
+    "com.unity.modules.director": "1.0.0",
+    "com.unity.modules.imageconversion": "1.0.0",
+    "com.unity.modules.imgui": "1.0.0",
+    "com.unity.modules.jsonserialize": "1.0.0",
+    "com.unity.modules.particlesystem": "1.0.0",
+    "com.unity.modules.physics": "1.0.0",
+    "com.unity.modules.physics2d": "1.0.0",
+    "com.unity.modules.physicscore2d": "1.0.0",
+    "com.unity.modules.screencapture": "1.0.0",
+    "com.unity.modules.terrain": "1.0.0",
+    "com.unity.modules.terrainphysics": "1.0.0",
+    "com.unity.modules.tetgen": "1.0.0",
+    "com.unity.modules.tilemap": "1.0.0",
+    "com.unity.modules.timelinefoundation": "1.0.0",
+    "com.unity.modules.ui": "1.0.0",
+    "com.unity.modules.uielements": "1.0.0",
+    "com.unity.modules.umbra": "1.0.0",
+    "com.unity.modules.unityanalytics": "1.0.0",
+    "com.unity.modules.unitywebrequest": "1.0.0",
+    "com.unity.modules.unitywebrequestassetbundle": "1.0.0",
+    "com.unity.modules.unitywebrequestaudio": "1.0.0",
+    "com.unity.modules.unitywebrequesttexture": "1.0.0",
+    "com.unity.modules.unitywebrequestwww": "1.0.0",
+    "com.unity.modules.vectorgraphics": "1.0.0",
+    "com.unity.modules.vehicles": "1.0.0",
+    "com.unity.modules.video": "1.0.0",
+    "com.unity.modules.wind": "1.0.0",
+    "com.unity.modules.xr": "1.0.0",
+    "com.unity.pipeline": "1.0.0"
+  }
+}
+
+
+ACTUAL INSPECTION RESULTS:
+
+TOOL search Assets/Dex/Runtime/DexArena.cs query=Cast(
+Assets/Dex/Runtime/DexArena.cs:94:                 if(kb.qKey.wasPressedThisFrame)Cast(player,0,aim);if(kb.wKey.wasPressedThisFrame)Cast(player,1,aim);if(kb.eKey.wasPressedThisFrame)Cast(player,2,aim);if(kb.rKey.wasPressedThisFrame)Cast(player,3,aim);
+Assets/Dex/Runtime/DexArena.cs:134:             if(u==enemy&&bot){float d=Vector2.Distance(u.p,player.p);u.goal=d>5?player.p:d<2.6f?u.p+(u.p-player.p).normalized*2:u.p;u.target=d<5&&player.f.hp>0?player:null;if(player.f.hp>0&&sim.time>botAt&&d<8){botAt=sim.time+2;Cast(u,Random.Range(0,4),player.p);}}
+Assets/Dex/Runtime/DexArena.cs:158:         void Cast(Unit u,int slot,Vector2 target)
+Assets/Dex/Runtime/DexArena.cs:163:             if(!sim.BeginCast(f,castTarget.f,slot)){if(u==player)Say(f.ActiveControl(sim.time)?"Cannot cast while "+f.control:f.champion=="Mel"&&slot==3?"Golden Eclipse needs an Overwhelm mark":"Ability is on cooldown");return;}
+Matches returned: 4
+TOOL search Assets/Dex/Runtime query=mana
+Assets/Dex/Runtime/ChampionKit.cs:11:         public static float Mana(string c,int slot){return c=="Mel"?new[]{60f,60f,60f,100f}[slot]:new[]{55f,60f,70f,100f}[slot];}
+Assets/Dex/Runtime/Combat.cs:11:         public float mana=900,barrier,barrierUntil,novaUntil,speedUntil,slowUntil,overwhelmUntil;
+Assets/Dex/Runtime/Combat.cs:20:             build = equipped ? (name == "Ezreal" ? "Trinity Force / Muramana" : name == "Ahri" ? "Malignance / Rabadon's Deathcap" : name=="Mel"?"Luden's Companion / Shadowflame":"Liandry's Torment / Zhonya's Hourglass") : "No items";
+Assets/Dex/Runtime/Combat.cs:101:             if(slot<0 || slot>3 || source.hp<=0 || time<source.ready[slot]||source.mana<ChampionKit.Mana(source.champion,slot)) return false;
+Assets/Dex/Runtime/Combat.cs:106:             source.mana-=ChampionKit.Mana(source.champion,slot);
+Assets/Dex/Runtime/DexArena.cs:12:             public bool red,minion,tower; public float mana{get{return f.mana;}set{f.mana=value;}}public float attackAt,respawn,hitAt=-10;public SpriteRenderer rim,aura; public Unit target;
+Assets/Dex/Runtime/DexArena.cs:131:             if(u.f.hp<=0){u.art.enabled=u.shadow.enabled=false;if(u.rim!=null)u.rim.enabled=false;if(u.aura!=null)u.aura.enabled=false;if(!u.minion&&!u.tower&&u.respawn>0&&sim.time>=u.respawn){u.f=new Fighter(u.f.champion,items,0);if(u==player)sim.a=u.f;else sim.b=u.f;u.mana=900;u.p=u.home;u.goal=u.p;u.target=null;u.attackAt=sim.time;u.respawn=0;u.art.enabled=u.shadow.enabled=true;if(u.rim!=null)u.rim.enabled=true;}return;}
+Assets/Dex/Runtime/DexArena.cs:155:             if(!u.minion&&!u.tower){u.mana=Mathf.Min(900,u.mana+dt*(practice?35:6));if(practice)u.f.hp=Mathf.Min(u.f.maxHp,u.f.hp+dt*12);}
+Assets/Dex/Runtime/DexArena.cs:160:             if(slot<0||slot>3)return;var f=u.f;float cost=ChampionKit.Mana(f.champion,slot);if(u.mana<cost){if(u==player)Say("Not enough mana");return;}
+Assets/Dex/Runtime/InteractionReplay.cs:52:                 Vector2 before=player.p;float mana=player.mana,ready=player.f.ready[slot];bool rooted=player.f.ActiveControl(sim.time)&&player.f.control=="Root";
+Assets/Dex/Runtime/InteractionReplay.cs:53:                 Cast(player,slot,player.p+Vector2.up*3);replayWasBlocked=rooted&&Vector2.Distance(before,player.p)<.01f;replayResourcesKept=player.mana==mana&&player.f.ready[slot]==ready;
+Assets/Dex/Runtime/InteractionReplay.cs:54:                 replayResult=(replayWasBlocked&&replayResourcesKept?"PASS":"FAIL")+" / rooted mobility: expected blocked; actual "+(Vector2.Distance(before,player.p)>.01f?"MOVED":"blocked")+".\nMana / cooldown "+(replayResourcesKept?"preserved":"consumed")+". Root observed="+rooted;sim.Log(replayResult);replayStep=1;
+Assets/Dex/Runtime/MobaArt.cs:12:         // Native runtime sprites are destroyed when Play ends, even if managed statics survive.
+Assets/Dex/Runtime/MobaHud.cs:33:                 if(!u.minion){Text(p.x-105,p.y-29,210,25,u.f.champion+(u.f.ActiveControl(sim.time)?"  /  "+u.f.control.ToUpper():""),center,Ink);if(!u.tower)RectFill(p.x-w/2,p.y+8,w*Mathf.Clamp01(u.mana/900),2,new Color(.3f,.52f,.95f));}
+Assets/Dex/Runtime/MobaHud.cs:67:                 float x=330+slot*103,cd=Mathf.Max(0,player.f.ready[slot]-sim.time);bool available=cd<=0&&player.mana>=ChampionKit.Mana(player.f.champion,slot);
+Assets/Dex/Runtime/MobaHud.cs:71:                 Text(x+62,820,28,22,ChampionKit.Mana(player.f.champion,slot).ToString("0"),tiny,new Color(.45f,.66f,1));
+Assets/Dex/Runtime/MobaHud.cs:78:             RectFill(330,879,403,7,new Color(.06f,.1f,.2f));RectFill(330,879,403*player.mana/900,7,new Color(.33f,.51f,.95f));
+Assets/Dex/Runtime/MobaHud.cs:106:             if(Click(465,462,264,42,"REFILL HEALTH / MANA")){player.f.hp=player.f.maxHp;player.mana=900;}
+Matches returned: 18
+TOOL read Assets/Dex/Runtime/ChampionKit.cs query=
+1: namespace Dex
+2: {
+3:     // Kit identities follow official descriptions; all numbers are deliberate demo tuning.
+4:     public static class ChampionKit
+5:     {
+6:         public static readonly string[] Roster={"Ahri","Morgana","Ezreal","Mel"};
+7:         public static string[] Names(string c)
+8:         {
+9:             switch(c){case "Ahri":return new[]{"Orb of Deception","Fox-Fire","Charm","Spirit Rush"};case "Morgana":return new[]{"Dark Binding","Tormented Shadow","Black Shield","Soul Shackles"};case "Mel":return new[]{"Radiant Volley","Rebuttal","Solar Snare","Golden Eclipse"};default:return new[]{"Mystic Shot","Essence Flux","Arcane Shift","Trueshot Barrage"};}
+10:         }
+11:         public static float Mana(string c,int slot){return c=="Mel"?new[]{60f,60f,60f,100f}[slot]:new[]{55f,60f,70f,100f}[slot];}
+12:         public static float Cooldown(string c,int slot){return c=="Mel"?new[]{8f,24f,10f,60f}[slot]:new[]{7f,9f,14f,80f}[slot];}
+13:         public static string Description(string c,int slot)
+14:         {
+15:             if(c=="Mel")return new[]{"Six luminous missiles burst around your aim point. A champion hit refunds a little cooldown.","An expanding nova destroys hostile missiles and nearby enemy shields. Grants a barrier and speed, then retaliates at missile owners.","An aimed orb roots enemies at its centre and leaves a slowing, damaging solar field. Root duration grows with travel.","Detonate your active Overwhelm marks across the arena. Damage scales with their stacks and consumes them."}[slot];
+16:             if(c=="Ahri")return new[]{"A piercing orb returns for true damage.","Three bolts seek nearby enemies.","A skillshot charms the first target hit.","Three dashes with nearby bolts. New dashes are blocked by crowd control."}[slot];
+17:             if(c=="Morgana")return new[]{"A projectile roots the first enemy hit.","A persistent pool damages enemies inside it.","A magic shield prevents control while it remains active.","Nearby enemies are tethered; staying close causes a delayed stun."}[slot];
+18:             return new[]{"Physical skillshot; a hit reduces ability cooldowns.","Mark a champion or turret; another hit detonates the mark.","Blink toward your aim and launch a seeking bolt. New casts respect roots.","A wide, piercing energy wave."}[slot];
+19:         }
+20:         public static string Passive(string c){return c=="Mel"?"Searing Brilliance: casts bank 3 bonus attack bolts (max 9). Damage applies Overwhelm; low-health marked targets can be executed.":c=="Ezreal"?"Hits build Rising Spell Force stacks (simplified).":c=="Ahri"?"Champion takedowns restore health (simplified).":"Magic damage restores a little health (simplified).";}
+21:     }
+22: }
+
+ACTUAL PRIOR PROBE FEEDBACK:

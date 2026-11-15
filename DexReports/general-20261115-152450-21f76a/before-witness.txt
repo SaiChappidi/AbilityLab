@@ -1,0 +1,8 @@
+Independent witness: Ahri orb hits once per direction across simulation step sizes: 3/7
+FAIL Fine outward deals exactly one existing magic hit: observed 1350 eq expected 1750 @ fineOutward
+FAIL Fine return deals exactly one existing true-damage hit: observed 150 eq expected 1250 @ fineComplete
+PASS Coarse outward deals exactly one existing magic hit: observed 1750 eq expected 1750 @ coarseOutward
+FAIL Coarse return deals exactly one existing true-damage hit: observed 1500 eq expected 1650 @ coarseComplete
+PASS Fine off-path control remains unharmed: observed 1800 eq expected 1800 @ fineComplete
+PASS Coarse off-path control remains unharmed: observed 1800 eq expected 1800 @ coarseComplete
+FAIL Completed damage agrees across tested step sizes: observed 1500 eq expected 150 @ coarseComplete

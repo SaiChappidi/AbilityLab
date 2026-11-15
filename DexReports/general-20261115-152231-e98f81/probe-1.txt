@@ -1,0 +1,11 @@
+Ahri orb hits once per enemy per leg across simulation step sizes: 4/10
+FAIL normal outward single hit: observed 1100 eq expected 1700 @ normalOutward
+FAIL normal return single hit: observed 500 eq expected 1000 @ normalComplete
+PASS off-path control unharmed: observed 1800 eq expected 1800 @ normalComplete
+PASS normal target stationary: observed 3 eq expected 3 @ normalComplete
+PASS normal flight finished: observed 0 eq expected 0 @ normalComplete
+FAIL fine outward single hit: observed 0 eq expected 1700 @ fineOutward
+FAIL fine return single hit: observed 0 eq expected -100 @ fineComplete
+FAIL outward damage independent of step size: observed 0 eq expected 1100 @ fineOutward
+FAIL total damage independent of step size: observed 0 eq expected 500 @ fineComplete
+PASS fine flight finished: observed 0 eq expected 0 @ fineComplete

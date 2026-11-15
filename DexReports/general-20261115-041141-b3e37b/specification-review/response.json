@@ -1,0 +1,78 @@
+{
+  "clearExpectedBehavior": true,
+  "rationale": "The report explicitly requires one listed mana charge per successful cast and no additional mana charge or cooldown extension on a rejected recast. ChampionKit lists Morgana E at 70 mana and 14 seconds; DexArena.Cast calls BeginCast, whose original deduction is twice the listed cost. The trace reproduces a 140-mana deduction while confirming a successful shield cast. Retain success and active-cooldown controls alongside the report-derived resource assertions. These checks cover this cast and recast, not every ability.",
+  "checks": [
+    {
+      "label": "Successful cast charges listed mana once",
+      "at": "successful_cast",
+      "unit": "player",
+      "field": "mana",
+      "relation": "eq",
+      "compareAt": "initial",
+      "compareUnit": "player",
+      "compareField": "mana",
+      "value": -70,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Shield confirms successful cast",
+      "at": "successful_cast",
+      "unit": "player",
+      "field": "shield",
+      "relation": "gt",
+      "compareAt": "",
+      "compareUnit": "",
+      "compareField": "",
+      "value": 0,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Successful cast starts original cooldown",
+      "at": "successful_cast",
+      "unit": "player",
+      "field": "readyE",
+      "relation": "eq",
+      "compareAt": "initial",
+      "compareUnit": "world",
+      "compareField": "time",
+      "value": 14,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Recast attempted during active cooldown",
+      "at": "before_recast",
+      "unit": "player",
+      "field": "cooldownE",
+      "relation": "gt",
+      "compareAt": "",
+      "compareUnit": "",
+      "compareField": "",
+      "value": 0,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Rejected recast spends no mana",
+      "at": "cooldown_recast",
+      "unit": "player",
+      "field": "mana",
+      "relation": "eq",
+      "compareAt": "before_recast",
+      "compareUnit": "player",
+      "compareField": "mana",
+      "value": 0,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Rejected recast preserves readiness deadline",
+      "at": "cooldown_recast",
+      "unit": "player",
+      "field": "readyE",
+      "relation": "eq",
+      "compareAt": "before_recast",
+      "compareUnit": "player",
+      "compareField": "readyE",
+      "value": 0,
+      "tolerance": 0.001
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+Independent witness: Arena cast mana charge and rejection controls: 4/5
+FAIL Successful arena E charges its listed mana cost once: observed 760 eq expected 830 @ successful_e
+PASS E actually succeeds and grants its shield: observed 1 eq expected 1 @ successful_e
+PASS Successful E starts the source-listed cooldown: observed 14 eq expected 14 @ successful_e
+PASS Cooldown recast spends no additional mana: observed 762.9993 eq expected 762.9993 @ cooldown_recast
+PASS Cooldown recast preserves the existing deadline: observed 14 eq expected 14 @ cooldown_recast

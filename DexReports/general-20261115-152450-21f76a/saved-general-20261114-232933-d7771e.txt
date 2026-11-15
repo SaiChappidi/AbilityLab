@@ -1,0 +1,10 @@
+Independent witness: Actual arena casts charge listed mana once and cooldown rejection preserves resources: 9/9
+PASS Successful E charges 70 mana once: observed 830 eq expected 830 @ shield_cast
+PASS E produces its shield: observed 210 eq expected 210 @ shield_cast
+PASS E starts its listed cooldown: observed 14 eq expected 14 @ shield_cast
+PASS Recast occurs during active cooldown: observed 13.5 gt expected 0 @ before_recast
+PASS Rejected cooldown recast preserves mana: observed 832.9993 eq expected 832.9993 @ cooldown_recast
+PASS Rejected cooldown recast preserves readiness: observed 14 eq expected 14 @ cooldown_recast
+PASS Successful Q charges 55 mana once: observed 845 eq expected 845 @ binding_cast
+PASS Q produces one projectile: observed 1 eq expected 1 @ binding_cast
+PASS Q starts its listed cooldown: observed 7 eq expected 7 @ binding_cast

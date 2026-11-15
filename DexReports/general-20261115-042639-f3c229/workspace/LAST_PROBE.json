@@ -1,0 +1,2218 @@
+{
+    "title": "Actual arena casts charge once and cooldown recasts preserve resources",
+    "error": "",
+    "screenshot": "C:\\Users\\gamer\\Downloads\\dex\\My project\\DexReports\\general-20261115-042639-f3c229\\probe-3.png",
+    "seed": 127,
+    "passed": 12,
+    "total": 12,
+    "observations": [
+        {
+            "label": "initial",
+            "action": "initial setup",
+            "time": 0.0,
+            "world": [
+                {
+                    "name": "time",
+                    "value": 0.0
+                },
+                {
+                    "name": "shots",
+                    "value": 0.0
+                },
+                {
+                    "name": "zones",
+                    "value": 0.0
+                },
+                {
+                    "name": "effects",
+                    "value": 0.0
+                },
+                {
+                    "name": "units",
+                    "value": 4.0
+                },
+                {
+                    "name": "kills",
+                    "value": 0.0
+                },
+                {
+                    "name": "deaths",
+                    "value": 0.0
+                },
+                {
+                    "name": "cs",
+                    "value": 0.0
+                },
+                {
+                    "name": "worldRoots",
+                    "value": 1.0
+                }
+            ],
+            "units": [
+                {
+                    "id": "player",
+                    "champion": "Ahri",
+                    "control": "",
+                    "values": [
+                        {
+                            "name": "x",
+                            "value": -6.0
+                        },
+                        {
+                            "name": "y",
+                            "value": -2.0
+                        },
+                        {
+                            "name": "present",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "alive",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "controlled",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shielded",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "searing",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelm",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "rushCharges",
+                            "value": 3.0
+                        },
+                        {
+                            "name": "attackAt",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "respawn",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "hp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "maxHp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "mana",
+                            "value": 900.0
+                        },
+                        {
+                            "name": "ap",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "ad",
+                            "value": 110.0
+                        },
+                        {
+                            "name": "armor",
+                            "value": 60.0
+                        },
+                        {
+                            "name": "mr",
+                            "value": 40.0
+                        },
+                        {
+                            "name": "haste",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "controlUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shield",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shieldUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrier",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrierUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "novaUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "speedUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "slowUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelmUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "markUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "tetherUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyQ",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownQ",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyE",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownE",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyR",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownR",
+                            "value": 0.0
+                        }
+                    ]
+                },
+                {
+                    "id": "enemy",
+                    "champion": "Morgana",
+                    "control": "",
+                    "values": [
+                        {
+                            "name": "x",
+                            "value": 6.0
+                        },
+                        {
+                            "name": "y",
+                            "value": 2.0
+                        },
+                        {
+                            "name": "present",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "alive",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "controlled",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shielded",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "searing",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelm",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "rushCharges",
+                            "value": 3.0
+                        },
+                        {
+                            "name": "attackAt",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "respawn",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "hp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "maxHp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "mana",
+                            "value": 900.0
+                        },
+                        {
+                            "name": "ap",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "ad",
+                            "value": 110.0
+                        },
+                        {
+                            "name": "armor",
+                            "value": 60.0
+                        },
+                        {
+                            "name": "mr",
+                            "value": 40.0
+                        },
+                        {
+                            "name": "haste",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "controlUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shield",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shieldUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrier",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrierUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "novaUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "speedUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "slowUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelmUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "markUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "tetherUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyQ",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownQ",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyE",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownE",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyR",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownR",
+                            "value": 0.0
+                        }
+                    ]
+                }
+            ],
+            "events": []
+        },
+        {
+            "label": "exact_cost",
+            "action": "{\"op\":\"set\",\"unit\":\"enemy\",\"target\":\"\",\"field\":\"mana\",\"text\":\"\",\"label\":\"exact_cost\",\"champion\":\"\",\"slot\":\"\",\"x\":0.0,\"y\":0.0,\"value\":70.0,\"seconds\":0.0,\"dt\":0.0,\"red\":false}",
+            "time": 0.0,
+            "world": [
+                {
+                    "name": "time",
+                    "value": 0.0
+                },
+                {
+                    "name": "shots",
+                    "value": 0.0
+                },
+                {
+                    "name": "zones",
+                    "value": 0.0
+                },
+                {
+                    "name": "effects",
+                    "value": 0.0
+                },
+                {
+                    "name": "units",
+                    "value": 4.0
+                },
+                {
+                    "name": "kills",
+                    "value": 0.0
+                },
+                {
+                    "name": "deaths",
+                    "value": 0.0
+                },
+                {
+                    "name": "cs",
+                    "value": 0.0
+                },
+                {
+                    "name": "worldRoots",
+                    "value": 1.0
+                }
+            ],
+            "units": [
+                {
+                    "id": "player",
+                    "champion": "Ahri",
+                    "control": "",
+                    "values": [
+                        {
+                            "name": "x",
+                            "value": -6.0
+                        },
+                        {
+                            "name": "y",
+                            "value": -2.0
+                        },
+                        {
+                            "name": "present",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "alive",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "controlled",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shielded",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "searing",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelm",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "rushCharges",
+                            "value": 3.0
+                        },
+                        {
+                            "name": "attackAt",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "respawn",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "hp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "maxHp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "mana",
+                            "value": 900.0
+                        },
+                        {
+                            "name": "ap",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "ad",
+                            "value": 110.0
+                        },
+                        {
+                            "name": "armor",
+                            "value": 60.0
+                        },
+                        {
+                            "name": "mr",
+                            "value": 40.0
+                        },
+                        {
+                            "name": "haste",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "controlUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shield",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shieldUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrier",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrierUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "novaUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "speedUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "slowUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelmUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "markUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "tetherUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyQ",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownQ",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyE",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownE",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyR",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownR",
+                            "value": 0.0
+                        }
+                    ]
+                },
+                {
+                    "id": "enemy",
+                    "champion": "Morgana",
+                    "control": "",
+                    "values": [
+                        {
+                            "name": "x",
+                            "value": 6.0
+                        },
+                        {
+                            "name": "y",
+                            "value": 2.0
+                        },
+                        {
+                            "name": "present",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "alive",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "controlled",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shielded",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "searing",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelm",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "rushCharges",
+                            "value": 3.0
+                        },
+                        {
+                            "name": "attackAt",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "respawn",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "hp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "maxHp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "mana",
+                            "value": 70.0
+                        },
+                        {
+                            "name": "ap",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "ad",
+                            "value": 110.0
+                        },
+                        {
+                            "name": "armor",
+                            "value": 60.0
+                        },
+                        {
+                            "name": "mr",
+                            "value": 40.0
+                        },
+                        {
+                            "name": "haste",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "controlUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shield",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shieldUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrier",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrierUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "novaUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "speedUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "slowUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelmUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "markUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "tetherUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyQ",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownQ",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyE",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownE",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyR",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownR",
+                            "value": 0.0
+                        }
+                    ]
+                }
+            ],
+            "events": []
+        },
+        {
+            "label": "q_success",
+            "action": "{\"op\":\"cast\",\"unit\":\"player\",\"target\":\"\",\"field\":\"\",\"text\":\"\",\"label\":\"q_success\",\"champion\":\"\",\"slot\":\"Q\",\"x\":6.0,\"y\":2.0,\"value\":0.0,\"seconds\":0.0,\"dt\":0.0,\"red\":false}",
+            "time": 0.0,
+            "world": [
+                {
+                    "name": "time",
+                    "value": 0.0
+                },
+                {
+                    "name": "shots",
+                    "value": 1.0
+                },
+                {
+                    "name": "zones",
+                    "value": 0.0
+                },
+                {
+                    "name": "effects",
+                    "value": 0.0
+                },
+                {
+                    "name": "units",
+                    "value": 4.0
+                },
+                {
+                    "name": "kills",
+                    "value": 0.0
+                },
+                {
+                    "name": "deaths",
+                    "value": 0.0
+                },
+                {
+                    "name": "cs",
+                    "value": 0.0
+                },
+                {
+                    "name": "worldRoots",
+                    "value": 1.0
+                }
+            ],
+            "units": [
+                {
+                    "id": "player",
+                    "champion": "Ahri",
+                    "control": "",
+                    "values": [
+                        {
+                            "name": "x",
+                            "value": -6.0
+                        },
+                        {
+                            "name": "y",
+                            "value": -2.0
+                        },
+                        {
+                            "name": "present",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "alive",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "controlled",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shielded",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "searing",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelm",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "rushCharges",
+                            "value": 3.0
+                        },
+                        {
+                            "name": "attackAt",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "respawn",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "hp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "maxHp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "mana",
+                            "value": 845.0
+                        },
+                        {
+                            "name": "ap",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "ad",
+                            "value": 110.0
+                        },
+                        {
+                            "name": "armor",
+                            "value": 60.0
+                        },
+                        {
+                            "name": "mr",
+                            "value": 40.0
+                        },
+                        {
+                            "name": "haste",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "controlUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shield",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shieldUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrier",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrierUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "novaUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "speedUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "slowUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelmUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "markUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "tetherUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyQ",
+                            "value": 7.0
+                        },
+                        {
+                            "name": "cooldownQ",
+                            "value": 7.0
+                        },
+                        {
+                            "name": "readyW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyE",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownE",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyR",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownR",
+                            "value": 0.0
+                        }
+                    ]
+                },
+                {
+                    "id": "enemy",
+                    "champion": "Morgana",
+                    "control": "",
+                    "values": [
+                        {
+                            "name": "x",
+                            "value": 6.0
+                        },
+                        {
+                            "name": "y",
+                            "value": 2.0
+                        },
+                        {
+                            "name": "present",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "alive",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "controlled",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shielded",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "searing",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelm",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "rushCharges",
+                            "value": 3.0
+                        },
+                        {
+                            "name": "attackAt",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "respawn",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "hp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "maxHp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "mana",
+                            "value": 70.0
+                        },
+                        {
+                            "name": "ap",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "ad",
+                            "value": 110.0
+                        },
+                        {
+                            "name": "armor",
+                            "value": 60.0
+                        },
+                        {
+                            "name": "mr",
+                            "value": 40.0
+                        },
+                        {
+                            "name": "haste",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "controlUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shield",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shieldUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrier",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrierUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "novaUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "speedUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "slowUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelmUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "markUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "tetherUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyQ",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownQ",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyE",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownE",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyR",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownR",
+                            "value": 0.0
+                        }
+                    ]
+                }
+            ],
+            "events": [
+                "0.00s  Ahri casts Orb of Deception"
+            ]
+        },
+        {
+            "label": "q_rejected",
+            "action": "{\"op\":\"cast\",\"unit\":\"player\",\"target\":\"\",\"field\":\"\",\"text\":\"\",\"label\":\"q_rejected\",\"champion\":\"\",\"slot\":\"Q\",\"x\":6.0,\"y\":2.0,\"value\":0.0,\"seconds\":0.0,\"dt\":0.0,\"red\":false}",
+            "time": 0.0,
+            "world": [
+                {
+                    "name": "time",
+                    "value": 0.0
+                },
+                {
+                    "name": "shots",
+                    "value": 1.0
+                },
+                {
+                    "name": "zones",
+                    "value": 0.0
+                },
+                {
+                    "name": "effects",
+                    "value": 0.0
+                },
+                {
+                    "name": "units",
+                    "value": 4.0
+                },
+                {
+                    "name": "kills",
+                    "value": 0.0
+                },
+                {
+                    "name": "deaths",
+                    "value": 0.0
+                },
+                {
+                    "name": "cs",
+                    "value": 0.0
+                },
+                {
+                    "name": "worldRoots",
+                    "value": 1.0
+                }
+            ],
+            "units": [
+                {
+                    "id": "player",
+                    "champion": "Ahri",
+                    "control": "",
+                    "values": [
+                        {
+                            "name": "x",
+                            "value": -6.0
+                        },
+                        {
+                            "name": "y",
+                            "value": -2.0
+                        },
+                        {
+                            "name": "present",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "alive",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "controlled",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shielded",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "searing",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelm",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "rushCharges",
+                            "value": 3.0
+                        },
+                        {
+                            "name": "attackAt",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "respawn",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "hp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "maxHp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "mana",
+                            "value": 845.0
+                        },
+                        {
+                            "name": "ap",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "ad",
+                            "value": 110.0
+                        },
+                        {
+                            "name": "armor",
+                            "value": 60.0
+                        },
+                        {
+                            "name": "mr",
+                            "value": 40.0
+                        },
+                        {
+                            "name": "haste",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "controlUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shield",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shieldUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrier",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrierUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "novaUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "speedUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "slowUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelmUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "markUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "tetherUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyQ",
+                            "value": 7.0
+                        },
+                        {
+                            "name": "cooldownQ",
+                            "value": 7.0
+                        },
+                        {
+                            "name": "readyW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyE",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownE",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyR",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownR",
+                            "value": 0.0
+                        }
+                    ]
+                },
+                {
+                    "id": "enemy",
+                    "champion": "Morgana",
+                    "control": "",
+                    "values": [
+                        {
+                            "name": "x",
+                            "value": 6.0
+                        },
+                        {
+                            "name": "y",
+                            "value": 2.0
+                        },
+                        {
+                            "name": "present",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "alive",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "controlled",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shielded",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "searing",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelm",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "rushCharges",
+                            "value": 3.0
+                        },
+                        {
+                            "name": "attackAt",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "respawn",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "hp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "maxHp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "mana",
+                            "value": 70.0
+                        },
+                        {
+                            "name": "ap",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "ad",
+                            "value": 110.0
+                        },
+                        {
+                            "name": "armor",
+                            "value": 60.0
+                        },
+                        {
+                            "name": "mr",
+                            "value": 40.0
+                        },
+                        {
+                            "name": "haste",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "controlUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shield",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shieldUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrier",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrierUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "novaUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "speedUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "slowUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelmUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "markUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "tetherUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyQ",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownQ",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyE",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownE",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyR",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownR",
+                            "value": 0.0
+                        }
+                    ]
+                }
+            ],
+            "events": [
+                "0.00s  Ahri casts Orb of Deception"
+            ]
+        },
+        {
+            "label": "e_success",
+            "action": "{\"op\":\"cast\",\"unit\":\"enemy\",\"target\":\"\",\"field\":\"\",\"text\":\"\",\"label\":\"e_success\",\"champion\":\"\",\"slot\":\"E\",\"x\":6.0,\"y\":2.0,\"value\":0.0,\"seconds\":0.0,\"dt\":0.0,\"red\":false}",
+            "time": 0.0,
+            "world": [
+                {
+                    "name": "time",
+                    "value": 0.0
+                },
+                {
+                    "name": "shots",
+                    "value": 1.0
+                },
+                {
+                    "name": "zones",
+                    "value": 0.0
+                },
+                {
+                    "name": "effects",
+                    "value": 1.0
+                },
+                {
+                    "name": "units",
+                    "value": 4.0
+                },
+                {
+                    "name": "kills",
+                    "value": 0.0
+                },
+                {
+                    "name": "deaths",
+                    "value": 0.0
+                },
+                {
+                    "name": "cs",
+                    "value": 0.0
+                },
+                {
+                    "name": "worldRoots",
+                    "value": 1.0
+                }
+            ],
+            "units": [
+                {
+                    "id": "player",
+                    "champion": "Ahri",
+                    "control": "",
+                    "values": [
+                        {
+                            "name": "x",
+                            "value": -6.0
+                        },
+                        {
+                            "name": "y",
+                            "value": -2.0
+                        },
+                        {
+                            "name": "present",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "alive",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "controlled",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shielded",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "searing",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelm",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "rushCharges",
+                            "value": 3.0
+                        },
+                        {
+                            "name": "attackAt",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "respawn",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "hp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "maxHp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "mana",
+                            "value": 845.0
+                        },
+                        {
+                            "name": "ap",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "ad",
+                            "value": 110.0
+                        },
+                        {
+                            "name": "armor",
+                            "value": 60.0
+                        },
+                        {
+                            "name": "mr",
+                            "value": 40.0
+                        },
+                        {
+                            "name": "haste",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "controlUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shield",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shieldUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrier",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrierUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "novaUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "speedUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "slowUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelmUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "markUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "tetherUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyQ",
+                            "value": 7.0
+                        },
+                        {
+                            "name": "cooldownQ",
+                            "value": 7.0
+                        },
+                        {
+                            "name": "readyW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyE",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownE",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyR",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownR",
+                            "value": 0.0
+                        }
+                    ]
+                },
+                {
+                    "id": "enemy",
+                    "champion": "Morgana",
+                    "control": "",
+                    "values": [
+                        {
+                            "name": "x",
+                            "value": 6.0
+                        },
+                        {
+                            "name": "y",
+                            "value": 2.0
+                        },
+                        {
+                            "name": "present",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "alive",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "controlled",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shielded",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "searing",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelm",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "rushCharges",
+                            "value": 3.0
+                        },
+                        {
+                            "name": "attackAt",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "respawn",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "hp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "maxHp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "mana",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "ap",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "ad",
+                            "value": 110.0
+                        },
+                        {
+                            "name": "armor",
+                            "value": 60.0
+                        },
+                        {
+                            "name": "mr",
+                            "value": 40.0
+                        },
+                        {
+                            "name": "haste",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "controlUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shield",
+                            "value": 210.0
+                        },
+                        {
+                            "name": "shieldUntil",
+                            "value": 5.0
+                        },
+                        {
+                            "name": "barrier",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrierUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "novaUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "speedUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "slowUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelmUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "markUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "tetherUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyQ",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownQ",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyE",
+                            "value": 14.0
+                        },
+                        {
+                            "name": "cooldownE",
+                            "value": 14.0
+                        },
+                        {
+                            "name": "readyR",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownR",
+                            "value": 0.0
+                        }
+                    ]
+                }
+            ],
+            "events": [
+                "0.00s  Morgana casts Black Shield",
+                "0.00s  Ahri casts Orb of Deception"
+            ]
+        },
+        {
+            "label": "e_rejected",
+            "action": "{\"op\":\"cast\",\"unit\":\"enemy\",\"target\":\"\",\"field\":\"\",\"text\":\"\",\"label\":\"e_rejected\",\"champion\":\"\",\"slot\":\"E\",\"x\":6.0,\"y\":2.0,\"value\":0.0,\"seconds\":0.0,\"dt\":0.0,\"red\":false}",
+            "time": 0.0,
+            "world": [
+                {
+                    "name": "time",
+                    "value": 0.0
+                },
+                {
+                    "name": "shots",
+                    "value": 1.0
+                },
+                {
+                    "name": "zones",
+                    "value": 0.0
+                },
+                {
+                    "name": "effects",
+                    "value": 1.0
+                },
+                {
+                    "name": "units",
+                    "value": 4.0
+                },
+                {
+                    "name": "kills",
+                    "value": 0.0
+                },
+                {
+                    "name": "deaths",
+                    "value": 0.0
+                },
+                {
+                    "name": "cs",
+                    "value": 0.0
+                },
+                {
+                    "name": "worldRoots",
+                    "value": 1.0
+                }
+            ],
+            "units": [
+                {
+                    "id": "player",
+                    "champion": "Ahri",
+                    "control": "",
+                    "values": [
+                        {
+                            "name": "x",
+                            "value": -6.0
+                        },
+                        {
+                            "name": "y",
+                            "value": -2.0
+                        },
+                        {
+                            "name": "present",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "alive",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "controlled",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shielded",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "searing",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelm",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "rushCharges",
+                            "value": 3.0
+                        },
+                        {
+                            "name": "attackAt",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "respawn",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "hp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "maxHp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "mana",
+                            "value": 845.0
+                        },
+                        {
+                            "name": "ap",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "ad",
+                            "value": 110.0
+                        },
+                        {
+                            "name": "armor",
+                            "value": 60.0
+                        },
+                        {
+                            "name": "mr",
+                            "value": 40.0
+                        },
+                        {
+                            "name": "haste",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "controlUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shield",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shieldUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrier",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrierUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "novaUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "speedUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "slowUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelmUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "markUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "tetherUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyQ",
+                            "value": 7.0
+                        },
+                        {
+                            "name": "cooldownQ",
+                            "value": 7.0
+                        },
+                        {
+                            "name": "readyW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyE",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownE",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyR",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownR",
+                            "value": 0.0
+                        }
+                    ]
+                },
+                {
+                    "id": "enemy",
+                    "champion": "Morgana",
+                    "control": "",
+                    "values": [
+                        {
+                            "name": "x",
+                            "value": 6.0
+                        },
+                        {
+                            "name": "y",
+                            "value": 2.0
+                        },
+                        {
+                            "name": "present",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "alive",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "controlled",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shielded",
+                            "value": 1.0
+                        },
+                        {
+                            "name": "searing",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelm",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "rushCharges",
+                            "value": 3.0
+                        },
+                        {
+                            "name": "attackAt",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "respawn",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "hp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "maxHp",
+                            "value": 1800.0
+                        },
+                        {
+                            "name": "mana",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "ap",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "ad",
+                            "value": 110.0
+                        },
+                        {
+                            "name": "armor",
+                            "value": 60.0
+                        },
+                        {
+                            "name": "mr",
+                            "value": 40.0
+                        },
+                        {
+                            "name": "haste",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "controlUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "shield",
+                            "value": 210.0
+                        },
+                        {
+                            "name": "shieldUntil",
+                            "value": 5.0
+                        },
+                        {
+                            "name": "barrier",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "barrierUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "novaUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "speedUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "slowUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "overwhelmUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "markUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "tetherUntil",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyQ",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownQ",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownW",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "readyE",
+                            "value": 14.0
+                        },
+                        {
+                            "name": "cooldownE",
+                            "value": 14.0
+                        },
+                        {
+                            "name": "readyR",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "cooldownR",
+                            "value": 0.0
+                        }
+                    ]
+                }
+            ],
+            "events": [
+                "0.00s  Morgana casts Black Shield",
+                "0.00s  Ahri casts Orb of Deception"
+            ]
+        }
+    ],
+    "assertions": [
+        "PASS Q charges listed cost once: observed 845 eq expected 845 @ q_success",
+        "PASS Q starts listed cooldown: observed 7 eq expected 7 @ q_success",
+        "PASS Q creates projectile: observed 1 eq expected 1 @ q_success",
+        "PASS Cooldown rejection preserves mana: observed 845 eq expected 845 @ q_rejected",
+        "PASS Cooldown rejection preserves ready time: observed 7 eq expected 7 @ q_rejected",
+        "PASS Rejected Q adds no projectile: observed 1 eq expected 1 @ q_rejected",
+        "PASS Exact-cost E charges once: observed 0 eq expected 0 @ e_success",
+        "PASS Exact-cost E grants shield: observed 210 gt expected 0 @ e_success",
+        "PASS E starts listed cooldown: observed 14 eq expected 14 @ e_success",
+        "PASS Rejected E preserves mana: observed 0 eq expected 0 @ e_rejected",
+        "PASS Rejected E preserves ready time: observed 14 eq expected 14 @ e_rejected",
+        "PASS Rejected E preserves shield: observed 210 eq expected 210 @ e_rejected"
+    ]
+}

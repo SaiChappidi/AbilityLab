@@ -1,0 +1,10 @@
+Actual arena casts charge listed mana once and cooldown rejections preserve state: 9/9
+PASS Shield cast spends listed 70 mana: observed 830 eq expected 830 @ shield_cast
+PASS Successful E creates shield: observed 1 eq expected 1 @ shield_cast
+PASS Successful E starts listed cooldown: observed 14 eq expected 14 @ shield_cast
+PASS Immediate rejection preserves mana: observed 830 eq expected 830 @ immediate_recast
+PASS Immediate rejection preserves deadline: observed 14 eq expected 14 @ immediate_recast
+PASS Delayed rejection preserves mana: observed 832.9993 eq expected 832.9993 @ delayed_recast
+PASS Delayed rejection preserves original deadline: observed 14 eq expected 14 @ delayed_recast
+PASS Independent Q spends listed 55 mana: observed 845 eq expected 845 @ independent_q
+PASS Independent Q creates projectile: observed 1 eq expected 1 @ independent_q

@@ -1,0 +1,39 @@
+Arena integration smoke checks: 38/38
+PASS movement approaches right-click goal
+PASS root blocks walking
+PASS attack creates targeted projectile
+PASS targeted attack damages enemy
+PASS Q aims at supplied cursor
+PASS cooldown rejects recast without mana charge
+PASS insufficient mana preserves cooldown
+PASS skillshot hits nearer minion before farther champion
+PASS swept Morgana Q collision applies root
+PASS rooted E preserves position mana and cooldown
+PASS post-expiry E blinks
+PASS active Black Shield rejects control
+PASS expired shield permits control
+PASS charm moves toward opposing champion
+PASS turret remains stationary
+PASS turret acquires and damages opposing target
+PASS minion advances lane
+PASS minion acquires and damages opposing target
+PASS minion death rewards CS
+PASS lethal damage starts respawn
+PASS dead caster cannot cast
+PASS respawn resets health mana control and cooldowns
+PASS Ahri R consumes exactly three charges
+PASS Ahri R refreshes charges after ultimate cooldown
+PASS Morgana W creates zone
+PASS Morgana W damages units inside its zone
+PASS expired zone removed
+PASS Mel Q launches six aimed burst missiles
+PASS Mel Q bursts build Overwhelm
+PASS Mel cast banks Searing Brilliance bolts
+PASS Mel W destroys a real incoming binding without root
+PASS Mel W breaks nearby enemy shields
+PASS Mel W retaliates with real damage
+PASS Mel W barrier grants temporary speed
+PASS Mel E applies root and solar slow field
+PASS Mel R detonates real arena marks
+PASS Mel empowered attack consumes nine banked bolts
+PASS reset clears projectiles zones effects scores and resources

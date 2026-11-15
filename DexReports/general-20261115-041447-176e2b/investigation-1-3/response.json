@@ -1,0 +1,31 @@
+{
+  "analysis": "ChampionKit lists Morgana E at 70 mana with a 14-second cooldown. DexArena.Cast calls Combat.BeginCast, which currently subtracts twice ChampionKit.Mana. Unit.mana aliases Fighter.mana. This source suggests double charging; actual arena execution is still needed. The scenario checks a successful shield cast, a cooldown recast after time has elapsed, and an insufficient-mana rejection.",
+  "needsReview": false,
+  "requests": [],
+  "scenario": {
+    "title": "Arena cast mana charge and rejection controls",
+    "expectedBehavior": "Morgana E creates its shield, spends exactly 70 mana, and starts a 14-second cooldown. A rejected cooldown recast changes neither mana nor the cooldown deadline. An unaffordable Q changes neither mana nor cooldown and creates no projectile.",
+    "player": "Morgana",
+    "opponent": "Ahri",
+    "seed": 2718,
+    "actions": [
+      {"op":"set","unit":"enemy","target":"","field":"mana","text":"","label":"low_mana","champion":"","slot":"","x":0,"y":0,"value":54,"seconds":0,"dt":0,"red":false},
+      {"op":"cast","unit":"enemy","target":"","field":"","text":"","label":"unaffordable_q","champion":"","slot":"Q","x":-6,"y":-2,"value":0,"seconds":0,"dt":0,"red":false},
+      {"op":"cast","unit":"player","target":"","field":"","text":"","label":"successful_e","champion":"","slot":"E","x":-6,"y":-2,"value":0,"seconds":0,"dt":0,"red":false},
+      {"op":"advance","unit":"","target":"","field":"","text":"","label":"before_recast","champion":"","slot":"","x":0,"y":0,"value":0,"seconds":0.5,"dt":0.016666667,"red":false},
+      {"op":"cast","unit":"player","target":"","field":"","text":"","label":"cooldown_recast","champion":"","slot":"E","x":-6,"y":-2,"value":0,"seconds":0,"dt":0,"red":false}
+    ],
+    "checks": [
+      {"label":"unaffordable cast preserves mana","at":"unaffordable_q","unit":"enemy","field":"mana","relation":"eq","compareAt":"low_mana","compareUnit":"enemy","compareField":"mana","value":0,"tolerance":0.001},
+      {"label":"unaffordable cast preserves readiness","at":"unaffordable_q","unit":"enemy","field":"readyQ","relation":"eq","compareAt":"low_mana","compareUnit":"enemy","compareField":"readyQ","value":0,"tolerance":0.001},
+      {"label":"unaffordable cast emits no projectile","at":"unaffordable_q","unit":"world","field":"shots","relation":"eq","compareAt":"low_mana","compareUnit":"world","compareField":"shots","value":0,"tolerance":0.001},
+      {"label":"successful E charges listed cost once","at":"successful_e","unit":"player","field":"mana","relation":"eq","compareAt":"initial","compareUnit":"player","compareField":"mana","value":-70,"tolerance":0.001},
+      {"label":"successful E grants shield","at":"successful_e","unit":"player","field":"shielded","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":1,"tolerance":0.001},
+      {"label":"successful E starts listed cooldown","at":"successful_e","unit":"player","field":"cooldownE","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":14,"tolerance":0.001},
+      {"label":"normal mana regeneration continues","at":"before_recast","unit":"player","field":"mana","relation":"eq","compareAt":"successful_e","compareUnit":"player","compareField":"mana","value":3,"tolerance":0.01},
+      {"label":"cooldown recast spends no mana","at":"cooldown_recast","unit":"player","field":"mana","relation":"eq","compareAt":"before_recast","compareUnit":"player","compareField":"mana","value":0,"tolerance":0.001},
+      {"label":"cooldown recast preserves deadline","at":"cooldown_recast","unit":"player","field":"readyE","relation":"eq","compareAt":"successful_e","compareUnit":"player","compareField":"readyE","value":0,"tolerance":0.001},
+      {"label":"cooldown recast does not refresh shield duration","at":"cooldown_recast","unit":"player","field":"shieldUntil","relation":"eq","compareAt":"successful_e","compareUnit":"player","compareField":"shieldUntil","value":0,"tolerance":0.001}
+    ]
+  }
+}

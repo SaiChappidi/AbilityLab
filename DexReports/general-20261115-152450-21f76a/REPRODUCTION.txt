@@ -1,0 +1,36 @@
+Ahri orb hits once per direction across simulation step sizes
+Seed: 42 / Ahri vs Morgana
+Expected: A stationary enemy receives exactly one outward hit and one return hit at both 0.01-second and 0.1-second steps. An off-path enemy remains unharmed, and the orb disappears after returning.
+
+1. Place player at (-4, 0)
+2. Place enemy at (0, 0)
+3. Set initial enemy.mr = 100
+4. Spawn fineControl (Morgana, red) at (0, 3)
+5. Observe state → observe [fineBefore]
+6. Cast player Q toward (4, 0) → observe [fineCast]
+7. Advance 0.4s at dt=0.01 → observe [fineOutward]
+8. Advance 1.4s at dt=0.01 → observe [fineComplete]
+9. Reset the actual arena
+10. Place player at (-4, 0)
+11. Place enemy at (0, 0)
+12. Set initial enemy.mr = 100
+13. Spawn coarseControl (Morgana, red) at (0, 3)
+14. Observe state → observe [coarseBefore]
+15. Cast player Q toward (4, 0) → observe [coarseCast]
+16. Advance 0.4s at dt=0.1 → observe [coarseOutward]
+17. Advance 1.4s at dt=0.1 → observe [coarseComplete]
+
+Assertions:
+Fine cast launches one orb @ fineCast: world.shots eq 1
+Fine outward hits once @ fineOutward: enemy.hp eq -50 + fineBefore.enemy.hp
+Fine full flight hits once each direction @ fineComplete: enemy.hp eq -150 + fineBefore.enemy.hp
+Fine off-path control unharmed @ fineComplete: fineControl.hp eq 0 + fineBefore.fineControl.hp
+Fine target stays stationary @ fineComplete: enemy.x eq 0
+Fine orb completes return @ fineComplete: world.shots eq 0
+Coarse cast launches one orb @ coarseCast: world.shots eq 1
+Coarse outward hits once @ coarseOutward: enemy.hp eq -50 + coarseBefore.enemy.hp
+Coarse full flight hits once each direction @ coarseComplete: enemy.hp eq -150 + coarseBefore.enemy.hp
+Coarse off-path control unharmed @ coarseComplete: coarseControl.hp eq 0 + coarseBefore.coarseControl.hp
+Coarse target stays stationary @ coarseComplete: enemy.x eq 0
+Coarse orb completes return @ coarseComplete: world.shots eq 0
+Completed damage independent of step size @ coarseComplete: enemy.hp eq 0 + fineComplete.enemy.hp

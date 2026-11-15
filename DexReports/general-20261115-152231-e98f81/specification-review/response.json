@@ -1,0 +1,90 @@
+{
+  "clearExpectedBehavior": true,
+  "rationale": "The report explicitly requires one hit per enemy on each leg, independent of step size. Original Cast supplies 100 + 0.5*AP damage; zero AP and MR therefore justify 100 damage per leg without changing balance. Speed 11 and range 8 place the 0.5-second checkpoint after outward contact and before return contact; 1.6 seconds covers both legs. Initial conditions are established before casting. The trace reproduces excess damage and step dependence. Source clears hit history on every collision instead of recording the victim, allowing repeated overlap hits. These checks witness the reported case, not all enemies or all step sizes.",
+  "checks": [
+    {
+      "label": "normal outward hits once",
+      "at": "normalOutward",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "normalBaseline",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": -100,
+      "tolerance": 0.01
+    },
+    {
+      "label": "normal return hits once",
+      "at": "normalComplete",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "normalOutward",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": -100,
+      "tolerance": 0.01
+    },
+    {
+      "label": "fine outward hits once",
+      "at": "fineOutward",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "fineBaseline",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": -100,
+      "tolerance": 0.01
+    },
+    {
+      "label": "fine return hits once",
+      "at": "fineComplete",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "fineOutward",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": -100,
+      "tolerance": 0.01
+    },
+    {
+      "label": "outward result independent of step size",
+      "at": "fineOutward",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "normalOutward",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": 0,
+      "tolerance": 0.01
+    },
+    {
+      "label": "complete result independent of step size",
+      "at": "fineComplete",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "normalComplete",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": 0,
+      "tolerance": 0.01
+    },
+    {
+      "label": "off-path enemy remains unharmed",
+      "at": "normalComplete",
+      "unit": "offpath",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "normalBaseline",
+      "compareUnit": "offpath",
+      "compareField": "hp",
+      "value": 0,
+      "tolerance": 0.01
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+Mel Rebuttal barrier lifetime and damage controls: 11/11
+PASS Cast grants barrier: observed 180 gt expected 0 @ cast
+PASS Barrier survives next tick unchanged: observed 180 eq expected 180 @ next_tick
+PASS Next tick precedes barrier deadline: observed 0.02 lt expected 2 @ next_tick
+PASS Nova deadline has passed: observed 1 gt expected 0.75 @ nova_expired
+PASS Barrier survives nova expiration: observed 180 eq expected 180 @ nova_expired
+PASS Barrier remains near duration end: observed 180 eq expected 180 @ before_expiry
+PASS Barrier expires: observed 0 eq expected 0 @ expired
+PASS No damage during lifetime observation: observed 1800 eq expected 1800 @ expired
+PASS Expired barrier permits mitigated damage: observed 1700 eq expected 1700 @ expired_damage
+PASS Active barrier absorbs mitigated damage: observed 80 eq expected 80 @ active_damage
+PASS Active barrier protects health: observed 1800 eq expected 1800 @ active_damage

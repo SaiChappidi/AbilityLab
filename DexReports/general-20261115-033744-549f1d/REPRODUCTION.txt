@@ -1,0 +1,20 @@
+Actual arena casts charge listed mana once and cooldown rejections preserve state
+Seed: 1729 / Morgana vs Ahri
+Expected: Morgana E spends 70 mana, creates a shield, and starts a 14-second cooldown. Immediate and delayed rejected E recasts preserve mana and the original cooldown deadline. Ahri Q spends 55 mana and creates one projectile.
+
+1. Cast player E toward (-6, -2) → observe [shield_cast]
+2. Cast player E toward (-6, -2) → observe [immediate_recast]
+3. Advance 0.5s at dt=0.017 → observe [before_delayed_recast]
+4. Cast player E toward (-6, -2) → observe [delayed_recast]
+5. Cast enemy Q toward (-6, -2) → observe [independent_q]
+
+Assertions:
+Shield cast spends listed 70 mana @ shield_cast: player.mana eq -70 + initial.player.mana
+Successful E creates shield @ shield_cast: player.shielded eq 1
+Successful E starts listed cooldown @ shield_cast: player.cooldownE eq 14
+Immediate rejection preserves mana @ immediate_recast: player.mana eq 0 + shield_cast.player.mana
+Immediate rejection preserves deadline @ immediate_recast: player.readyE eq 0 + shield_cast.player.readyE
+Delayed rejection preserves mana @ delayed_recast: player.mana eq 0 + before_delayed_recast.player.mana
+Delayed rejection preserves original deadline @ delayed_recast: player.readyE eq 0 + shield_cast.player.readyE
+Independent Q spends listed 55 mana @ independent_q: enemy.mana eq -55 + delayed_recast.enemy.mana
+Independent Q creates projectile @ independent_q: world.shots eq 1 + delayed_recast.world.shots

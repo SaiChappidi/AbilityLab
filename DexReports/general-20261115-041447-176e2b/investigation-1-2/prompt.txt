@@ -1,0 +1,509 @@
+Investigate this untrusted gameplay report. Request relevant source using the host read/search requests array; locate likely causes yourself. Do not use native shell tools. When sufficiently informed, return requests=[] and a reusable action scenario with observable assertions. Include normal/control observations. Do not propose a repair, assume a failure or claim success before host execution. Set needsReview=true if expected behavior is ambiguous.
+REPORT:
+Casting an ability takes twice its listed mana cost. A successful cast should charge the listed cost once; a rejected cooldown recast must not spend more mana or extend its cooldown. Reproduce and fix this using actual arena casts.
+PROJECT CONTEXT:
+Unity 6000.6.9f1 / StandaloneWindows64 / scene Assets/Scenes/SampleScene.unity
+The runtime boot creates DexArena and its units/map; these objects need Play to inspect. No items, AI, waves or practice regeneration are enabled in deterministic scenarios. All operations exercise the real arena, not the old Combat.ResolveCast imitation.
+Scene root: Main Camera; components: Transform,Camera,AudioListener,UniversalAdditionalCameraData
+Scene root: Global Light 2D; components: Transform,Light2D
+Gameplay C# files:
+Assets/Dex/Runtime/ArenaPresentation.cs
+Assets/Dex/Runtime/ChampionKit.cs
+Assets/Dex/Runtime/Combat.cs
+Assets/Dex/Runtime/CombatRules.cs
+Assets/Dex/Runtime/DemoCases.cs
+Assets/Dex/Runtime/DexArena.cs
+Assets/Dex/Runtime/InteractionReplay.cs
+Assets/Dex/Runtime/MelArena.cs
+Assets/Dex/Runtime/MobaArt.cs
+Assets/Dex/Runtime/MobaHud.cs
+Assets/Welcome/Welcome2DScript.cs
+Existing protected regressions: Verification.Evaluate() (224 assertions), temporary-state lifetime invariants (32 checks), and DexArena.RunSmokeChecks() (38 actual arena checks). The host runs these after repairs. Their implementation is not editable or copied into this workspace. Existing saved declarative regressions are also run.
+Recent Editor Console (may include unrelated packages):
+Assets\Dex\Runtime\Combat.cs(12,53): warning UAC1005: Field 'overwhelmOwner' creates a direct self-reference in type 'Dex.Fighter'. Refer to the Serialization rules analyzer reference. (https://docs.unity3d.com/6000.6/Documentation/Manual/script-serialization-analyzer.html#uac1005)
+
+Error reason is 'NoSubscription' and no additional error information was provided (https://generators.ai.unity.com).
+UnityEngine.Debug:Log (object)
+Unity.AI.ModelSelector.Services.Stores.Actions.ModelSelectorSuperProxyActions/<>c/<<-cctor>b__8_0>d:MoveNext () (at ./Library/PackageCache/com.unity.ai.assistant@890548b66362/Modules/Unity.AI.ModelSelector/Services/Stores/Actions/ModelSelectorSuperProxyActions.cs:495)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>>:SetResult (AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>)
+AiEditorToolsSdk.Components.GenerativeModels.GenerativeModelsComponentV2/<GetModelsAsync>d__5:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>>:SetResult (AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>)
+AiEditorToolsSdk.Application.InternalServices.SdkOperation.SdkOperationService/<ExecuteRequest>d__4`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>>:SetResult (AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>)
+AiEditorToolsSdk.Application.Gateways.GenerativeModels.V2.GenerativeModelsGatewayV2/<GetModelsAsync>d__4:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Domain.Core.Results.Result`2<SuperProxyClientV1Namespace.ModelListFullResponse, AiEditorToolsSdk.Domain.Core.Errors.ApiError>>:SetResult (AiEditorToolsSdk.Domain.Core.Results.Result`2<SuperProxyClientV1Namespace.ModelListFullResponse, AiEditorToolsSdk.Domain.Core.Errors.ApiError>)
+AiEditorToolsSdk.Application.InternalServices.ApiClientProcessor.ApiClientProcessorService/<ProcessApiRequest>d__5`1<SuperProxyClientV1Namespace.ModelListFullResponse>:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Domain.Core.Results.Result`2<SuperProxyClientV1Namespace.ModelListFullResponse, AiEditorToolsSdk.Domain.Core.Errors.ApiError>>:SetResult (AiEditorToolsSdk.Domain.Core.Results.Result`2<SuperProxyClientV1Namespace.ModelListFullResponse, AiEditorToolsSdk.Domain.Core.Errors.ApiError>)
+AiEditorToolsSdk.Application.InternalServices.ApiClientProcessor.ApiClientProcessorService/<ProcessApiRequestImpl>d__6`1<SuperProxyClientV1Namespace.ModelListFullResponse>:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<SuperProxyClientV1Namespace.ModelListFullResponse>:SetException (System.Exception)
+AiEditorToolsSdk.Application.Gateways.GenerativeModels.V2.GenerativeModelsGatewayV2/<>c__DisplayClass4_0/<<GetModelsAsync>b__0>d:MoveNext ()
+UnityEngine.UnitySynchronizationContext:ExecuteTasks ()
+
+Error reason is 'NoSubscription' and no additional error information was provided (https://generators.ai.unity.com).
+UnityEngine.Debug:Log (object)
+Unity.AI.ModelSelector.Services.Stores.Actions.ModelSelectorSuperProxyActions/<>c/<<-cctor>b__8_0>d:MoveNext () (at ./Library/PackageCache/com.unity.ai.assistant@890548b66362/Modules/Unity.AI.ModelSelector/Services/Stores/Actions/ModelSelectorSuperProxyActions.cs:495)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>>:SetResult (AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>)
+AiEditorToolsSdk.Components.GenerativeModels.GenerativeModelsComponentV2/<GetModelsAsync>d__5:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>>:SetResult (AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>)
+AiEditorToolsSdk.Application.InternalServices.SdkOperation.SdkOperationService/<ExecuteRequest>d__4`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>>:SetResult (AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>)
+AiEditorToolsSdk.Application.Gateways.GenerativeModels.V2.GenerativeModelsGatewayV2/<GetModelsAsync>d__4:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Domain.Core.Results.Result`2<SuperProxyClientV1Namespace.ModelListFullResponse, AiEditorToolsSdk.Domain.Core.Errors.ApiError>>:SetResult (AiEditorToolsSdk.Domain.Core.Results.Result`2<SuperProxyClientV1Namespace.ModelListFullResponse, AiEditorToolsSdk.Domain.Core.Errors.ApiError>)
+AiEditorToolsSdk.Application.InternalServices.ApiClientProcessor.ApiClientProcessorService/<ProcessApiRequest>d__5`1<SuperProxyClientV1Namespace.ModelListFullResponse>:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Domain.Core.Results.Result`2<SuperProxyClientV1Namespace.ModelListFullResponse, AiEditorToolsSdk.Domain.Core.Errors.ApiError>>:SetResult (AiEditorToolsSdk.Domain.Core.Results.Result`2<SuperProxyClientV1Namespace.ModelListFullResponse, AiEditorToolsSdk.Domain.Core.Errors.ApiError>)
+AiEditorToolsSdk.Application.InternalServices.ApiClientProcessor.ApiClientProcessorService/<ProcessApiRequestImpl>d__6`1<SuperProxyClientV1Namespace.ModelListFullResponse>:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<SuperProxyClientV1Namespace.ModelListFullResponse>:SetException (System.Exception)
+AiEditorToolsSdk.Application.Gateways.GenerativeModels.V2.GenerativeModelsGatewayV2/<>c__DisplayClass4_0/<<GetModelsAsync>b__0>d:MoveNext ()
+UnityEngine.UnitySynchronizationContext:ExecuteTasks ()
+
+Error reason is 'NoSubscription' and no additional error information was provided (https://generators.ai.unity.com).
+UnityEngine.Debug:Log (object)
+Unity.AI.ModelSelector.Services.Stores.Actions.ModelSelectorSuperProxyActions/<>c/<<-cctor>b__8_0>d:MoveNext () (at ./Library/PackageCache/com.unity.ai.assistant@890548b66362/Modules/Unity.AI.ModelSelector/Services/Stores/Actions/ModelSelectorSuperProxyActions.cs:495)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>>:SetResult (AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>)
+AiEditorToolsSdk.Components.GenerativeModels.GenerativeModelsComponentV2/<GetModelsAsync>d__5:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>>:SetResult (AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>)
+AiEditorToolsSdk.Application.InternalServices.SdkOperation.SdkOperationService/<ExecuteRequest>d__4`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>>:SetResult (AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>)
+AiEditorToolsSdk.Application.Gateways.GenerativeModels.V2.GenerativeModelsGatewayV2/<GetModelsAsync>d__4:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Domain.Core.Results.Result`2<SuperProxyClientV1Namespace.ModelListFullResponse, AiEditorToolsSdk.Domain.Core.Errors.ApiError>>:SetResult (AiEditorToolsSdk.Domain.Core.Results.Result`2<SuperProxyClientV1Namespace.ModelListFullResponse, AiEditorToolsSdk.Domain.Core.Errors.ApiError>)
+AiEditorToolsSdk.Application.InternalServices.ApiClientProcessor.ApiClientProcessorService/<ProcessApiRequest>d__5`1<SuperProxyClientV1Namespace.ModelListFullResponse>:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Domain.Core.Results.Result`2<SuperProxyClientV1Namespace.ModelListFullResponse, AiEditorToolsSdk.Domain.Core.Errors.ApiError>>:SetResult (AiEditorToolsSdk.Domain.Core.Results.Result`2<SuperProxyClientV1Namespace.ModelListFullResponse, AiEditorToolsSdk.Domain.Core.Errors.ApiError>)
+AiEditorToolsSdk.Application.InternalServices.ApiClientProcessor.ApiClientProcessorService/<ProcessApiRequestImpl>d__6`1<SuperProxyClientV1Namespace.ModelListFullResponse>:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<SuperProxyClientV1Namespace.ModelListFullResponse>:SetException (System.Exception)
+AiEditorToolsSdk.Application.Gateways.GenerativeModels.V2.GenerativeModelsGatewayV2/<>c__DisplayClass4_0/<<GetModelsAsync>b__0>d:MoveNext ()
+UnityEngine.UnitySynchronizationContext:ExecuteTasks ()
+
+Error reason is 'NoSubscription' and no additional error information was provided (https://generators.ai.unity.com).
+UnityEngine.Debug:Log (object)
+Unity.AI.ModelSelector.Services.Stores.Actions.ModelSelectorSuperProxyActions/<>c/<<-cctor>b__8_0>d:MoveNext () (at ./Library/PackageCache/com.unity.ai.assistant@890548b66362/Modules/Unity.AI.ModelSelector/Services/Stores/Actions/ModelSelectorSuperProxyActions.cs:495)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>>:SetResult (AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>)
+AiEditorToolsSdk.Components.GenerativeModels.GenerativeModelsComponentV2/<GetModelsAsync>d__5:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>>:SetResult (AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>)
+AiEditorToolsSdk.Application.InternalServices.SdkOperation.SdkOperationService/<ExecuteRequest>d__4`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>>:SetResult (AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>)
+AiEditorToolsSdk.Application.Gateways.GenerativeModels.V2.GenerativeModelsGatewayV2/<GetModelsAsync>d__4:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Domain.Core.Results.Result`2<SuperProxyClientV1Namespace.ModelListFullResponse, AiEditorToolsSdk.Domain.Core.Errors.ApiError>>:SetResult (AiEditorToolsSdk.Domain.Core.Results.Result`2<SuperProxyClientV1Namespace.ModelListFullResponse, AiEditorToolsSdk.Domain.Core.Errors.ApiError>)
+AiEditorToolsSdk.Application.InternalServices.ApiClientProcessor.ApiClientProcessorService/<ProcessApiRequest>d__5`1<SuperProxyClientV1Namespace.ModelListFullResponse>:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Domain.Core.Results.Result`2<SuperProxyClientV1Namespace.ModelListFullResponse, AiEditorToolsSdk.Domain.Core.Errors.ApiError>>:SetResult (AiEditorToolsSdk.Domain.Core.Results.Result`2<SuperProxyClientV1Namespace.ModelListFullResponse, AiEditorToolsSdk.Domain.Core.Errors.ApiError>)
+AiEditorToolsSdk.Application.InternalServices.ApiClientProcessor.ApiClientProcessorService/<ProcessApiRequestImpl>d__6`1<SuperProxyClientV1Namespace.ModelListFullResponse>:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<SuperProxyClientV1Namespace.ModelListFullResponse>:SetException (System.Exception)
+AiEditorToolsSdk.Application.Gateways.GenerativeModels.V2.GenerativeModelsGatewayV2/<>c__DisplayClass4_0/<<GetModelsAsync>b__0>d:MoveNext ()
+UnityEngine.UnitySynchronizationContext:ExecuteTasks ()
+
+Error reason is 'NoSubscription' and no additional error information was provided (https://generators.ai.unity.com).
+UnityEngine.Debug:Log (object)
+Unity.AI.ModelSelector.Services.Stores.Actions.ModelSelectorSuperProxyActions/<>c/<<-cctor>b__8_0>d:MoveNext () (at ./Library/PackageCache/com.unity.ai.assistant@890548b66362/Modules/Unity.AI.ModelSelector/Services/Stores/Actions/ModelSelectorSuperProxyActions.cs:495)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>>:SetResult (AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>)
+AiEditorToolsSdk.Components.GenerativeModels.GenerativeModelsComponentV2/<GetModelsAsync>d__5:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>>:SetResult (AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>)
+AiEditorToolsSdk.Application.InternalServices.SdkOperation.SdkOperationService/<ExecuteRequest>d__4`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>>:SetResult (AiEditorToolsSdk.Components.Common.Responses.Wrappers.OperationResult`1<AiEditorToolsSdk.Components.GenerativeModels.Responses.ModelListV2.ModelListFullResult>)
+AiEditorToolsSdk.Application.Gateways.GenerativeModels.V2.GenerativeModelsGatewayV2/<GetModelsAsync>d__4:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Domain.Core.Results.Result`2<SuperProxyClientV1Namespace.ModelListFullResponse, AiEditorToolsSdk.Domain.Core.Errors.ApiError>>:SetResult (AiEditorToolsSdk.Domain.Core.Results.Result`2<SuperProxyClientV1Namespace.ModelListFullResponse, AiEditorToolsSdk.Domain.Core.Errors.ApiError>)
+AiEditorToolsSdk.Application.InternalServices.ApiClientProcessor.ApiClientProcessorService/<ProcessApiRequest>d__5`1<SuperProxyClientV1Namespace.ModelListFullResponse>:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<AiEditorToolsSdk.Domain.Core.Results.Result`2<SuperProxyClientV1Namespace.ModelListFullResponse, AiEditorToolsSdk.Domain.Core.Errors.ApiError>>:SetResult (AiEditorToolsSdk.Domain.Core.Results.Result`2<SuperProxyClientV1Namespace.ModelListFullResponse, AiEditorToolsSdk.Domain.Core.Errors.ApiError>)
+AiEditorToolsSdk.Application.InternalServices.ApiClientProcessor.ApiClientProcessorService/<ProcessApiRequestImpl>d__6`1<SuperProxyClientV1Namespace.ModelListFullResponse>:MoveNext ()
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<SuperProxyClientV1Namespace.ModelListFullResponse>:SetException (System.Exception)
+AiEditorToolsSdk.Application.Gateways.GenerativeModels.V2.GenerativeModelsGatewayV2/<>c__DisplayClass4_0/<<GetModelsAsync>b__0>d:MoveNext ()
+UnityEngine.UnitySynchronizationContext:ExecuteTasks ()
+
+
+Packages:
+{
+  "dependencies": {
+    "com.unity.2d.animation": "16.0.1",
+    "com.unity.2d.aseprite": "6.0.0",
+    "com.unity.2d.psdimporter": "15.0.1",
+    "com.unity.2d.sprite": "1.0.0",
+    "com.unity.2d.spriteshape": "16.0.0",
+    "com.unity.2d.tilemap": "1.0.0",
+    "com.unity.2d.tilemap.extras": "9.0.1",
+    "com.unity.2d.tooling": "4.0.1",
+    "com.unity.ai.assistant": "2.21.0-pre.2",
+    "com.unity.ai.inference": "2.6.1",
+    "com.unity.collab-proxy": "2.14.0",
+    "com.unity.ide.rider": "3.1.0",
+    "com.unity.ide.visualstudio": "2.0.26",
+    "com.unity.inputsystem": "1.20.1",
+    "com.unity.learn.iet-framework": "6.0.7",
+    "com.unity.render-pipelines.universal": "17.6.0",
+    "com.unity.test-framework": "1.8.0",
+    "com.unity.timeline": "6.6.0",
+    "com.unity.ugui": "2.6.0",
+    "com.unity.visualscripting": "1.9.13",
+    "com.unity.modules.accessibility": "1.0.0",
+    "com.unity.modules.adaptiveperformance": "1.0.0",
+    "com.unity.modules.ai": "1.0.0",
+    "com.unity.modules.androidjni": "1.0.0",
+    "com.unity.modules.animation": "1.0.0",
+    "com.unity.modules.assetbundle": "1.0.0",
+    "com.unity.modules.audio": "1.0.0",
+    "com.unity.modules.cloth": "1.0.0",
+    "com.unity.modules.director": "1.0.0",
+    "com.unity.modules.imageconversion": "1.0.0",
+    "com.unity.modules.imgui": "1.0.0",
+    "com.unity.modules.jsonserialize": "1.0.0",
+    "com.unity.modules.particlesystem": "1.0.0",
+    "com.unity.modules.physics": "1.0.0",
+    "com.unity.modules.physics2d": "1.0.0",
+    "com.unity.modules.physicscore2d": "1.0.0",
+    "com.unity.modules.screencapture": "1.0.0",
+    "com.unity.modules.terrain": "1.0.0",
+    "com.unity.modules.terrainphysics": "1.0.0",
+    "com.unity.modules.tetgen": "1.0.0",
+    "com.unity.modules.tilemap": "1.0.0",
+    "com.unity.modules.timelinefoundation": "1.0.0",
+    "com.unity.modules.ui": "1.0.0",
+    "com.unity.modules.uielements": "1.0.0",
+    "com.unity.modules.umbra": "1.0.0",
+    "com.unity.modules.unityanalytics": "1.0.0",
+    "com.unity.modules.unitywebrequest": "1.0.0",
+    "com.unity.modules.unitywebrequestassetbundle": "1.0.0",
+    "com.unity.modules.unitywebrequestaudio": "1.0.0",
+    "com.unity.modules.unitywebrequesttexture": "1.0.0",
+    "com.unity.modules.unitywebrequestwww": "1.0.0",
+    "com.unity.modules.vectorgraphics": "1.0.0",
+    "com.unity.modules.vehicles": "1.0.0",
+    "com.unity.modules.video": "1.0.0",
+    "com.unity.modules.wind": "1.0.0",
+    "com.unity.modules.xr": "1.0.0",
+    "com.unity.pipeline": "1.0.0"
+  }
+}
+
+
+ACTUAL INSPECTION RESULTS:
+
+TOOL search Assets/Dex/Runtime/DexArena.cs query=void Cast
+Assets/Dex/Runtime/DexArena.cs:158:         void Cast(Unit u,int slot,Vector2 target)
+Matches returned: 1
+TOOL search Assets/Dex/Runtime query=mana -=
+Matches returned: 0
+TOOL read Assets/Dex/Runtime/ChampionKit.cs query=
+1: namespace Dex
+2: {
+3:     // Kit identities follow official descriptions; all numbers are deliberate demo tuning.
+4:     public static class ChampionKit
+5:     {
+6:         public static readonly string[] Roster={"Ahri","Morgana","Ezreal","Mel"};
+7:         public static string[] Names(string c)
+8:         {
+9:             switch(c){case "Ahri":return new[]{"Orb of Deception","Fox-Fire","Charm","Spirit Rush"};case "Morgana":return new[]{"Dark Binding","Tormented Shadow","Black Shield","Soul Shackles"};case "Mel":return new[]{"Radiant Volley","Rebuttal","Solar Snare","Golden Eclipse"};default:return new[]{"Mystic Shot","Essence Flux","Arcane Shift","Trueshot Barrage"};}
+10:         }
+11:         public static float Mana(string c,int slot){return c=="Mel"?new[]{60f,60f,60f,100f}[slot]:new[]{55f,60f,70f,100f}[slot];}
+12:         public static float Cooldown(string c,int slot){return c=="Mel"?new[]{8f,24f,10f,60f}[slot]:new[]{7f,9f,14f,80f}[slot];}
+13:         public static string Description(string c,int slot)
+14:         {
+15:             if(c=="Mel")return new[]{"Six luminous missiles burst around your aim point. A champion hit refunds a little cooldown.","An expanding nova destroys hostile missiles and nearby enemy shields. Grants a barrier and speed, then retaliates at missile owners.","An aimed orb roots enemies at its centre and leaves a slowing, damaging solar field. Root duration grows with travel.","Detonate your active Overwhelm marks across the arena. Damage scales with their stacks and consumes them."}[slot];
+16:             if(c=="Ahri")return new[]{"A piercing orb returns for true damage.","Three bolts seek nearby enemies.","A skillshot charms the first target hit.","Three dashes with nearby bolts. New dashes are blocked by crowd control."}[slot];
+17:             if(c=="Morgana")return new[]{"A projectile roots the first enemy hit.","A persistent pool damages enemies inside it.","A magic shield prevents control while it remains active.","Nearby enemies are tethered; staying close causes a delayed stun."}[slot];
+18:             return new[]{"Physical skillshot; a hit reduces ability cooldowns.","Mark a champion or turret; another hit detonates the mark.","Blink toward your aim and launch a seeking bolt. New casts respect roots.","A wide, piercing energy wave."}[slot];
+19:         }
+20:         public static string Passive(string c){return c=="Mel"?"Searing Brilliance: casts bank 3 bonus attack bolts (max 9). Damage applies Overwhelm; low-health marked targets can be executed.":c=="Ezreal"?"Hits build Rising Spell Force stacks (simplified).":c=="Ahri"?"Champion takedowns restore health (simplified).":"Magic damage restores a little health (simplified).";}
+21:     }
+22: }
+
+TOOL read Assets/Dex/Runtime/DexArena.cs query=
+120:                 // Match the visible token/body instead of requiring a click on a tiny centre point.
+121:                 Vector2 visual=(Vector2)u.art.bounds.ClosestPoint(new Vector3(point.x,point.y,0));
+122:                 float distance=Vector2.Distance(point,visual);
+123:                 if(distance<=.18f&&Vector2.Distance(point,u.p)<closest){selected=u;closest=Vector2.Distance(point,u.p);}
+124:             }
+125:             if(selected!=null){player.target=selected;player.goal=selected.p;Effect(MobaArt.Ring,selected.p,Pink,.4f,selected.tower?2.6f:1.8f);Say("Auto-attacking "+selected.f.champion+". S to stop.");}
+126:             else if(moveOnGround){player.target=null;player.goal=Clamp(point);Effect(MobaArt.Ring,player.goal,Cyan,.4f,.5f);}
+127:         }
+128:         void Wave(bool red){for(int i=0;i<4;i++)Spawn(new Fighter("Minion",false,0){hp=420,maxHp=420,ad=32,armor=15,mr=15},new Vector2(red?11:-11,(red?3.5f:-3.5f)+(i-1.5f)*.43f),red,true);}
+129:         void Step(Unit u,float dt)
+130:         {
+131:             if(u.f.hp<=0){u.art.enabled=u.shadow.enabled=false;if(u.rim!=null)u.rim.enabled=false;if(u.aura!=null)u.aura.enabled=false;if(!u.minion&&!u.tower&&u.respawn>0&&sim.time>=u.respawn){u.f=new Fighter(u.f.champion,items,0);if(u==player)sim.a=u.f;else sim.b=u.f;u.mana=900;u.p=u.home;u.goal=u.p;u.target=null;u.attackAt=sim.time;u.respawn=0;u.art.enabled=u.shadow.enabled=true;if(u.rim!=null)u.rim.enabled=true;}return;}
+132:             if(u.f.controlUntil<=sim.time)u.f.control="";if(u.f.shieldUntil<=sim.time)u.f.shield=0;
+133:             if(u.f.barrierUntil<=sim.time)u.f.barrier=0;if(u.f.overwhelmUntil<=sim.time)u.f.overwhelm=0;
+134:             if(u==enemy&&bot){float d=Vector2.Distance(u.p,player.p);u.goal=d>5?player.p:d<2.6f?u.p+(u.p-player.p).normalized*2:u.p;u.target=d<5&&player.f.hp>0?player:null;if(player.f.hp>0&&sim.time>botAt&&d<8){botAt=sim.time+2;Cast(u,Random.Range(0,4),player.p);}}
+135:             if(u.minion){u.target=Nearest(u.p,!u.red,3.4f);u.goal=u.target!=null?u.target.p:new Vector2(u.red?-12:12,u.red?-4:4);}
+136:             if(u.tower)u.target=Nearest(u.p,!u.red,5.8f);
+137:             if(u.target!=null&&u.target.f.hp<=0){u.target=null;u.goal=u.p;}
+138:             if(u.target!=null&&u.target.f.hp>0)
+139:             {
+140:                 float d=Vector2.Distance(u.p,u.target.p),range=u.tower?5.8f:u.minion?2.2f:4.8f;
+141:                 if(d>range&&!u.tower)u.goal=u.target.p;
+142:                 else if(d<=range){u.goal=u.p;bool disabled=u.f.ActiveControl(sim.time)&&(u.f.control=="Stun"||u.f.control=="Charm");if(sim.time>=u.attackAt&&!disabled){u.attackAt=sim.time+(u.tower?1.2f:u.minion?1.4f:.9f);Shoot(u,-1,u.target.p,u.tower?175:u.f.ad,true,false,u.target);if(u.f.champion=="Mel"){int bolts=u.f.searing;u.f.searing=0;for(int n=0;n<bolts;n++)Shoot(u,-2,u.target.p,20+.04f*u.f.ap,false,false,u.target);}if(u==player)PlayCue(0);}}
+143:             }
+144:             if(!u.tower&&(!u.f.ActiveControl(sim.time)||u.f.control=="Ground"))
+145:             {
+146:                 Vector2 travel=u.goal-u.p;
+147:                 if(!u.minion&&travel.sqrMagnitude>.02f){u.art.sprite=MobaArt.Frame(u.f.champion,sim.time);u.art.flipX=travel.x<0&&u.art.sprite!=MobaArt.Portrait(u.f.champion);}
+148:                 u.p=Vector2.MoveTowards(u.p,u.goal,dt*(u.minion?1.7f:3.3f)*(u.f.speedUntil>sim.time?1.2f:1)*(u.f.slowUntil>sim.time?.7f:1));
+149:                 foreach(var v in units)if(v!=u&&v.f.hp>0){Vector2 away=u.p-v.p;float min=(u.radius+v.radius)*.8f;if(away.sqrMagnitude<min*min&&away.sqrMagnitude>.0001f)u.p+=away.normalized*dt*1.5f;}
+150:             }
+151:             if(u.f.control=="Charm")u.p=Vector2.MoveTowards(u.p,u==player?enemy.p:player.p,dt*.8f);
+152:             u.p=Clamp(u.p);u.f.x=u.p.x/25;u.art.transform.position=u.p+Vector2.up*(u.minion?0:.025f*Mathf.Sin(sim.time*5));u.shadow.transform.position=u.p+Vector2.down*.3f;u.art.sortingOrder=100-(int)(u.p.y*10);
+153:             u.art.color=sim.time-u.hitAt<.1f?new Color(1.6f,1.6f,1.6f):u.red?new Color(1,.85f,.9f):Color.white;
+154:             UpdateUnitVisuals(u);
+155:             if(!u.minion&&!u.tower){u.mana=Mathf.Min(900,u.mana+dt*(practice?35:6));if(practice)u.f.hp=Mathf.Min(u.f.maxHp,u.f.hp+dt*12);}
+156:         }
+157:         void Say(string s){notice=s;noticeUntil=sim.time+3;}
+158:         void Cast(Unit u,int slot,Vector2 target)
+159:         {
+160:             if(slot<0||slot>3)return;var f=u.f;float cost=ChampionKit.Mana(f.champion,slot);if(u.mana<cost){if(u==player)Say("Not enough mana");return;}
+161:             Unit castTarget=u==player?enemy:player;
+162:             if(f.champion=="Mel"&&slot==3){var marked=units.Find(v=>v.red!=u.red&&v.f.hp>0&&v.f.MarkedBy(f,sim.time));if(marked!=null)castTarget=marked;}
+163:             if(!sim.BeginCast(f,castTarget.f,slot)){if(u==player)Say(f.ActiveControl(sim.time)?"Cannot cast while "+f.control:f.champion=="Mel"&&slot==3?"Golden Eclipse needs an Overwhelm mark":"Ability is on cooldown");return;}
+164:             if(u==player)PlayCue(1);
+165:             Vector2 dir=(target-u.p).normalized;if(dir.sqrMagnitude<.1f)dir=Vector2.right;
+166:             if(f.champion=="Ahri")
+167:             {
+168:                 if(slot==0)Shoot(u,slot,target,100+.5f*f.ap,false,true);
+169:                 if(slot==1)for(int i=0;i<3;i++){var v=Nearest(u.p,!u.red,6);if(v!=null)Shoot(u,slot,v.p,(i==0?80:32)+f.ap*(i==0?.4f:.16f));}
+170:                 if(slot==2)Shoot(u,slot,target,160+.85f*f.ap);
+171:                 if(slot==3){Dash(u,dir);var v=Nearest(u.p,!u.red,6);if(v!=null)Shoot(u,slot,v.p,125+.35f*f.ap);if(--f.rushCharges>0)f.ready[3]=sim.time+1;}
+172:             }
+173:             else if(f.champion=="Morgana")
+174:             {
+175:                 if(slot==0)Shoot(u,slot,target,160+.9f*f.ap);
+176:                 if(slot==1){Vector2 p=u.p+Vector2.ClampMagnitude(target-u.p,7);zones.Add(new Zone{owner=u,p=p,until=sim.time+5,art=Art("Tormented Shadow",MobaArt.Disc,p,Vector2.one*3,new Color(.35f,.1f,.55f,.65f),-50)});}
+177:                 if(slot==2){f.shield=210+.7f*f.ap;f.shieldUntil=sim.time+5;Effect(MobaArt.Ring,u.p,new Color(.7f,.3f,1),1,2);}
+178:                 if(slot==3)foreach(var v in units)if(v.red!=u.red&&v.f.hp>0&&Vector2.Distance(u.p,v.p)<5){Hit(u,v,200+.7f*f.ap,false);v.f.tetherUntil=sim.time+3;Effect(MobaArt.Ring,v.p,new Color(.8f,.35f,1),3,2);}
+179:             }
+180:             else if(f.champion=="Ezreal")
+181:             {
+182:                 if(slot==0)Shoot(u,slot,target,80+1.3f*f.ad+.15f*f.ap,true);
+183:                 if(slot==1)Shoot(u,slot,target,0);
+184:                 if(slot==2){Dash(u,dir);var v=Nearest(u.p,!u.red,6);if(v!=null)Shoot(u,slot,v.p,180+.5f*f.ad+.75f*f.ap);}
+185:                 if(slot==3)Shoot(u,slot,target,500+f.ad+.9f*f.ap);
+186:             }
+187:             else if(f.champion=="Mel")CastMel(u,slot,target);
+188:         }
+189:         void Dash(Unit u,Vector2 dir){Vector2 from=u.p;u.p=Clamp(u.p+dir*2.8f);u.goal=u.p;u.target=null;for(int i=0;i<6;i++)Effect(MobaArt.Disc,Vector2.Lerp(from,u.p,i/5f),Cyan,.3f,.55f);}
+190:         void Shoot(Unit owner,int slot,Vector2 target,float damage,bool physical=false,bool orb=false,Unit homing=null)
+191:         {
+192:             Vector2 dir=(target-owner.p).normalized;if(dir.sqrMagnitude<.01f)dir=Vector2.right;
+193:             Color color=owner.f.champion=="Morgana"?new Color(.72f,.32f,1):owner.f.champion=="Ahri"?slot==2?Pink:Cyan:owner.f.champion=="Mel"?new Color(1,.82f,.38f):Gold;
+194:             var m=new Shot{owner=owner,slot=slot,p=owner.p,dir=dir,damage=damage,physical=physical,range=slot==3?25:8,width=slot==3?.8f:.2f,orb=orb,homing=homing};
+195:             m.art=Art("Skillshot",slot==2&&owner.f.champion=="Ahri"?MobaArt.Heart:MobaArt.Bolt,m.p,new Vector2(slot==3?2:.7f,slot==3?.8f:.35f),color,300);shots.Add(m);
+196:         }
+197:         static float SegmentDistance(Vector2 p,Vector2 a,Vector2 b){Vector2 d=b-a;return Vector2.Distance(p,a+d*Mathf.Clamp01(Vector2.Dot(p-a,d)/Mathf.Max(.0001f,d.sqrMagnitude)));}
+198:         void StepShots(float dt)
+199:         {
+200:             for(int i=shots.Count-1;i>=0;i--)
+201:             {
+202:                 var m=shots[i];if(m.homing!=null&&m.homing.f.hp<=0){Destroy(m.art.gameObject);shots.RemoveAt(i);continue;}Vector2 prev=m.p;if(m.back)m.dir=(m.owner.p-m.p).normalized;else if(m.homing!=null)m.dir=(m.homing.p-m.p).normalized;m.p+=m.dir*m.speed*dt;m.range-=m.speed*dt;bool remove=false;
+203:                 foreach(var defender in units)if(defender.red!=m.owner.red&&defender.f.hp>0&&defender.f.champion=="Mel"&&defender.f.novaUntil>sim.time)
+204:                 {float radius=NovaRadius(defender.f);if(SegmentDistance(defender.p,prev,m.p)<radius&&sim.InterceptProjectile(defender.f,m.owner.f,true)){Effect(MobaArt.Ring,m.p,Gold,.35f,.7f);remove=true;break;}}
+205:                 if(remove){Destroy(m.art.gameObject);shots.RemoveAt(i);continue;}
+206:                 if(m.burst)
+207:                 {
+208:                     if(m.range<=0||SegmentDistance(m.destination,prev,m.p)<.12f){BurstVolley(m);Destroy(m.art.gameObject);shots.RemoveAt(i);}else{m.art.transform.position=m.p;m.art.transform.rotation=Quaternion.Euler(0,0,Mathf.Atan2(m.dir.y,m.dir.x)*Mathf.Rad2Deg);}continue;
+209:                 }
+210:                 collisionOrder.Clear();collisionOrder.AddRange(units);
+211:                 collisionOrder.Sort((a,b)=>Vector2.Dot(a.p-prev,m.dir).CompareTo(Vector2.Dot(b.p-prev,m.dir)));
+212:                 foreach(var u in collisionOrder)
+213:                 {
+214:                     if(u.red==m.owner.red||u.f.hp<=0||m.hit.Contains(u)||m.homing!=null&&u!=m.homing||SegmentDistance(u.p,prev,m.p)>m.width+u.radius)continue;
+215:                     if(m.owner.f.champion=="Ezreal"&&m.slot==1&&u.minion)continue;m.hit.Add(u);
+216:                     if(m.owner.f.champion=="Ezreal"&&m.slot==1)u.f.markUntil=sim.time+4;
+217:                     else
+218:                     {
+219:                         if(m.back){float old=u.f.hp;u.f.hp=Mathf.Max(0,u.f.hp-m.damage);TrackHit(m.owner,u,old-u.f.hp);}else Hit(m.owner,u,m.damage,m.physical);
+220:                         if(m.owner.f.champion=="Morgana"&&m.slot==0)sim.CC(u.f,"Root",2);
+221:                         if(m.owner.f.champion=="Ahri"&&m.slot==2)sim.CC(u.f,"Charm",1.5f);
+222:                         if(m.owner.f.champion=="Mel"&&m.slot==2){SolarBurst(m.owner,u.p,8-m.range);m.solarBloomed=true;}
+223:                         if(m.owner.f.champion=="Ezreal"&&m.slot==0)for(int k=0;k<4;k++)m.owner.f.ready[k]=Mathf.Max(sim.time,m.owner.f.ready[k]-1.5f);
+224:                         if(m.owner.f.champion=="Ezreal"&&u.f.markUntil>sim.time&&m.slot!=1){u.f.markUntil=0;Hit(m.owner,u,180+.9f*m.owner.f.ap,false);}
+225:                     }
+226:                     Effect(MobaArt.Ring,u.p,m.art.color,.3f,1);if(!m.orb&&m.slot!=3){remove=true;break;}
+227:                 }
+228:                 if(m.orb&&!m.back&&m.range<=0){m.back=true;m.hit.Clear();m.range=20;}else if(m.range<=0||m.back&&Vector2.Distance(m.p,m.owner.p)<.4f)remove=true;
+229:                 if(m.owner.f.champion=="Mel"&&m.slot==2&&m.range<=0&&!m.solarBloomed)SolarBurst(m.owner,m.p,8);
+230:                 if(remove){Destroy(m.art.gameObject);shots.RemoveAt(i);}else {m.art.transform.position=m.p;m.art.transform.rotation=Quaternion.Euler(0,0,Mathf.Atan2(m.dir.y,m.dir.x)*Mathf.Rad2Deg);}
+231:             }
+232:         }
+233:         void Hit(Unit source,Unit target,float amount,bool physical){float old=target.f.hp;sim.Damage(source.f,target.f,amount,physical);TrackHit(source,target,old-target.f.hp);}
+234:         void TrackHit(Unit source,Unit target,float amount)
+235:         {
+236:             target.hitAt=sim.time;if(amount>3)pops.Add(new Pop{p=target.p,born=sim.time,text=Mathf.RoundToInt(amount).ToString(),color=source==player?Gold:Pink});
+237:             if(amount>3&&(source==player||target==player))PlayCue(target.f.hp<=0?3:2);
+238:             if(target.f.hp<=0&&target.respawn==0)
+239:             {
+240:                 target.respawn=sim.time+7;target.target=null;
+241:                 if(source==player){gold+=target.minion?21:target.tower?250:300;if(target.minion)cs++;else if(!target.tower){kills++;Say("CHAMPION TAKEDOWN  +300 gold");}}
+242:                 if(target==player){deaths++;Say("You have been slain. Respawning in 7 seconds.");}Effect(MobaArt.Ring,target.p,target.red?Pink:Cyan,1,3);
+243:                 if(source.f.champion=="Ahri"&&!target.minion&&!target.tower)source.f.hp=Mathf.Min(source.f.maxHp,source.f.hp+120+.3f*source.f.ap);
+244:             }
+245:         }
+246:         void StepZones(float dt)
+247:         {
+248:             for(int i=zones.Count-1;i>=0;i--)
+249:             {
+250:                 var z=zones[i];if(sim.time>z.until){Destroy(z.art.gameObject);zones.RemoveAt(i);continue;}
+251:                 z.art.transform.Rotate(0,0,dt*12);bool pulse=!z.solar||sim.time>=z.nextTick;
+252:                 foreach(var u in units)if(u.red!=z.owner.red&&u.f.hp>0&&Vector2.Distance(z.p,u.p)<1.5f)
+253:                 {if(pulse)Hit(z.owner,u,(z.solar?18+.05f*z.owner.f.ap:45+.14f*z.owner.f.ap)*(z.solar?.25f:dt),false);if(z.solar)u.f.slowUntil=sim.time+.2f;}
+254:                 if(z.solar&&pulse)z.nextTick=sim.time+.25f;
+255:             }
+256:             foreach(var u in units)if(u.f.tetherUntil>0&&sim.time>=u.f.tetherUntil){u.f.tetherUntil=0;Unit source=u.red?player:enemy;if(source.f.champion=="Morgana"&&source.f.hp>0&&Vector2.Distance(source.p,u.p)<6){Hit(source,u,200+.7f*source.f.ap,false);sim.CC(u.f,"Stun",1.5f);}}
+257:             ResolveNovaEffects();
+258:         }
+259:         void Effect(Sprite sprite,Vector2 p,Color color,float life,float size){fx.Add(new Fx{art=Art("VFX",sprite,p,Vector2.one*size,color,250),born=sim.time,life=life,size=size});}
+260:         void OnDestroy(){if(world!=null)Destroy(world.gameObject);ReleaseFeel();if(buttonTexture!=null)Destroy(buttonTexture);if(hoverTexture!=null)Destroy(hoverTexture);}
+261:     }
+262: }
+TOOL read Assets/Dex/Runtime/Combat.cs query=
+1: using System;
+2: using System.Collections.Generic;
+3: 
+4: namespace Dex
+5: {
+6:     [Serializable] public class Fighter
+7:     {
+8:         public string champion, build;
+9:         public float hp = 1800, maxHp = 1800, ap, ad = 110, armor = 60, mr = 40, haste;
+10:         public float x, controlUntil, shield, shieldUntil, markUntil, poolUntil, tetherUntil;
+11:         public float mana=900,barrier,barrierUntil,novaUntil,speedUntil,slowUntil,overwhelmUntil;
+12:         public int searing,overwhelm;public Fighter overwhelmOwner;
+13:         public readonly Dictionary<Fighter,int> retaliations=new Dictionary<Fighter,int>();
+14:         public string control = "";
+15:         public int stacks, rushCharges = 3;
+16:         public float[] ready = new float[4];
+17:         public Fighter(string name, bool equipped, float position)
+18:         {
+19:             champion = name; x = position;
+20:             build = equipped ? (name == "Ezreal" ? "Trinity Force / Muramana" : name == "Ahri" ? "Malignance / Rabadon's Deathcap" : name=="Mel"?"Luden's Companion / Shadowflame":"Liandry's Torment / Zhonya's Hourglass") : "No items";
+21:             // Demonstration aggregate stats; item procs and exact live balance are not modeled.
+22:             if(equipped) { ap = name == "Ezreal" ? 0 : 230; ad += name == "Ezreal" ? 100 : 0; haste = 30; }
+23:         }
+24:         public bool ActiveControl(float t) { return hp > 0 && controlUntil > t; }
+25:         public bool Shielded(float t) { return shield > 0 && shieldUntil > t; }
+26:         public bool MarkedBy(Fighter owner,float t){return overwhelm>0&&overwhelmUntil>t&&overwhelmOwner==owner;}
+27:     }
+28:     public class Combat
+29:     {
+30:         public Fighter a, b;
+31:         public float time;
+32:         public readonly List<string> events = new List<string>();
+33:         public Combat(string left = "Morgana", string right = "Ezreal", bool items = true)
+34:         { a = new Fighter(left, items, 0.28f); b = new Fighter(right, items, 0.7f); }
+35:         public void Log(string message) { events.Insert(0, time.ToString("0.00") + "s  " + message); if(events.Count > 30) events.RemoveAt(30); }
+36:         public void Tick(float dt)
+37:         {
+38:             time += dt;
+39:             foreach(var f in new[]{a,b})
+40:             {
+41:                 var enemy = f == a ? b : a;
+42:                 if(f.controlUntil <= time) f.control = "";
+43:                 if(f.shieldUntil <= time) f.shield = 0;
+44:                 if(f.barrierUntil<=time)f.barrier=0;
+45:                 if(f.overwhelmUntil<=time)f.overwhelm=0;
+46:                 if(f.hp <= 0) continue;
+47:                 if(f.control == "Charm") f.x = Approach(f.x, enemy.x, dt * 0.025f);
+48:                 if(f.poolUntil > time) Damage(enemy, f, (35 + enemy.ap * 0.1f) * dt, false);
+49:                 if(f.tetherUntil > 0 && time >= f.tetherUntil)
+50:                 { f.tetherUntil = 0; if(Math.Abs(f.x - enemy.x) < 0.55f) { Damage(enemy,f,200+enemy.ap*0.7f,false); CC(f,"Stun",1.5f); Log("Soul Shackles detonates"); } else Log("Soul Shackles tether broken"); }
+51:             }
+52:             ResolveRetaliations(a,(from,to,amount)=>Damage(from,to,amount,false));ResolveRetaliations(b,(from,to,amount)=>Damage(from,to,amount,false));
+53:         }
+54:         static float Approach(float v,float target,float step) { return v < target ? Math.Min(v+step,target) : Math.Max(v-step,target); }
+55:         public void Damage(Fighter source, Fighter target, float amount, bool physical,bool applyMark=true)
+56:         {
+57:             if(target.hp<=0||amount<=0)return;
+58:             float dealt = amount * 100f / (100f + (physical ? target.armor : target.mr));
+59:             if(target.barrierUntil>time&&target.barrier>0){float absorbed=Math.Min(target.barrier,dealt);target.barrier-=absorbed;dealt-=absorbed;}
+60:             if(!physical && target.Shielded(time)) { float absorbed = Math.Min(target.shield,dealt); target.shield -= absorbed; dealt -= absorbed; }
+61:             target.hp = Math.Max(0,target.hp-dealt);
+62:             if(source.champion == "Morgana"&&source.hp>0) source.hp = Math.Min(source.maxHp,source.hp+dealt*0.18f);
+63:             if(source.champion == "Ezreal") source.stacks = Math.Min(5,source.stacks+1);
+64:             if(source.champion=="Mel"&&applyMark&&dealt>0&&target.champion!="Turret")
+65:             {
+66:                 if(!target.MarkedBy(source,time))target.overwhelm=0;
+67:                 if(target.overwhelm<int.MaxValue)target.overwhelm++;
+68:                 target.overwhelmOwner=source;target.overwhelmUntil=time+5;
+69:                 if(target.hp>0&&target.hp<40+.1f*source.ap+target.overwhelm*6){target.hp=0;target.overwhelm=0;Log("Overwhelm executes "+target.champion);}
+70:             }
+71:         }
+72:         public bool InterceptProjectile(Fighter defender,Fighter owner,bool insideNova)
+73:         {
+74:             if(defender.champion!="Mel"||!CombatRules.DestroysProjectile(defender.novaUntil>time,defender!=owner,insideNova))return false;
+75:             int n;defender.retaliations.TryGetValue(owner,out n);defender.retaliations[owner]=Math.Min(7,n+1);Log("Rebuttal destroys "+owner.champion+" missile");return true;
+76:         }
+77:         public bool Projectile(Fighter source,Fighter target,float damage,bool physical,string control="",float duration=0)
+78:         {if(InterceptProjectile(target,source,true))return false;Damage(source,target,damage,physical);if(control!=""&&target.hp>0)CC(target,control,duration);return true;}
+79:         public void ResolveRetaliations(Fighter defender,Action<Fighter,Fighter,float> hit)
+80:         {
+81:             if(defender.retaliations.Count==0||time<defender.novaUntil)return;
+82:             if(defender.hp>0)foreach(var pair in defender.retaliations)if(pair.Key.hp>0)hit(defender,pair.Key,45+.1f*defender.ap+(pair.Value-1)*(15+.05f*defender.ap));
+83:             defender.retaliations.Clear();
+84:         }
+85:         public void Attack(Fighter source,Fighter target)
+86:         {Damage(source,target,source.ad,true);if(source.champion=="Mel"){int bolts=source.searing;source.searing=0;for(int i=0;i<bolts;i++)Damage(source,target,20+.04f*source.ap,false);}}
+87:         public void MelUltimate(Fighter source,Fighter target)
+88:         {if(!target.MarkedBy(source,time))return;int count=target.overwhelm;target.overwhelm=0;Damage(source,target,150+.5f*source.ap+count*(8+.02f*source.ap),false,false);Log("Golden Eclipse detonates "+count+" stacks");}
+89:         public void CC(Fighter target,string kind,float seconds)
+90:         { if(CombatRules.BlocksControl(target.Shielded(time),false)) { Log("Black Shield resists " + kind); return; } target.control = kind; target.controlUntil = time+seconds; Log(target.champion+" receives "+kind); }
+91:         public bool Mobility(Fighter f)
+92:         { bool active=f.ActiveControl(time); return CombatRules.CanMove(active&&f.control=="Stun",active&&f.control=="Root",active&&f.control=="Charm",active&&f.control=="Ground"); }
+93:         public bool Cast(Fighter source,Fighter target,int slot)
+94:         {
+95:             if(!BeginCast(source,target,slot)) return false;
+96:             ResolveCast(source,target,slot);
+97:             return true;
+98:         }
+99:         public bool BeginCast(Fighter source,Fighter target,int slot)
+100:         {
+101:             if(slot<0 || slot>3 || source.hp<=0 || time<source.ready[slot]||source.mana<ChampionKit.Mana(source.champion,slot)) return false;
+102:             if(source.champion=="Mel"&&slot==3&&!target.MarkedBy(source,time)){Log("Golden Eclipse needs an active Overwhelm mark");return false;}
+103:             if(source.ActiveControl(time) && (source.control=="Stun" || source.control=="Charm")) { Log("Cast blocked by "+source.control); return false; }
+104:             bool move=(source.champion=="Ezreal"&&slot==2)||(source.champion=="Ahri"&&slot==3);
+105:             if(move&&!Mobility(source)) { Log("Mobility blocked by "+source.control); return false; }
+106:             source.mana-=2*ChampionKit.Mana(source.champion,slot);
+107:             source.ready[slot]=time+ChampionKit.Cooldown(source.champion,slot)/(1+source.haste/100);
+108:             if(source.champion=="Ahri"&&slot==3&&source.rushCharges<=0) source.rushCharges=3;
+109:             if(source.champion=="Mel")source.searing=Math.Min(9,source.searing+3);
+110:             Log(source.champion+" casts "+Names(source.champion)[slot]);
+111:             return true;
+112:         }
+113:         public void ResolveCast(Fighter source,Fighter target,int slot)
+114:         {
+115:             float p=source.ap;
+116:             if(source.champion=="Morgana")
+117:             {
+118:                 if(slot==0) Projectile(source,target,160+.9f*p,false,"Root",2);
+119:                 if(slot==1) target.poolUntil=time+5;
+120:                 if(slot==2) { source.shield=210+0.7f*p; source.shieldUntil=time+5; }
+121:                 if(slot==3) { Damage(source,target,200+0.7f*p,false); target.tetherUntil=time+3; }
+122:             }
+123:             if(source.champion=="Ahri")
+124:             {
+125:                 if(slot==0) { Damage(source,target,100+0.5f*p,false); target.hp=Math.Max(0,target.hp-100-0.5f*p); }
+126:                 if(slot==1) Damage(source,target,144+0.72f*p,false);
+127:                 if(slot==2) Projectile(source,target,160+.85f*p,false,"Charm",1.5f);
+128:                 if(slot==3) { source.x=Approach(source.x,target.x,0.14f); Damage(source,target,125+0.35f*p,false); if(--source.rushCharges>0) source.ready[slot]=time+1; }
+129:                 if(target.hp<=0) source.hp=Math.Min(source.maxHp,source.hp+120+0.3f*p);
+130:             }
+131:             if(source.champion=="Ezreal")
+132:             {
+133:                 if(slot==0&&Projectile(source,target,80+1.3f*source.ad+.15f*p,true))for(int i=0;i<4;i++)source.ready[i]=Math.Max(time,source.ready[i]-1.5f);
+134:                 if(slot==1) target.markUntil=time+4;
+135:                 if(slot==2) { source.x=Math.Min(0.94f,source.x+0.16f); Damage(source,target,180+0.5f*source.ad+0.75f*p,false); }
+136:                 if(slot==3) Damage(source,target,500+source.ad+0.9f*p,false);
+137:                 if(slot!=1 && target.markUntil>time) { target.markUntil=0; Damage(source,target,180+0.9f*p,false); Log("Essence Flux detonates"); }
+138:             }
+139:             if(source.champion=="Mel")
+140:             {
+141:                 if(slot==0){for(int i=0;i<6;i++)Projectile(source,target,22+.16f*p,false);source.ready[0]=Math.Max(time,source.ready[0]-.75f);}
+142:                 if(slot==1){source.novaUntil=time+.75f;source.barrier=180+.7f*p;source.barrierUntil=time+2;source.speedUntil=time+2;}
+143:                 if(slot==2){if(Projectile(source,target,100+.4f*p,false,"Root",1.5f))target.slowUntil=time+3;}
+144:                 if(slot==3)MelUltimate(source,target);
+145:             }
+146:         }
+147:         public static string[] Names(string c)
+148:         {return ChampionKit.Names(c);}
+149:     }
+150: }
+TOOL search Assets/Dex/Runtime query=ChampionKit.Mana
+Assets/Dex/Runtime/Combat.cs:101:             if(slot<0 || slot>3 || source.hp<=0 || time<source.ready[slot]||source.mana<ChampionKit.Mana(source.champion,slot)) return false;
+Assets/Dex/Runtime/Combat.cs:106:             source.mana-=2*ChampionKit.Mana(source.champion,slot);
+Assets/Dex/Runtime/DexArena.cs:160:             if(slot<0||slot>3)return;var f=u.f;float cost=ChampionKit.Mana(f.champion,slot);if(u.mana<cost){if(u==player)Say("Not enough mana");return;}
+Assets/Dex/Runtime/MobaHud.cs:67:                 float x=330+slot*103,cd=Mathf.Max(0,player.f.ready[slot]-sim.time);bool available=cd<=0&&player.mana>=ChampionKit.Mana(player.f.champion,slot);
+Assets/Dex/Runtime/MobaHud.cs:71:                 Text(x+62,820,28,22,ChampionKit.Mana(player.f.champion,slot).ToString("0"),tiny,new Color(.45f,.66f,1));
+Matches returned: 5
+
+ACTUAL PRIOR PROBE FEEDBACK:

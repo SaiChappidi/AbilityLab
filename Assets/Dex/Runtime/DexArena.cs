@@ -27,7 +27,7 @@ namespace Dex
         readonly string[] champions=ChampionKit.Roster;int champion=3,opponent=2,kills,deaths,cs,gold=500;
         bool bot=true,waves=true,items=true,practice=true,menu;
         // The Editor's deterministic driver calls the same gameplay tick as Update.
-        bool manualSimulation;float nextWave,botAt;Vector2 aim,lastArenaAim;
+        bool manualSimulation;string scenarioStatus="";float nextWave,botAt;Vector2 aim,lastArenaAim;
         string notice="Left-click an enemy to auto-attack. Right-click to move or attack. Aim Q / W / E / R.";float noticeUntil=8;
         static readonly Color Cyan=new Color(.27f,.85f,.94f),Gold=new Color(.83f,.7f,.38f),Pink=new Color(.96f,.39f,.55f);
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -59,6 +59,7 @@ namespace Dex
         {
             Art("Test chamber",MobaArt.Square,Vector2.zero,new Vector2(32,19),new Color(.024f,.04f,.065f),-100);
             Art("Inner board",MobaArt.Square,Vector2.zero,new Vector2(27.5f,14.2f),new Color(.035f,.065f,.095f),-99);
+            Art("Arcane stone grain",MobaArt.Ground,Vector2.zero,new Vector2(27.3f,14f),new Color(.58f,.73f,.82f,.33f),-98);
             for(int x=-13;x<=13;x++)Art("Grid",MobaArt.Square,new Vector2(x,0),new Vector2(x%5==0?.018f:.008f,13.5f),new Color(.12f,.24f,.3f,x%5==0?.45f:.28f),-95);
             for(int y=-6;y<=6;y++)Art("Grid",MobaArt.Square,new Vector2(0,y),new Vector2(26.5f,y%3==0?.018f:.008f),new Color(.12f,.24f,.3f,y%3==0?.45f:.28f),-95);
             var lane=Art("Interaction lane",MobaArt.Square,Vector2.zero,new Vector2(27,3),new Color(.045f,.095f,.13f),-94);lane.transform.rotation=Quaternion.Euler(0,0,18);
@@ -129,7 +130,7 @@ namespace Dex
         {
             if(u.f.hp<=0){u.art.enabled=u.shadow.enabled=false;if(u.rim!=null)u.rim.enabled=false;if(u.aura!=null)u.aura.enabled=false;if(!u.minion&&!u.tower&&u.respawn>0&&sim.time>=u.respawn){u.f=new Fighter(u.f.champion,items,0);if(u==player)sim.a=u.f;else sim.b=u.f;u.mana=900;u.p=u.home;u.goal=u.p;u.target=null;u.attackAt=sim.time;u.respawn=0;u.art.enabled=u.shadow.enabled=true;if(u.rim!=null)u.rim.enabled=true;}return;}
             if(u.f.controlUntil<=sim.time)u.f.control="";if(u.f.shieldUntil<=sim.time)u.f.shield=0;
-            if(u.f.barrierUntil>=sim.time)u.f.barrier=0;if(u.f.overwhelmUntil<=sim.time)u.f.overwhelm=0;
+            if(u.f.barrierUntil<=sim.time)u.f.barrier=0;if(u.f.overwhelmUntil<=sim.time)u.f.overwhelm=0;
             if(u==enemy&&bot){float d=Vector2.Distance(u.p,player.p);u.goal=d>5?player.p:d<2.6f?u.p+(u.p-player.p).normalized*2:u.p;u.target=d<5&&player.f.hp>0?player:null;if(player.f.hp>0&&sim.time>botAt&&d<8){botAt=sim.time+2;Cast(u,Random.Range(0,4),player.p);}}
             if(u.minion){u.target=Nearest(u.p,!u.red,3.4f);u.goal=u.target!=null?u.target.p:new Vector2(u.red?-12:12,u.red?-4:4);}
             if(u.tower)u.target=Nearest(u.p,!u.red,5.8f);

@@ -1,0 +1,90 @@
+{
+  "clearExpectedBehavior": true,
+  "rationale": "The report explicitly requires one hit per enemy per direction, independent of step size. Original source sets orb damage to 100 + 0.5*AP: with AP 0 and MR 100, one outward magic hit deals 50 and one returning true-damage hit deals 100. These preserve existing per-hit balance, yielding 150 total damage. All setup occurs before casting. The trace reproduces excess damage: fine steps deal 450 outward and 1650 total; coarse steps deal 300 total. StepShots clears the hit set on collision without adding the victim, permitting repeated overlap hits. Retained damage and off-path controls directly witness the report; equality across step sizes alone would also accept equally broken results. These checks cover the supplied stationary-target scenario, not all enemies or step sizes.",
+  "checks": [
+    {
+      "label": "Fine outward deals exactly one existing magic hit",
+      "at": "fineOutward",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "fineBefore",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": -50,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Fine return deals exactly one existing true-damage hit",
+      "at": "fineComplete",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "fineOutward",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": -100,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Coarse outward deals exactly one existing magic hit",
+      "at": "coarseOutward",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "coarseBefore",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": -50,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Coarse return deals exactly one existing true-damage hit",
+      "at": "coarseComplete",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "coarseOutward",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": -100,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Fine off-path control remains unharmed",
+      "at": "fineComplete",
+      "unit": "fineControl",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "fineBefore",
+      "compareUnit": "fineControl",
+      "compareField": "hp",
+      "value": 0,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Coarse off-path control remains unharmed",
+      "at": "coarseComplete",
+      "unit": "coarseControl",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "coarseBefore",
+      "compareUnit": "coarseControl",
+      "compareField": "hp",
+      "value": 0,
+      "tolerance": 0.01
+    },
+    {
+      "label": "Completed damage agrees across tested step sizes",
+      "at": "coarseComplete",
+      "unit": "enemy",
+      "field": "hp",
+      "relation": "eq",
+      "compareAt": "fineComplete",
+      "compareUnit": "enemy",
+      "compareField": "hp",
+      "value": 0,
+      "tolerance": 0.01
+    }
+  ]
+}

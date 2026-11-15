@@ -1,0 +1,114 @@
+{
+  "clearExpectedBehavior": true,
+  "rationale": "The report explicitly requires one listed mana charge per successful arena cast and preservation of mana and cooldown on rejected recasts. ChampionKit lists Morgana E at 70 mana and 14 seconds, and Ahri Q at 55 mana. DexArena.Cast invokes BeginCast and creates the shield or projectile; BeginCast currently subtracts twice the listed cost. The trace reproduces both double charges while showing both cooldown recasts preserve resources. The proposed checks follow from the report and source, use actual casts, and account for regeneration by comparing immediately adjacent checkpoints. Shield and projectile assertions provide successful-cast controls. These checks cover this scenario only.",
+  "checks": [
+    {
+      "label": "Successful Morgana E charges 70 mana once",
+      "at": "shield_cast",
+      "unit": "player",
+      "field": "mana",
+      "relation": "eq",
+      "compareAt": "initial",
+      "compareUnit": "player",
+      "compareField": "mana",
+      "value": -70,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Morgana E actually creates an active shield",
+      "at": "shield_cast",
+      "unit": "player",
+      "field": "shielded",
+      "relation": "eq",
+      "compareAt": "",
+      "compareUnit": "",
+      "compareField": "",
+      "value": 1,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Successful Morgana E starts its listed cooldown",
+      "at": "shield_cast",
+      "unit": "player",
+      "field": "cooldownE",
+      "relation": "eq",
+      "compareAt": "",
+      "compareUnit": "",
+      "compareField": "",
+      "value": 14,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Immediate cooldown rejection preserves mana",
+      "at": "immediate_recast",
+      "unit": "player",
+      "field": "mana",
+      "relation": "eq",
+      "compareAt": "shield_cast",
+      "compareUnit": "player",
+      "compareField": "mana",
+      "value": 0,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Immediate cooldown rejection preserves deadline",
+      "at": "immediate_recast",
+      "unit": "player",
+      "field": "readyE",
+      "relation": "eq",
+      "compareAt": "shield_cast",
+      "compareUnit": "player",
+      "compareField": "readyE",
+      "value": 0,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Delayed cooldown rejection preserves mana",
+      "at": "delayed_recast",
+      "unit": "player",
+      "field": "mana",
+      "relation": "eq",
+      "compareAt": "before_delayed_recast",
+      "compareUnit": "player",
+      "compareField": "mana",
+      "value": 0,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Delayed cooldown rejection preserves original deadline",
+      "at": "delayed_recast",
+      "unit": "player",
+      "field": "readyE",
+      "relation": "eq",
+      "compareAt": "shield_cast",
+      "compareUnit": "player",
+      "compareField": "readyE",
+      "value": 0,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Successful Ahri Q charges 55 mana once",
+      "at": "independent_q",
+      "unit": "enemy",
+      "field": "mana",
+      "relation": "eq",
+      "compareAt": "delayed_recast",
+      "compareUnit": "enemy",
+      "compareField": "mana",
+      "value": -55,
+      "tolerance": 0.001
+    },
+    {
+      "label": "Ahri Q actually creates one projectile",
+      "at": "independent_q",
+      "unit": "world",
+      "field": "shots",
+      "relation": "eq",
+      "compareAt": "delayed_recast",
+      "compareUnit": "world",
+      "compareField": "shots",
+      "value": 1,
+      "tolerance": 0.001
+    }
+  ]
+}

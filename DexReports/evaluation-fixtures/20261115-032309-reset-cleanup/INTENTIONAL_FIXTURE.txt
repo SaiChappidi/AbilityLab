@@ -1,0 +1,3 @@
+reset-cleanup
+Resetting while projectiles are in flight leaves stale projectiles in the new match. Reset should remove old projectiles, zones and effects and restore fresh resources.
+This is injected by a developer menu, not discovered by the agent. Baseline and mutant are saved separately.

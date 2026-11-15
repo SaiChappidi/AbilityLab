@@ -1,0 +1,19 @@
+Actual arena cast charges listed mana once and cooldown rejection preserves resources
+Seed: 12345 / Morgana vs Ahri
+Expected: Morgana E grants a shield, spends 70 mana once, and starts its 14-second cooldown at zero haste. After 0.5 seconds, ordinary regeneration restores 3 mana. A cooldown recast preserves mana, the original readiness deadline, and the shield lifetime. The idle opponent retains its mana.
+
+1. Set initial player.haste = 0 → observe [zero_haste]
+2. Cast player E toward (-6, -2) → observe [successful_cast]
+3. Advance 0.5s at dt=0.017 → observe [before_recast]
+4. Cast player E toward (-6, -2) → observe [cooldown_recast]
+
+Assertions:
+successful cast spends listed cost once @ successful_cast: player.mana eq -70 + initial.player.mana
+successful cast grants shield @ successful_cast: player.shield gt 0
+successful cast starts listed cooldown @ successful_cast: player.readyE eq 14 + initial.world.time
+ordinary mana regeneration control @ before_recast: player.mana eq 3 + successful_cast.player.mana
+recast occurs during cooldown @ before_recast: player.cooldownE gt 0
+rejected recast preserves mana @ cooldown_recast: player.mana eq 0 + before_recast.player.mana
+rejected recast preserves cooldown deadline @ cooldown_recast: player.readyE eq 0 + successful_cast.player.readyE
+rejected recast preserves shield lifetime @ cooldown_recast: player.shieldUntil eq 0 + successful_cast.player.shieldUntil
+idle opponent mana control @ cooldown_recast: enemy.mana eq 0 + initial.enemy.mana

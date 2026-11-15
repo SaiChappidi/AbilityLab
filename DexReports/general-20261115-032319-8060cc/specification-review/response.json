@@ -1,0 +1,22 @@
+{
+  "clearExpectedBehavior": true,
+  "rationale": "The report explicitly requires reset to clear projectiles, zones and effects and restore fresh resources. The scenario creates these through gameplay before reset, without manufacturing passing state afterward. The trace reproduces one retained projectile at fresh_match; zones, effects and resources reset successfully. Retain the direct reset witness and its preconditions without imposing new ability balance requirements. Enemy resources are already fresh before the final reset, so their final equality alone does not demonstrate restoration.",
+  "checks": [
+    {"label":"projectile_exists_before_reset","at":"active_before_reset","unit":"world","field":"shots","relation":"gt","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0},
+    {"label":"zone_exists_before_reset","at":"active_before_reset","unit":"world","field":"zones","relation":"gt","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0},
+    {"label":"effect_exists_before_reset","at":"active_before_reset","unit":"world","field":"effects","relation":"gt","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0},
+    {"label":"health_depleted_before_reset","at":"active_before_reset","unit":"player","field":"hp","relation":"lt","compareAt":"initial","compareUnit":"player","compareField":"hp","value":0,"tolerance":0},
+    {"label":"mana_spent_before_reset","at":"active_before_reset","unit":"player","field":"mana","relation":"lt","compareAt":"initial","compareUnit":"player","compareField":"mana","value":0,"tolerance":0},
+    {"label":"q_cooldown_active_before_reset","at":"active_before_reset","unit":"player","field":"cooldownQ","relation":"gt","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0},
+    {"label":"w_cooldown_active_before_reset","at":"active_before_reset","unit":"player","field":"cooldownW","relation":"gt","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0},
+    {"label":"e_cooldown_active_before_reset","at":"active_before_reset","unit":"player","field":"cooldownE","relation":"gt","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0},
+    {"label":"reset_clears_projectiles","at":"fresh_match","unit":"world","field":"shots","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0},
+    {"label":"reset_clears_zones","at":"fresh_match","unit":"world","field":"zones","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0},
+    {"label":"reset_clears_effects","at":"fresh_match","unit":"world","field":"effects","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0},
+    {"label":"reset_restores_health","at":"fresh_match","unit":"player","field":"hp","relation":"eq","compareAt":"initial","compareUnit":"player","compareField":"hp","value":0,"tolerance":0.001},
+    {"label":"reset_restores_mana","at":"fresh_match","unit":"player","field":"mana","relation":"eq","compareAt":"initial","compareUnit":"player","compareField":"mana","value":0,"tolerance":0.001},
+    {"label":"reset_restores_q_availability","at":"fresh_match","unit":"player","field":"cooldownQ","relation":"eq","compareAt":"initial","compareUnit":"player","compareField":"cooldownQ","value":0,"tolerance":0.001},
+    {"label":"reset_restores_w_availability","at":"fresh_match","unit":"player","field":"cooldownW","relation":"eq","compareAt":"initial","compareUnit":"player","compareField":"cooldownW","value":0,"tolerance":0.001},
+    {"label":"reset_restores_e_availability","at":"fresh_match","unit":"player","field":"cooldownE","relation":"eq","compareAt":"initial","compareUnit":"player","compareField":"cooldownE","value":0,"tolerance":0.001}
+  ]
+}

@@ -1,0 +1,9 @@
+Independent witness: Ahri orb hits once per enemy per leg across timesteps: 8/8
+PASS Fine outward hits once: observed 1728.571 eq expected 1728.571 @ fine_outward
+PASS Fine return hits once: observed 1628.571 eq expected 1628.571 @ fine_return
+PASS Fine completed cast deals exactly two hits: observed 1628.571 eq expected 1628.571 @ fine_finished
+PASS Coarse outward hits once: observed 1728.571 eq expected 1728.571 @ coarse_outward
+PASS Coarse return hits once: observed 1628.571 eq expected 1628.571 @ coarse_return
+PASS Coarse completed cast deals exactly two hits: observed 1628.571 eq expected 1628.571 @ coarse_finished
+PASS Fine off-path control remains unharmed: observed 1800 eq expected 1800 @ fine_finished
+PASS Coarse off-path control remains unharmed: observed 1800 eq expected 1800 @ coarse_finished

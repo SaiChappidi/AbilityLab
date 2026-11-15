@@ -1,6 +1,7 @@
 # Reusable actual-arena testing API
 
-The host owns Unity and verification. Propose JSON scenarios; the host executes them and returns observations and assertion failures. There are no scenario identifiers or report-specific routes in general mode. Search the source to choose useful operations and quantitative expectations. Do not assume a failure or request edits before an observable reproduction fails.
+The host owns Unity and verification. Request read/search operations in the structured requests array; do not use native shell tools. A read request has tool=read,path (relative snapshot file),query (empty),start (1-based line),count (up to 400). A search request has tool=search,path (file or directory, empty for whole snapshot),query (literal substring),start (unused),count (up to 400 matches). All five fields are required. Return requests=[] when ready to propose the scenario. During inspection, scenario may contain a placeholder with empty actions/checks; it is executed only after requests are empty.
+The host executes proposed JSON scenarios and returns observations and failures. There are no scenario identifiers or report-specific routes in general mode. Search source to choose useful operations and quantitative expectations. Do not assume a failure or request edits before an observable reproduction fails.
 
 Scenario: title, expectedBehavior, player/opponent (Ahri/Morgana/Ezreal/Mel), integer seed, actions array, checks array. Items, waves, AI, sound and practice healing are off. Initial player/enemy positions are (-6,-2)/(6,2), with 1800 health and 900 mana. Ordinary mana regeneration in Step still occurs. Every action records state. Give relevant actions unique label strings for assertions. initial is the first checkpoint.
 

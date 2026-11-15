@@ -1,0 +1,10 @@
+Actual arena mana charges and rejected cooldown recast: 9/9
+PASS E charges listed mana once: observed 830 eq expected 830 @ shield_cast
+PASS E creates shield: observed 210 gt expected 0 @ shield_cast
+PASS E starts listed cooldown: observed 14 eq expected 14 @ shield_cast
+PASS Rejected recast preserves mana: observed 830 eq expected 830 @ cooldown_recast
+PASS Rejected recast preserves cooldown: observed 14 eq expected 14 @ cooldown_recast
+PASS Rejected recast preserves shield: observed 210 eq expected 210 @ cooldown_recast
+PASS Q charges listed mana once: observed 775 eq expected 775 @ projectile_cast
+PASS Q creates projectile: observed 1 eq expected 1 @ projectile_cast
+PASS Q starts listed cooldown: observed 7 eq expected 7 @ projectile_cast

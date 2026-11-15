@@ -52,9 +52,9 @@ namespace Dex
                 case "disc":p.Ellipse(.5f,.5f,.48f,.48f,Color.white);break;
                 case "ring":p.Ellipse(.5f,.5f,.48f,.48f,Color.white);p.Ellipse(.5f,.5f,.455f,.455f,Color.clear);break;
                 case "ground":
-                    p.Fill(new Color(.075f,.16f,.13f));
-                    for(int i=0;i<17000;i++){float x=(float)rng.NextDouble(),y=(float)rng.NextDouble(),v=(float)rng.NextDouble();p.Ellipse(x,y,.0006f+v*.003f,.001f+v*.003f,new Color(.07f+v*.03f,.145f+v*.055f,.115f+v*.04f));}
-                    for(int i=0;i<120;i++){float x=(float)rng.NextDouble(),y=(float)rng.NextDouble();p.Line(x,y,x+.004f,y+.009f,.0015f,new Color(.13f,.24f,.17f));}break;
+                    p.Fill(new Color(.055f,.105f,.13f));
+                    for(int i=0;i<17000;i++){float x=(float)rng.NextDouble(),y=(float)rng.NextDouble(),v=(float)rng.NextDouble();p.Ellipse(x,y,.0006f+v*.003f,.001f+v*.003f,new Color(.055f+v*.025f,.11f+v*.055f,.135f+v*.045f));}
+                    for(int i=0;i<120;i++){float x=(float)rng.NextDouble(),y=(float)rng.NextDouble();p.Line(x,y,x+.004f,y+.009f,.0015f,new Color(.22f,.23f,.16f,.7f));}break;
                 case "stone":
                     p.Fill(new Color(.19f,.24f,.23f));
                     for(int row=0;row<9;row++)for(int col=0;col<4;col++){float x=col*.29f+(row%2)*.13f,y=row*.12f;p.Polygon(new Color(.28f+row*.005f,.32f+row*.005f,.3f+row*.005f),x+.01f,y+.01f,x+.25f,y+.015f,x+.27f,y+.1f,x+.015f,y+.105f);p.Line(x+.025f,y+.1f,x+.25f,y+.1f,.004f,new Color(.39f,.42f,.36f));}break;

@@ -1,0 +1,1 @@
+{"type":"object","properties":{"analysis":{"type":"string"},"edits":{"type":"array","items":{"type":"object","properties":{"path":{"type":"string"},"find":{"type":"string"},"replace":{"type":"string"},"create":{"type":"boolean"}},"required":["path","find","replace","create"],"additionalProperties":false}}},"required":["analysis","edits"],"additionalProperties":false}

@@ -1,0 +1,52 @@
+{
+  "analysis": "ResetWorld clears units, zones, effects and floating text, but does not clear the shots collection. This is a likely cause requiring host execution to confirm. The scenario first checks ordinary projectile travel and impact, then resets while a projectile, zone and effect are active and resources are depleted. Immediate reset assertions avoid advancing potentially stale projectile references.",
+  "needsReview": false,
+  "requests": [],
+  "scenario": {
+    "title": "Reset clears active arena objects and restores fresh resources",
+    "expectedBehavior": "A normal Morgana Q travels, damages and roots its target. Reset removes all prior projectiles, zones and effects and restores both champions' initial health, mana and cooldowns.",
+    "player": "Morgana",
+    "opponent": "Ezreal",
+    "seed": 73,
+    "actions": [
+      {"op":"place","unit":"player","target":"","field":"","text":"","label":"control_player_position","champion":"","slot":"","x":-3,"y":0,"value":0,"seconds":0,"dt":0,"red":false},
+      {"op":"place","unit":"enemy","target":"","field":"","text":"","label":"control_enemy_position","champion":"","slot":"","x":3,"y":0,"value":0,"seconds":0,"dt":0,"red":false},
+      {"op":"cast","unit":"player","target":"","field":"","text":"","label":"normal_projectile_launched","champion":"","slot":"Q","x":3,"y":0,"value":0,"seconds":0,"dt":0,"red":false},
+      {"op":"advance","unit":"","target":"","field":"","text":"","label":"normal_projectile_impact","champion":"","slot":"","x":0,"y":0,"value":0,"seconds":0.6,"dt":0.01,"red":false},
+      {"op":"reset","unit":"","target":"","field":"","text":"","label":"control_reset","champion":"","slot":"","x":0,"y":0,"value":0,"seconds":0,"dt":0,"red":false},
+      {"op":"place","unit":"player","target":"","field":"","text":"","label":"reset_test_player_position","champion":"","slot":"","x":0,"y":0,"value":0,"seconds":0,"dt":0,"red":false},
+      {"op":"place","unit":"enemy","target":"","field":"","text":"","label":"reset_test_enemy_position","champion":"","slot":"","x":6,"y":0,"value":0,"seconds":0,"dt":0,"red":false},
+      {"op":"damage","unit":"enemy","target":"player","field":"","text":"magic","label":"health_depleted","champion":"","slot":"","x":0,"y":0,"value":140,"seconds":0,"dt":0,"red":false},
+      {"op":"cast","unit":"player","target":"","field":"","text":"","label":"zone_created","champion":"","slot":"W","x":6,"y":0,"value":0,"seconds":0,"dt":0,"red":false},
+      {"op":"cast","unit":"player","target":"","field":"","text":"","label":"effect_created","champion":"","slot":"E","x":0,"y":0,"value":0,"seconds":0,"dt":0,"red":false},
+      {"op":"cast","unit":"player","target":"","field":"","text":"","label":"active_before_reset","champion":"","slot":"Q","x":6,"y":0,"value":0,"seconds":0,"dt":0,"red":false},
+      {"op":"reset","unit":"","target":"","field":"","text":"","label":"fresh_match","champion":"","slot":"","x":0,"y":0,"value":0,"seconds":0,"dt":0,"red":false}
+    ],
+    "checks": [
+      {"label":"normal_cast_creates_projectile","at":"normal_projectile_launched","unit":"world","field":"shots","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":1,"tolerance":0},
+      {"label":"normal_cast_spends_mana","at":"normal_projectile_launched","unit":"player","field":"mana","relation":"lt","compareAt":"initial","compareUnit":"player","compareField":"mana","value":0,"tolerance":0},
+      {"label":"normal_projectile_damages_enemy","at":"normal_projectile_impact","unit":"enemy","field":"hp","relation":"lt","compareAt":"initial","compareUnit":"enemy","compareField":"hp","value":0,"tolerance":0},
+      {"label":"normal_projectile_roots_enemy","at":"normal_projectile_impact","unit":"enemy","field":"controlled","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":1,"tolerance":0},
+      {"label":"normal_projectile_consumed","at":"normal_projectile_impact","unit":"world","field":"shots","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0},
+      {"label":"control_reset_clears_impact_effect","at":"control_reset","unit":"world","field":"effects","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0},
+      {"label":"control_reset_clears_root","at":"control_reset","unit":"enemy","field":"controlled","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0},
+      {"label":"projectile_present_before_reset","at":"active_before_reset","unit":"world","field":"shots","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":1,"tolerance":0},
+      {"label":"zone_present_before_reset","at":"active_before_reset","unit":"world","field":"zones","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":1,"tolerance":0},
+      {"label":"effect_present_before_reset","at":"active_before_reset","unit":"world","field":"effects","relation":"gt","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0},
+      {"label":"health_depleted_before_reset","at":"active_before_reset","unit":"player","field":"hp","relation":"lt","compareAt":"initial","compareUnit":"player","compareField":"hp","value":0,"tolerance":0},
+      {"label":"mana_depleted_before_reset","at":"active_before_reset","unit":"player","field":"mana","relation":"lt","compareAt":"initial","compareUnit":"player","compareField":"mana","value":0,"tolerance":0},
+      {"label":"cooldown_active_before_reset","at":"active_before_reset","unit":"player","field":"cooldownQ","relation":"gt","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0},
+      {"label":"reset_clears_projectiles","at":"fresh_match","unit":"world","field":"shots","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0},
+      {"label":"reset_clears_zones","at":"fresh_match","unit":"world","field":"zones","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0},
+      {"label":"reset_clears_effects","at":"fresh_match","unit":"world","field":"effects","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0},
+      {"label":"reset_restores_player_health","at":"fresh_match","unit":"player","field":"hp","relation":"eq","compareAt":"initial","compareUnit":"player","compareField":"hp","value":0,"tolerance":0.001},
+      {"label":"reset_restores_player_mana","at":"fresh_match","unit":"player","field":"mana","relation":"eq","compareAt":"initial","compareUnit":"player","compareField":"mana","value":0,"tolerance":0.001},
+      {"label":"reset_restores_enemy_health","at":"fresh_match","unit":"enemy","field":"hp","relation":"eq","compareAt":"initial","compareUnit":"enemy","compareField":"hp","value":0,"tolerance":0.001},
+      {"label":"reset_restores_enemy_mana","at":"fresh_match","unit":"enemy","field":"mana","relation":"eq","compareAt":"initial","compareUnit":"enemy","compareField":"mana","value":0,"tolerance":0.001},
+      {"label":"reset_clears_q_cooldown","at":"fresh_match","unit":"player","field":"cooldownQ","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0.001},
+      {"label":"reset_clears_w_cooldown","at":"fresh_match","unit":"player","field":"cooldownW","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0.001},
+      {"label":"reset_clears_e_cooldown","at":"fresh_match","unit":"player","field":"cooldownE","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0.001},
+      {"label":"reset_clears_shield","at":"fresh_match","unit":"player","field":"shield","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0.001}
+    ]
+  }
+}

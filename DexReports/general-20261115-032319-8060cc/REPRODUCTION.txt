@@ -1,0 +1,42 @@
+Reset clears active arena objects and restores fresh resources
+Seed: 73 / Morgana vs Ezreal
+Expected: A normal Morgana Q travels, damages and roots its target. Reset removes all prior projectiles, zones and effects and restores both champions' initial health, mana and cooldowns.
+
+1. Place player at (-3, 0) → observe [control_player_position]
+2. Place enemy at (3, 0) → observe [control_enemy_position]
+3. Cast player Q toward (3, 0) → observe [normal_projectile_launched]
+4. Advance 0.6s at dt=0.01 → observe [normal_projectile_impact]
+5. Reset the actual arena → observe [control_reset]
+6. Place player at (0, 0) → observe [reset_test_player_position]
+7. Place enemy at (6, 0) → observe [reset_test_enemy_position]
+8. Damage player from enemy for 140 magic → observe [health_depleted]
+9. Cast player W toward (6, 0) → observe [zone_created]
+10. Cast player E toward (0, 0) → observe [effect_created]
+11. Cast player Q toward (6, 0) → observe [active_before_reset]
+12. Reset the actual arena → observe [fresh_match]
+
+Assertions:
+normal_cast_creates_projectile @ normal_projectile_launched: world.shots eq 1
+normal_cast_spends_mana @ normal_projectile_launched: player.mana lt 0 + initial.player.mana
+normal_projectile_damages_enemy @ normal_projectile_impact: enemy.hp lt 0 + initial.enemy.hp
+normal_projectile_roots_enemy @ normal_projectile_impact: enemy.controlled eq 1
+normal_projectile_consumed @ normal_projectile_impact: world.shots eq 0
+control_reset_clears_impact_effect @ control_reset: world.effects eq 0
+control_reset_clears_root @ control_reset: enemy.controlled eq 0
+projectile_present_before_reset @ active_before_reset: world.shots eq 1
+zone_present_before_reset @ active_before_reset: world.zones eq 1
+effect_present_before_reset @ active_before_reset: world.effects gt 0
+health_depleted_before_reset @ active_before_reset: player.hp lt 0 + initial.player.hp
+mana_depleted_before_reset @ active_before_reset: player.mana lt 0 + initial.player.mana
+cooldown_active_before_reset @ active_before_reset: player.cooldownQ gt 0
+reset_clears_projectiles @ fresh_match: world.shots eq 0
+reset_clears_zones @ fresh_match: world.zones eq 0
+reset_clears_effects @ fresh_match: world.effects eq 0
+reset_restores_player_health @ fresh_match: player.hp eq 0 + initial.player.hp
+reset_restores_player_mana @ fresh_match: player.mana eq 0 + initial.player.mana
+reset_restores_enemy_health @ fresh_match: enemy.hp eq 0 + initial.enemy.hp
+reset_restores_enemy_mana @ fresh_match: enemy.mana eq 0 + initial.enemy.mana
+reset_clears_q_cooldown @ fresh_match: player.cooldownQ eq 0
+reset_clears_w_cooldown @ fresh_match: player.cooldownW eq 0
+reset_clears_e_cooldown @ fresh_match: player.cooldownE eq 0
+reset_clears_shield @ fresh_match: player.shield eq 0

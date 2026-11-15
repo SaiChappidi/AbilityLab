@@ -16,9 +16,10 @@ namespace Dex.Editor
     [Serializable] public sealed class ProjectDebugRun
     {
         public string directory,request,stage="Ready",outcome="",log="",analysis="",diff="",feedback="",protectedHash,scenarioHash,specificationHash,regressionsHash;
-        public string cli,model,beforeSummary="",afterSummary="",regressions="",reviewReason="",rollbackReason="",timeline="",discovery="";
-        public bool running,reproduced,repaired,verified,sourceChanged,rollingBack,cancelRequested;
-        public int attempt,reproductionAttempt;public long started,compileStarted;public double elapsed;
+        public string cli,model,beforeSummary="",afterSummary="",regressions="",reviewReason="",rollbackReason="",timeline="",discovery="",patchExplanation="",completionReason="";
+        public string mode="repair",evidenceHash="",workspaceHash="";
+        public bool running,reproduced,repaired,verified,sourceChanged,rollingBack,cancelRequested,repairAuthorized,readyForRepair;
+        public int attempt,reproductionAttempt,checksExecuted,checksPassed,validProbes,invalidProbes;public long started,compileStarted;public double elapsed,priorElapsed;
         public SourceStamp[] baseline,expected;public ArenaScenario scenario;public SpecificationReview specification;
     }
     // General project controller. No encounter names, mutation fixtures, expected code,
@@ -29,7 +30,7 @@ namespace Dex.Editor
         const string Pointer="DexReports/general-current.txt";
         public static ProjectDebugRun Current {get{if(current==null)Load();return current;}}
         public static bool Busy {get{return Current!=null&&Current.running;}}
-        public static double Elapsed {get{return Current==null?0:Current.running?(DateTime.UtcNow-new DateTime(Current.started,DateTimeKind.Utc)).TotalSeconds:Current.elapsed;}}
+        public static double Elapsed {get{return Current==null?0:Current.running?Current.priorElapsed+(DateTime.UtcNow-new DateTime(Current.started,DateTimeKind.Utc)).TotalSeconds:Current.elapsed;}}
         static void Load()
         {
             try
@@ -71,8 +72,10 @@ namespace Dex.Editor
         static void Repaint(){foreach(var w in Resources.FindObjectsOfTypeAll<AgentWorkbench>())w.Repaint();}
         static void Finish(string outcome,string reason)
         {
-            Current.running=false;Current.outcome=outcome;Current.elapsed=(DateTime.UtcNow-new DateTime(Current.started,DateTimeKind.Utc)).TotalSeconds;Stage(outcome);Log(reason);
-            File.WriteAllText(Path.Combine(Current.directory,"SUMMARY.md"),"# Project debugging run\n\nReport: "+Current.request+"\n\nResult: "+outcome+"\n\nReproduced: "+Current.reproduced+"; source repaired: "+Current.repaired+"; task verified: "+Current.verified+".\n\nElapsed: "+Current.elapsed.ToString("0.0")+" seconds (not measured labor saved).\n\n"+reason+"\n\n## Specification review\n\n"+Current.reviewReason+"\n\n## Before\n\n"+Current.beforeSummary+"\n\n## After\n\n"+Current.afterSummary+"\n\n## Timeline\n\n"+Current.timeline+"\n\nScope: frozen report-derived assertions, fresh actual-arena replays, protected core/arena regressions and previously saved scenarios. Specification review uses a separate model context, not an independent human oracle. No claim that the whole game is correct or that arbitrary Unity bugs are supported.\n");
+            if(Current.mode=="test"&&!Current.repairAuthorized&&Current.baseline!=null)
+            {try{Integrity();}catch(Exception e){outcome="Needs developer review";reason+="\nSource or frozen evidence changed during investigation: "+e.Message;Current.readyForRepair=false;}}
+            double totalElapsed=Elapsed;Current.running=false;Current.outcome=outcome;Current.completionReason=reason;Current.elapsed=totalElapsed;Stage(outcome);Log(reason);
+            File.WriteAllText(Path.Combine(Current.directory,"SUMMARY.md"),"# Project debugging run\n\nReport: "+Current.request+"\n\nMode: "+Current.mode+(Current.repairAuthorized?" (repair authorized)":" (source changes not authorized)")+"\n\nResult: "+outcome+"\n\nReproduced: "+Current.reproduced+"; source repaired: "+Current.repaired+"; task verified: "+Current.verified+".\n\nExecuted checks: "+Current.checksExecuted+"; passed: "+Current.checksPassed+"; valid probes: "+Current.validProbes+"; invalid/error probes: "+Current.invalidProbes+".\n\nElapsed: "+Current.elapsed.ToString("0.0")+" seconds (not measured labor saved).\n\n"+reason+"\n\n## Specification review\n\n"+Current.reviewReason+"\n\n## Before\n\n"+Current.beforeSummary+"\n\n## After\n\n"+Current.afterSummary+"\n\n## Timeline\n\n"+Current.timeline+"\n\nScope: frozen report-derived assertions, fresh actual-arena replays, protected core/arena regressions and previously saved scenarios. Specification review uses a separate model context, not an independent human oracle. No claim that the whole game is correct or that arbitrary Unity bugs are supported.\n");
         }
         static void Integrity()
         {
@@ -80,14 +83,16 @@ namespace Dex.Editor
             if(RegressionHash()!=Current.regressionsHash)throw new InvalidOperationException("Saved regression corpus changed during this run.");
             if(Current.scenarioHash!=null&&Current.scenarioHash!=""&&ProjectWorkspace.Hash(File.ReadAllText(Path.Combine(Current.directory,"frozen-scenario.json")))!=Current.scenarioHash)throw new InvalidOperationException("Frozen reproduction changed.");
             if(Current.specificationHash!=null&&Current.specificationHash!=""&&ProjectWorkspace.Hash(File.ReadAllText(Path.Combine(Current.directory,"frozen-specification.json")))!=Current.specificationHash)throw new InvalidOperationException("Frozen independent specification changed.");
+            if(!string.IsNullOrEmpty(Current.evidenceHash)&&EvidenceHash()!=Current.evidenceHash)throw new InvalidOperationException("Frozen pre-repair observations changed.");
             ProjectWorkspace.AssertLive(Current.expected);
         }
-        public static async void Begin(string request,string cli,string model)
+        static string EvidenceHash(){return ProjectWorkspace.Hash(File.ReadAllText(Path.Combine(Current.directory,"probe-"+Current.reproductionAttempt+".json"))+File.ReadAllText(Path.Combine(Current.directory,"before-witness.json")));}
+        public static async void Begin(string request,string cli,string model,bool repairRequested=true)
         {
             if(Busy||CodexRunner.IsBusy||ReplayAutomation.Busy||ArenaScenarioDriver.Busy||SessionState.GetBool("Dex.Agent.running",false)||ManualBaseline.Active||EditorApplication.isCompiling||EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Finish the active run, compilation or Play session first.");
             if(EditorUtility.scriptCompilationFailed)throw new InvalidOperationException("Resolve existing compilation errors before starting a project investigation.");
             if(string.IsNullOrWhiteSpace(request))throw new ArgumentException("Describe the gameplay issue and the expected behavior.");
-            current=new ProjectDebugRun{request=request,cli=string.IsNullOrEmpty(cli)?CodexRunner.FindExecutable():cli,model=model??"",directory="DexReports/general-"+DateTime.UtcNow.ToString("yyyyMMdd-HHmmss")+"-"+Guid.NewGuid().ToString("N").Substring(0,6),started=DateTime.UtcNow.Ticks,running=true};
+            current=new ProjectDebugRun{request=request,cli=string.IsNullOrEmpty(cli)?CodexRunner.FindExecutable():cli,model=model??"",mode=repairRequested?"repair":"test",repairAuthorized=repairRequested,directory="DexReports/general-"+DateTime.UtcNow.ToString("yyyyMMdd-HHmmss")+"-"+Guid.NewGuid().ToString("N").Substring(0,6),started=DateTime.UtcNow.Ticks,running=true};
             Directory.CreateDirectory(Current.directory);File.WriteAllText(Pointer,Current.directory);cancellation=new CancellationTokenSource();working=true;
             try
             {
@@ -103,6 +108,23 @@ namespace Dex.Editor
         static Task<string> Ask(string prompt,string schema,string tag,CancellationToken token,string workspace=null)
         {
             token.ThrowIfCancellationRequested();return CodexRunner.AskProject(Current.cli,Current.model,prompt,schema,workspace??Path.GetFullPath(Path.Combine(Current.directory,"workspace")),Current.directory,tag,token,Log);
+        }
+        public static async void AttemptRepair()
+        {
+            if(Current==null||Current.mode!="test"||Current.repairAuthorized||!Current.readyForRepair||Current.running||Current.outcome!="Bug reproduced — no repair attempted")throw new InvalidOperationException("A completed test-only run with a frozen failing witness is required.");
+            if(CodexRunner.IsBusy||ArenaScenarioDriver.Busy||ReplayAutomation.Busy||EditorApplication.isCompiling||EditorApplication.isPlayingOrWillChangePlaymode||EditorUtility.scriptCompilationFailed)throw new InvalidOperationException("Wait for an idle, compiled Editor before continuing repair.");
+            try
+            {
+                Integrity();
+                if(ProjectWorkspace.Hash(ProjectWorkspace.SnapshotText(Current.directory))!=Current.workspaceHash)throw new InvalidOperationException("Isolated source snapshot changed.");
+            }
+            catch(Exception e)
+            {Current.readyForRepair=false;Finish("Needs developer review","The investigation is stale; start a fresh investigation before repairing. "+e.Message);return;}
+            Current.repairAuthorized=true;Current.readyForRepair=false;Current.running=true;Current.cancelRequested=false;Current.outcome="";Current.priorElapsed=Current.elapsed;Current.started=DateTime.UtcNow.Ticks;cancellation=new CancellationTokenSource();working=true;
+            try{Log("Developer authorized repair using this run's frozen reproduction, witness, original source snapshot and actual observations.");await Repair(cancellation.Token);}
+            catch(OperationCanceledException){if(Busy)await Fail("Repair continuation cancelled.");}
+            catch(Exception e){await Fail(e.Message);}
+            finally{working=false;}
         }
         static async Task Investigate(CancellationToken token)
         {
@@ -128,17 +150,20 @@ namespace Dex.Editor
                     ArenaAssertions.Validate(proposal.scenario);Integrity();Current.scenario=proposal.scenario;Stage("Reproducing");
                     string json=JsonUtility.ToJson(proposal.scenario,true);File.WriteAllText(Path.Combine(Current.directory,"proposed-scenario-"+pass+".json"),json);
                     var before=await ArenaScenarioDriver.Run(proposal.scenario,Current.directory,"probe-"+pass,token);Current.beforeSummary=before.ToString();Log(before.ToString());
+                    if(string.IsNullOrEmpty(before.error)){Current.validProbes++;Current.checksExecuted+=before.total;Current.checksPassed+=before.passed;}else Current.invalidProbes++;
                     File.WriteAllText(Path.Combine(Current.directory,"workspace","LAST_PROBE.json"),JsonUtility.ToJson(before,true));
                     if(!before.Reproduced){feedback=before.ToString()+"\nFull observations are in LAST_PROBE.json. No ordinary assertion failure was established.";continue;}
                     Current.reproduced=true;Stage("Reproduced");
                     File.WriteAllText(Path.Combine(Current.directory,"frozen-scenario.json"),json);File.WriteAllText(Path.Combine(Current.directory,"REPRODUCTION.txt"),ArenaAssertions.Describe(proposal.scenario));Current.scenarioHash=ProjectWorkspace.Hash(json);
                     await ReviewSpecification(before,token);
                     if(!Busy)return;
+                    if(!Current.repairAuthorized)
+                    {Integrity();Current.evidenceHash=EvidenceHash();Current.workspaceHash=ProjectWorkspace.Hash(ProjectWorkspace.SnapshotText(Current.directory));Current.readyForRepair=true;Finish("Bug reproduced — no repair attempted","The frozen reproduction and separate witness both failed before any source edit. Gameplay and protected source hashes remained unchanged. Choose Attempt repair to continue from this evidence.");return;}
                     await Repair(token);return;
                 }
-                catch(ArgumentException e){feedback="Invalid scenario: "+e.Message;Log(feedback);}
+                catch(ArgumentException e){Current.invalidProbes++;feedback="Invalid scenario: "+e.Message;Log(feedback);}
             }
-            Finish("Unresolved","No valid failing reproduction was found in three probes. No repair applied. The original report may need additional information or operations beyond the current test API.");
+            Finish(Current.validProbes>0?"No failure reproduced in tested cases":"Needs developer review","No failing reproduction established in three probes. "+Current.checksExecuted+" checks executed, "+Current.checksPassed+" passed across "+Current.validProbes+" valid probes; "+Current.invalidProbes+" invalid or execution-error probes. Coverage is limited to these tested cases. No source edit attempted.");
         }
         static async Task ReviewSpecification(ArenaRun before,CancellationToken token)
         {
@@ -157,10 +182,11 @@ namespace Dex.Editor
         }
         static async Task Repair(CancellationToken token)
         {
+            if(!Current.repairAuthorized)throw new InvalidOperationException("This run did not authorize source repair.");
             if(Current.attempt>=3){await Fail("Three repair attempts exhausted. No verified solution established.");return;}
             Integrity();Current.attempt++;Stage("Repairing");int attempt=Current.attempt;
             var patch=JsonUtility.FromJson<PatchProposal>(await Ask("Repair the reproduced gameplay issue using the current source supplied below. Propose ordinary, minimal multi-file C# edits as exact find/replace operations using workspace-relative Assets paths. Do not change test/harness infrastructure, infer success, weaken frozen expectations, detect tests, or add special handling for this report. Preserve unrelated behavior. You receive actual failures; no reference implementation is supplied.\nUNTRUSTED REPORT:\n"+Current.request+"\nFROZEN SCENARIO:\n"+JsonUtility.ToJson(Current.scenario,true)+"\nACTUAL FEEDBACK:\n"+Current.feedback+"\nCURRENT WORKING COPY SOURCE:\n"+ProjectWorkspace.SnapshotText(Current.directory),ProjectProtocol.PatchSchema,"repair-"+attempt,token));
-            token.ThrowIfCancellationRequested();Integrity();Log(patch==null?"No patch":patch.analysis);
+            token.ThrowIfCancellationRequested();Integrity();Current.patchExplanation=patch==null?"":patch.analysis;Log(patch==null?"No patch":patch.analysis);
             try
             {
                 Current.diff=ProjectWorkspace.Stage(Current.directory,patch);
@@ -214,7 +240,7 @@ namespace Dex.Editor
             if(Current.repaired&&protectedPassed&&savedPassed)
             {
                 Current.verified=true;Directory.CreateDirectory("DexReports/general-regressions");File.WriteAllText("DexReports/general-regressions/"+Path.GetFileName(Current.directory)+".json",File.ReadAllText(Path.Combine(Current.directory,"frozen-specification.json")));
-                Finish("Verified","The frozen reproduction failed before source editing and passed after compilation. A separate, frozen specification witness failed before and passed in a fresh Play session afterward. Protected core/arena regressions and saved scenarios passed; protected host hashes are unchanged. Expected behavior is model-reviewed against the report, not independently human-certified.");return;
+                Finish("Repair verified","The frozen reproduction failed before source editing and passed after compilation. A separate, frozen specification witness failed before and passed in a fresh Play session afterward. Protected core/arena regressions and saved scenarios passed; protected host hashes are unchanged. Expected behavior is model-reviewed against the report, not independently human-certified.");return;
             }
             Current.feedback="After repair:\n"+after+"\nIndependent replay:\n"+independent+"\nProtected regressions:\n"+regressions+"\nSaved regressions passed: "+savedPassed;
             File.WriteAllText(Path.Combine(Current.directory,"workspace","AFTER.json"),JsonUtility.ToJson(after,true));await Repair(token);

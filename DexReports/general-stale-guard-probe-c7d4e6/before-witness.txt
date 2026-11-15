@@ -1,0 +1,7 @@
+Independent witness: Actual arena cast charges listed mana once and cooldown rejection preserves resources: 5/6
+FAIL Successful cast charges listed mana once: observed 760 eq expected 830 @ successful_cast
+PASS Shield confirms successful cast: observed 210 gt expected 0 @ successful_cast
+PASS Successful cast starts original cooldown: observed 14 eq expected 14 @ successful_cast
+PASS Recast attempted during active cooldown: observed 13.5 gt expected 0 @ before_recast
+PASS Rejected recast spends no mana: observed 762.9993 eq expected 762.9993 @ cooldown_recast
+PASS Rejected recast preserves readiness deadline: observed 14 eq expected 14 @ cooldown_recast

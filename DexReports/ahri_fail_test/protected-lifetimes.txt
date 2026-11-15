@@ -1,0 +1,33 @@
+Independent verifier: 32/32 passed. VERIFIED
+PASS Ahri temporary barrier at 0.5 | expected=True actual=True 
+PASS Ahri temporary magic shield at 0.5 | expected=True actual=True 
+PASS Ahri temporary barrier at 0.999 | expected=True actual=True 
+PASS Ahri temporary magic shield at 0.999 | expected=True actual=True 
+PASS Ahri temporary barrier at 1 | expected=False actual=False 
+PASS Ahri temporary magic shield at 1 | expected=False actual=False 
+PASS Ahri temporary barrier at 1.001 | expected=False actual=False 
+PASS Ahri temporary magic shield at 1.001 | expected=False actual=False 
+PASS Morgana temporary barrier at 0.5 | expected=True actual=True 
+PASS Morgana temporary magic shield at 0.5 | expected=True actual=True 
+PASS Morgana temporary barrier at 0.999 | expected=True actual=True 
+PASS Morgana temporary magic shield at 0.999 | expected=True actual=True 
+PASS Morgana temporary barrier at 1 | expected=False actual=False 
+PASS Morgana temporary magic shield at 1 | expected=False actual=False 
+PASS Morgana temporary barrier at 1.001 | expected=False actual=False 
+PASS Morgana temporary magic shield at 1.001 | expected=False actual=False 
+PASS Ezreal temporary barrier at 0.5 | expected=True actual=True 
+PASS Ezreal temporary magic shield at 0.5 | expected=True actual=True 
+PASS Ezreal temporary barrier at 0.999 | expected=True actual=True 
+PASS Ezreal temporary magic shield at 0.999 | expected=True actual=True 
+PASS Ezreal temporary barrier at 1 | expected=False actual=False 
+PASS Ezreal temporary magic shield at 1 | expected=False actual=False 
+PASS Ezreal temporary barrier at 1.001 | expected=False actual=False 
+PASS Ezreal temporary magic shield at 1.001 | expected=False actual=False 
+PASS Mel temporary barrier at 0.5 | expected=True actual=True 
+PASS Mel temporary magic shield at 0.5 | expected=True actual=True 
+PASS Mel temporary barrier at 0.999 | expected=True actual=True 
+PASS Mel temporary magic shield at 0.999 | expected=True actual=True 
+PASS Mel temporary barrier at 1 | expected=False actual=False 
+PASS Mel temporary magic shield at 1 | expected=False actual=False 
+PASS Mel temporary barrier at 1.001 | expected=False actual=False 
+PASS Mel temporary magic shield at 1.001 | expected=False actual=False 

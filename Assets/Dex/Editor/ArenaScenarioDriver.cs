@@ -39,7 +39,7 @@ namespace Dex.Editor
                 while(arena==null){token.ThrowIfCancellationRequested();if(DateTime.UtcNow>deadline)throw new TimeoutException("Arena startup timed out.");if(EditorApplication.isPlaying)arena=UnityEngine.Object.FindAnyObjectByType<DexArena>();await Task.Delay(30,token);}
                 Application.runInBackground=true;Set(arena,"manualSimulation",true);Set(arena,"menu",false);Set(arena,"bot",false);Set(arena,"waves",false);Set(arena,"practice",false);Set(arena,"items",false);Set(arena,"sound",false);
                 Set(arena,"champion",Array.IndexOf(ChampionKit.Roster,scenario.player));Set(arena,"opponent",Array.IndexOf(ChampionKit.Roster,scenario.opponent));
-                Call(arena,"ResetWorld");UnityEngine.Random.InitState(scenario.seed);await Task.Delay(50,token);
+                Call(arena,"ResetWorld");Set(arena,"scenarioStatus",(playback?"RECORDED REPLAY":"DEX TEST")+" / "+scenario.title+"\nExpected: "+scenario.expectedBehavior);UnityEngine.Random.InitState(scenario.seed);await Task.Delay(50,token);
                 var actors=new Dictionary<string,object>();Bind(arena,actors);observations.Add(Observe(arena,actors,"initial","initial setup"));
                 int index=0;
                 foreach(var action in scenario.actions)
@@ -57,6 +57,7 @@ namespace Dex.Editor
                     observations.Add(Observe(arena,actors,string.IsNullOrEmpty(action.label)?"action-"+index:action.label,JsonUtility.ToJson(action)));index++;
                 }
                 run.observations=observations.ToArray();ArenaAssertions.Evaluate(run,scenario.checks);
+                Set(arena,"scenarioStatus",(playback?"REPLAY":"TEST")+" / "+scenario.title+"\nExpected: "+scenario.expectedBehavior+"\nObserved: "+run.passed+"/"+run.total+" checks passed"+(run.Success?"  PASS":"  FAIL"));
                 string image=Path.GetFullPath(Path.Combine(directory,phase+".png"));ScreenCapture.CaptureScreenshot(image);await Task.Delay(150,token);run.screenshot=image;
             }
             catch(OperationCanceledException){throw;}

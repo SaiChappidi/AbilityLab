@@ -1,0 +1,46 @@
+{
+  "analysis": "Source inspection identifies a likely cause in DexArena.StepShots: collision eligibility checks m.hit.Contains(u), but the collision handler clears m.hit instead of recording the struck unit. The orb remains active after collisions, so successive simulation ticks may damage the same overlapping target. The separate clear at the outward-to-return transition appears intended to permit one additional hit on return. This remains a hypothesis until execution. The scenario compares fine and coarse steps, checks outward and completed-flight damage separately, and includes an off-path enemy control. With AP 0 and target MR 100, one outward hit deals 50 magic damage and one return hit deals 100 true damage.",
+  "needsReview": false,
+  "requests": [],
+  "scenario": {
+    "title": "Ahri orb hits once per direction across simulation step sizes",
+    "expectedBehavior": "A stationary enemy receives exactly one outward hit and one return hit at both 0.01-second and 0.1-second steps. An off-path enemy remains unharmed, and the orb disappears after returning.",
+    "player": "Ahri",
+    "opponent": "Morgana",
+    "seed": 42,
+    "actions": [
+      {"op":"place","unit":"player","target":"","field":"","text":"","label":"","champion":"","slot":"","x":-4,"y":0,"value":0,"seconds":0,"dt":0,"red":false},
+      {"op":"place","unit":"enemy","target":"","field":"","text":"","label":"","champion":"","slot":"","x":0,"y":0,"value":0,"seconds":0,"dt":0,"red":false},
+      {"op":"set","unit":"enemy","target":"","field":"mr","text":"","label":"","champion":"","slot":"","x":0,"y":0,"value":100,"seconds":0,"dt":0,"red":false},
+      {"op":"spawn","unit":"fineControl","target":"","field":"","text":"","label":"","champion":"Morgana","slot":"","x":0,"y":3,"value":0,"seconds":0,"dt":0,"red":true},
+      {"op":"observe","unit":"","target":"","field":"","text":"","label":"fineBefore","champion":"","slot":"","x":0,"y":0,"value":0,"seconds":0,"dt":0,"red":false},
+      {"op":"cast","unit":"player","target":"","field":"","text":"","label":"fineCast","champion":"","slot":"Q","x":4,"y":0,"value":0,"seconds":0,"dt":0,"red":false},
+      {"op":"advance","unit":"","target":"","field":"","text":"","label":"fineOutward","champion":"","slot":"","x":0,"y":0,"value":0,"seconds":0.4,"dt":0.01,"red":false},
+      {"op":"advance","unit":"","target":"","field":"","text":"","label":"fineComplete","champion":"","slot":"","x":0,"y":0,"value":0,"seconds":1.4,"dt":0.01,"red":false},
+      {"op":"reset","unit":"","target":"","field":"","text":"","label":"","champion":"","slot":"","x":0,"y":0,"value":0,"seconds":0,"dt":0,"red":false},
+      {"op":"place","unit":"player","target":"","field":"","text":"","label":"","champion":"","slot":"","x":-4,"y":0,"value":0,"seconds":0,"dt":0,"red":false},
+      {"op":"place","unit":"enemy","target":"","field":"","text":"","label":"","champion":"","slot":"","x":0,"y":0,"value":0,"seconds":0,"dt":0,"red":false},
+      {"op":"set","unit":"enemy","target":"","field":"mr","text":"","label":"","champion":"","slot":"","x":0,"y":0,"value":100,"seconds":0,"dt":0,"red":false},
+      {"op":"spawn","unit":"coarseControl","target":"","field":"","text":"","label":"","champion":"Morgana","slot":"","x":0,"y":3,"value":0,"seconds":0,"dt":0,"red":true},
+      {"op":"observe","unit":"","target":"","field":"","text":"","label":"coarseBefore","champion":"","slot":"","x":0,"y":0,"value":0,"seconds":0,"dt":0,"red":false},
+      {"op":"cast","unit":"player","target":"","field":"","text":"","label":"coarseCast","champion":"","slot":"Q","x":4,"y":0,"value":0,"seconds":0,"dt":0,"red":false},
+      {"op":"advance","unit":"","target":"","field":"","text":"","label":"coarseOutward","champion":"","slot":"","x":0,"y":0,"value":0,"seconds":0.4,"dt":0.1,"red":false},
+      {"op":"advance","unit":"","target":"","field":"","text":"","label":"coarseComplete","champion":"","slot":"","x":0,"y":0,"value":0,"seconds":1.4,"dt":0.1,"red":false}
+    ],
+    "checks": [
+      {"label":"Fine cast launches one orb","at":"fineCast","unit":"world","field":"shots","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":1,"tolerance":0},
+      {"label":"Fine outward hits once","at":"fineOutward","unit":"enemy","field":"hp","relation":"eq","compareAt":"fineBefore","compareUnit":"enemy","compareField":"hp","value":-50,"tolerance":0.01},
+      {"label":"Fine full flight hits once each direction","at":"fineComplete","unit":"enemy","field":"hp","relation":"eq","compareAt":"fineBefore","compareUnit":"enemy","compareField":"hp","value":-150,"tolerance":0.01},
+      {"label":"Fine off-path control unharmed","at":"fineComplete","unit":"fineControl","field":"hp","relation":"eq","compareAt":"fineBefore","compareUnit":"fineControl","compareField":"hp","value":0,"tolerance":0.01},
+      {"label":"Fine target stays stationary","at":"fineComplete","unit":"enemy","field":"x","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0.001},
+      {"label":"Fine orb completes return","at":"fineComplete","unit":"world","field":"shots","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0},
+      {"label":"Coarse cast launches one orb","at":"coarseCast","unit":"world","field":"shots","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":1,"tolerance":0},
+      {"label":"Coarse outward hits once","at":"coarseOutward","unit":"enemy","field":"hp","relation":"eq","compareAt":"coarseBefore","compareUnit":"enemy","compareField":"hp","value":-50,"tolerance":0.01},
+      {"label":"Coarse full flight hits once each direction","at":"coarseComplete","unit":"enemy","field":"hp","relation":"eq","compareAt":"coarseBefore","compareUnit":"enemy","compareField":"hp","value":-150,"tolerance":0.01},
+      {"label":"Coarse off-path control unharmed","at":"coarseComplete","unit":"coarseControl","field":"hp","relation":"eq","compareAt":"coarseBefore","compareUnit":"coarseControl","compareField":"hp","value":0,"tolerance":0.01},
+      {"label":"Coarse target stays stationary","at":"coarseComplete","unit":"enemy","field":"x","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0.001},
+      {"label":"Coarse orb completes return","at":"coarseComplete","unit":"world","field":"shots","relation":"eq","compareAt":"","compareUnit":"","compareField":"","value":0,"tolerance":0},
+      {"label":"Completed damage independent of step size","at":"coarseComplete","unit":"enemy","field":"hp","relation":"eq","compareAt":"fineComplete","compareUnit":"enemy","compareField":"hp","value":0,"tolerance":0.01}
+    ]
+  }
+}

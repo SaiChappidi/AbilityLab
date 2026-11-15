@@ -1,0 +1,21 @@
+Arena cast mana charge and rejection controls
+Seed: 2718 / Morgana vs Ahri
+Expected: Morgana E creates its shield, spends exactly 70 mana, and starts a 14-second cooldown. A rejected cooldown recast changes neither mana nor the cooldown deadline. An unaffordable Q changes neither mana nor cooldown and creates no projectile.
+
+1. Set initial enemy.mana = 54 → observe [low_mana]
+2. Cast enemy Q toward (-6, -2) → observe [unaffordable_q]
+3. Cast player E toward (-6, -2) → observe [successful_e]
+4. Advance 0.5s at dt=0.017 → observe [before_recast]
+5. Cast player E toward (-6, -2) → observe [cooldown_recast]
+
+Assertions:
+unaffordable cast preserves mana @ unaffordable_q: enemy.mana eq 0 + low_mana.enemy.mana
+unaffordable cast preserves readiness @ unaffordable_q: enemy.readyQ eq 0 + low_mana.enemy.readyQ
+unaffordable cast emits no projectile @ unaffordable_q: world.shots eq 0 + low_mana.world.shots
+successful E charges listed cost once @ successful_e: player.mana eq -70 + initial.player.mana
+successful E grants shield @ successful_e: player.shielded eq 1
+successful E starts listed cooldown @ successful_e: player.cooldownE eq 14
+normal mana regeneration continues @ before_recast: player.mana eq 3 + successful_e.player.mana
+cooldown recast spends no mana @ cooldown_recast: player.mana eq 0 + before_recast.player.mana
+cooldown recast preserves deadline @ cooldown_recast: player.readyE eq 0 + successful_e.player.readyE
+cooldown recast does not refresh shield duration @ cooldown_recast: player.shieldUntil eq 0 + successful_e.player.shieldUntil

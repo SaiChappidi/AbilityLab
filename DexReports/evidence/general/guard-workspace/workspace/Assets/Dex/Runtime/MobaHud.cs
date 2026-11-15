@@ -12,7 +12,7 @@ namespace Dex
         void Border(float x,float y,float w,float h,Color c){RectFill(x,y,w,1,c);RectFill(x,y+h-1,w,1,c);RectFill(x,y,1,h,c);RectFill(x+w-1,y,1,h,c);}
         void Line(Vector2 a,Vector2 b,Color c,float width=1){Matrix4x4 before=GUI.matrix;Vector2 d=b-a;GUIUtility.RotateAroundPivot(Mathf.Atan2(d.y,d.x)*Mathf.Rad2Deg,a);RectFill(a.x,a.y,d.magnitude,width,c);GUI.matrix=before;}
         Vector2 ScreenPoint(Vector2 p){Vector3 s=cam.WorldToScreenPoint(p);return new Vector2(s.x/Screen.width*1600,(1-s.y/Screen.height)*900);}
-        bool Click(float x,float y,float w,float h,string name){return GUI.Button(new Rect(x,y,w,h),name,button);}
+        bool Click(float x,float y,float w,float h,string name){return !manualSimulation&&GUI.Button(new Rect(x,y,w,h),name,button);}
         Texture2D TintTexture(Color color){var t=new Texture2D(1,1);t.SetPixel(0,0,color);t.Apply();return t;}
         void InitHud()
         {
@@ -37,20 +37,24 @@ namespace Dex
             }
             foreach(var pop in pops){Vector2 p=ScreenPoint(pop.p);Text(p.x-30,p.y-24-(sim.time-pop.born)*48,90,32,pop.text,header,pop.color);}
             if(!menu&&player.f.hp>0&&!ReplayRunning){Vector2 to=ScreenPoint(aim);Line(to+Vector2.left*6,to+Vector2.right*6,Cyan);Line(to+Vector2.up*6,to+Vector2.down*6,Cyan);}
-            Frame(0,0,1600,66);Text(28,12,320,36,"DEX  /  INTERACTION LAB",header,Ink);Text(366,22,500,22,"PLAYABLE VERIFICATION  /  SIMPLIFIED KITS",tiny,Cyan);
+            Frame(0,0,1600,66);Text(28,12,320,36,"DEX  /  INTERACTION LAB",header,Ink);Text(366,22,335,22,manualSimulation?"AUTOMATED TEST  /  CONTROLS LOCKED":ReplayRunning?"RECORDED REPLAY  /  CONTROLS LOCKED":"MANUAL PRACTICE  /  SIMPLIFIED KITS",tiny,Cyan);
+#if UNITY_EDITOR
+            if(!ReplayRunning&&Click(714,15,220,34,"OPEN DEX WORKSPACE"))UnityEditor.EditorApplication.delayCall+=()=>UnityEditor.EditorApplication.ExecuteMenuItem("Dex/Agent Workbench");
+#endif
             Text(950,15,275,35,kills+" K   "+deaths+" D   "+cs+" CS    "+((int)sim.time/60).ToString("00")+":"+((int)sim.time%60).ToString("00"),center,Muted);
             if(Click(1250,15,145,34,trace?"CLOSE TRACE":"COMBAT TRACE"))trace=!trace;if(Click(1407,15,165,34,"SANDBOX  /  ESC"))menu=!menu;
             Frame(25,88,620,100);RectFill(25,88,3,100,replayResult.Contains("FAIL")?Pink:Cyan);
-            Text(43,96,580,82,replayResult,label,replayResult.Contains("FAIL")?Pink:Cyan);
+            string statusText=manualSimulation&&!string.IsNullOrEmpty(scenarioStatus)?scenarioStatus:replayResult;
+            Text(43,96,580,82,statusText,label,statusText.Contains("FAIL")?Pink:Cyan);
             if(player.f.hp<=0){Frame(610,285,380,115);Text(635,305,330,40,"RESPAWNING",big,Pink);Text(635,355,330,30,Mathf.CeilToInt(player.respawn-sim.time)+" seconds  /  fresh resources on return",center,Ink);}
-            else if(sim.time<noticeUntil&&!ReplayRunning)Text(660,90,540,55,notice,center,Gold);
+            else if(sim.time<noticeUntil&&!ReplayRunning&&!manualSimulation)Text(660,90,540,55,notice,center,Gold);
             DrawHud();if(trace)DrawTrace();if(menu)DrawMenu();GUI.matrix=Matrix4x4.identity;
         }
         void DrawTrace()
         {
             Frame(1240,85,335,340);Text(1258,99,300,27,"INTERACTION TRACE",header,Ink);Text(1258,129,300,25,"Actual combat events / newest first",tiny,Muted);
             for(int i=0;i<Mathf.Min(8,sim.events.Count);i++)Text(1258,165+i*29,300,28,sim.events[i],tiny,i==0?Cyan:Ink);
-            Text(1258,405,300,55,"Stop Play to use the repair workbench.",tiny,Muted);
+            Text(1258,405,300,55,"Open Dex Workspace for reports and evidence.",tiny,Muted);
         }
         void DrawHud()
         {
@@ -66,7 +70,7 @@ namespace Dex
                 Border(x,758,94,88,available?Cyan:new Color(.14f,.22f,.29f));RectFill(x+3,761,23,23,Panel);Text(x+3,759,23,25,"QWER"[slot].ToString(),keyStyle,Ink);
                 Text(x+62,820,28,22,ChampionKit.Mana(player.f.champion,slot).ToString("0"),tiny,new Color(.45f,.66f,1));
                 if(cd>0){RectFill(x+1,759,92,86,new Color(.015f,.025f,.04f,.65f));Text(x,779,94,44,cd.ToString("0.0"),keyStyle,Gold);}
-                if(GUI.Button(new Rect(x,758,94,88),GUIContent.none,GUIStyle.none)&&!menu&&!ReplayRunning)Cast(player,slot,lastArenaAim);
+                if(!manualSimulation&&GUI.Button(new Rect(x,758,94,88),GUIContent.none,GUIStyle.none)&&!menu&&!ReplayRunning)Cast(player,slot,lastArenaAim);
                 if(new Rect(x,758,94,88).Contains(Event.current.mousePosition))
                 {Frame(x-40,574,360,150);Text(x-22,590,324,32,names[slot],header,Gold);Text(x-22,628,324,80,ChampionKit.Description(player.f.champion,slot),label,Ink);}
             }

@@ -1,0 +1,6 @@
+0.0s / Investigating
+2.6s / Investigating
+64.2s / Reproducing
+64.6s / Reproduced
+64.7s / Reviewing specification
+84.5s / Bug reproduced — no repair attempted

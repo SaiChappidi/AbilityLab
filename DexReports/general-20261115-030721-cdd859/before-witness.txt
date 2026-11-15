@@ -1,0 +1,9 @@
+Independent witness: Rebuttal barrier persists until expiration without damage: 5/8
+PASS Rebuttal grants a positive barrier: observed 180 gt expected 0 @ rebuttal_cast
+FAIL Barrier survives first simulation tick unchanged: observed 0 eq expected 180 @ first_tick
+FAIL Barrier persists beyond nova duration: observed 0 eq expected 180 @ after_nova
+FAIL Barrier remains unchanged just before expiration: observed 0 eq expected 180 @ before_expiration
+PASS Persistence checkpoint precedes original deadline: observed 1.98 lt expected 2 @ before_expiration
+PASS Expiration checkpoint follows original deadline: observed 2.02 gt expected 2 @ after_expiration
+PASS Barrier clears after expiration: observed 0 eq expected 0 @ after_expiration
+PASS Health stays unchanged without incoming damage: observed 1800 eq expected 1800 @ black_shield_expired

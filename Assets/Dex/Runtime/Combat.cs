@@ -41,7 +41,7 @@ namespace Dex
                 var enemy = f == a ? b : a;
                 if(f.controlUntil <= time) f.control = "";
                 if(f.shieldUntil <= time) f.shield = 0;
-                if(f.barrierUntil>=time)f.barrier=0;
+                if(f.barrierUntil<=time)f.barrier=0;
                 if(f.overwhelmUntil<=time)f.overwhelm=0;
                 if(f.hp <= 0) continue;
                 if(f.control == "Charm") f.x = Approach(f.x, enemy.x, dt * 0.025f);

@@ -1,0 +1,30 @@
+Ahri orb hits once per enemy per leg across simulation step sizes
+Seed: 173 / Ahri vs Morgana
+Expected: With zero AP and target MR, Q deals 100 damage outward and another 100 returning. A stationary off-path enemy takes no damage. Results match at dt 0.02 and 0.005.
+
+1. Place player at (0, 0)
+2. Place enemy at (3, 0)
+3. Set initial enemy.mr = 0
+4. Spawn offpath (Morgana, red) at (3, 3) → observe [normalBaseline]
+5. Cast player Q toward (8, 0) → observe [normalCast]
+6. Advance 0.5s at dt=0.02 → observe [normalOutward]
+7. Advance 1.1s at dt=0.02 → observe [normalComplete]
+8. Reset the actual arena
+9. Place player at (0, 0)
+10. Place enemy at (3, 0)
+11. Set initial enemy.mr = 0 → observe [fineBaseline]
+12. Cast player Q toward (8, 0) → observe [fineCast]
+13. Advance 0.5s at dt=0.005 → observe [fineOutward]
+14. Advance 1.1s at dt=0.005 → observe [fineComplete]
+
+Assertions:
+normal outward single hit @ normalOutward: enemy.hp eq -100 + normalBaseline.enemy.hp
+normal return single hit @ normalComplete: enemy.hp eq -100 + normalOutward.enemy.hp
+off-path control unharmed @ normalComplete: offpath.hp eq 0 + normalBaseline.offpath.hp
+normal target stationary @ normalComplete: enemy.x eq 3
+normal flight finished @ normalComplete: world.shots eq 0
+fine outward single hit @ fineOutward: enemy.hp eq -100 + fineBaseline.enemy.hp
+fine return single hit @ fineComplete: enemy.hp eq -100 + fineOutward.enemy.hp
+outward damage independent of step size @ fineOutward: enemy.hp eq 0 + normalOutward.enemy.hp
+total damage independent of step size @ fineComplete: enemy.hp eq 0 + normalComplete.enemy.hp
+fine flight finished @ fineComplete: world.shots eq 0
